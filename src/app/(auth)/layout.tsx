@@ -26,7 +26,7 @@ export default function AuthLayout({
                 </CardContent>
                 <CardFooter>
                     {pathName == '/login' ? (
-                        <div className="w-full text-center text-sm">Need an account? <Link href="/register" className='font-medium underline'>Sign up here</Link></div>
+                        <div className="w-full text-center text-sm">Need an account? <Link href="/register" className='font-medium underline'>Register here</Link></div>
                     ) : (
                         <div className="w-full text-center text-sm">Already have an account? <Link href="/login" className='font-medium underline'>Login here</Link></div>
                     )}

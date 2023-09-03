@@ -100,32 +100,32 @@ export const RegisterForm = () => {
                             <FormLabel>Date of birth</FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
-                                    <FormControl>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                                "text-left font-normal",
-                                                !field.value && "text-muted-foreground"
-                                            )}
-                                        >
-                                            {field.value ? (
-                                                format(field.value, "PPP")
-                                            ) : (
-                                                <span>Pick a date</span>
-                                            )}
-                                            <CalendarIcon className="h-4 w-4 text-gray-500 ml-auto" />
-                                        </Button>
-                                    </FormControl>
+                                    <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                            "text-left font-normal",
+                                            !field.value && "text-muted-foreground"
+                                        )}
+                                    >
+                                        {field.value ? (
+                                            format(field.value, "PPP")
+                                        ) : (
+                                            <span>Pick a date</span>
+                                        )}
+                                        <CalendarIcon className="h-4 w-4 text-gray-500 ml-auto" />
+                                    </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                         mode="single"
+                                        captionLayout="dropdown-buttons"
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) =>
                                             date > new Date() || date < new Date("1900-01-01")
                                         }
-                                        initialFocus
+                                        fromYear={1960}
+                                        toYear={new Date().getFullYear()}
                                     />
                                 </PopoverContent>
                             </Popover>
