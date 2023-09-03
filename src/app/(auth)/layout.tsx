@@ -15,7 +15,7 @@ export default function AuthLayout({
     const pathName = usePathname()
     return (
         <div className="flex min-h-screen flex-col items-center justify-center w-full">
-            <Card className='w-3/5 md:1/2'>
+            <Card className='w-3/5 md:w-2/5'>
                 <CardHeader>
                     <CardTitle className='text-center'>{pathName == '/login' ? 'Welcome back!' : 'Let\'s get started'}</CardTitle>
                     <CardDescription className='text-center'>{pathName == '/login' ? 'Login to your account and stay connected.' : 'Relax, have fun, and enjoy the experience.'}</CardDescription>
@@ -26,9 +26,9 @@ export default function AuthLayout({
                 </CardContent>
                 <CardFooter>
                     {pathName == '/login' ? (
-                        <div className="w-full text-center text-sm">Need an account? <Link href="/register" className='font-medium underline'>Register here</Link></div>
+                        <div className="w-full text-center text-sm">Need an account? <Link href="/register" className='font-medium text-link'>Register here</Link></div>
                     ) : (
-                        <div className="w-full text-center text-sm">Already have an account? <Link href="/login" className='font-medium underline'>Login here</Link></div>
+                        <div className="w-full text-center text-sm">Already have an account? <Link href="/login" className='font-medium text-link'>Login here</Link></div>
                     )}
                 </CardFooter>
             </Card>
