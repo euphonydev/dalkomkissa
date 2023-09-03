@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -11,8 +10,11 @@ import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
-    password: z.string().min(1, "Password field is required"),
-    email: z.string().email("Must be a valid email"),
+    password: z
+        .string({ required_error: "Password field is required." }),
+    email: z
+        .string({ required_error: "Email field is required." })
+        .email("Must be a valid email"),
 })
 
 type formValues = z.infer<typeof formSchema>

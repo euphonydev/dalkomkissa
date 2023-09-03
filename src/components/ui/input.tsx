@@ -34,9 +34,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={togglePasswordVisibility}
             >
               {showPassword ? (
-                <EyeIcon className="h-4 w-4 text-gray-500" />
+                <EyeIcon className="h-4 w-4 text-gray-500 me-1" />
               ) : (
-                <EyeOffIcon className="h-4 w-4 text-gray-500" />
+                <EyeOffIcon className="h-4 w-4 text-gray-500 me-1" />
               )}
             </button>
           )
