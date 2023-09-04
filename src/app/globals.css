@@ -6,12 +6,12 @@
   :root {
     --background: 46.67 81.82% 97.84%;
     --foreground: 75 7.69% 10.2%;
-    --muted: 80.63 40% 84.31%;
-    --muted-foreground: 84 50% 7.84%;
+    --muted: 72 21.74% 86.47%;
+    --muted-foreground: 76.36 8.27% 26.08%;
     --primary: 83.48 55.56% 40.59%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 100%;
-    --secondary-foreground: 84 14.62% 33.53%;
+    --secondary: 80.63 40% 84.31%;
+    --secondary-foreground: 84 50% 7.84%;
     --popover: 46.67 81.82% 97.84%;
     --popover-foreground: 75 7.69% 10.2%;
     --input: 75 17.39% 81.96%;
@@ -29,12 +29,12 @@
   .dark {
     --background: 75 7.69% 10.2%;
     --foreground: 53.33 14.29% 87.65%;
-    --muted: 82.5 19.35% 24.31%;
-    --muted-foreground: 80.63 40% 84.31%;
+    --muted: 76.36 8.27% 26.08%;
+    --muted-foreground: 72 12% 75.49%;
     --primary: 84.3 59.61% 60.2%;
     --primary-foreground: 83.33 100% 10.59%;
-    --secondary: 82.86 25.93% 15.88%;
-    --secondary-foreground: 80 22.06% 73.33%;
+    --secondary: 82.5 19.35% 24.31%;
+    --secondary-foreground: 80.63 40% 84.31%;
     --popover: 75 7.69% 10.2%;
     --popover-foreground: 53.33 14.29% 87.65%;
     --input: 72 5.75% 17.06%;
@@ -61,7 +61,7 @@
     @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   }
   h2 {
-    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+    @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
   }
   h3 {
     @apply scroll-m-20 text-2xl font-semibold tracking-tight;

@@ -1,6 +1,5 @@
 'use client'
 
-import '@/app/globals.css'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
