@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { CompassIcon } from "lucide-react"
 
 const MainSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("pb-12 hidden md:block", className)} ref={ref}>
+    <div className={cn("hidden md:block", className)} ref={ref}>
         <div className="py-4 space-y-4">
             <div className="px-3 py-2">
                 <div className="space-y-1">

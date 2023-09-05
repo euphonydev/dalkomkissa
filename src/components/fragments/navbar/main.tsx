@@ -63,9 +63,11 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    Settings
-                                </DropdownMenuItem>
+                                <Link href="/settings">
+                                    <DropdownMenuItem>
+                                        Settings
+                                    </DropdownMenuItem>
+                                </Link>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
