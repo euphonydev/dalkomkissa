@@ -2,8 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { StarIcon } from "lucide-react"
-import { shortenFormatNumber } from "@/lib/utils/number/shorten-format-number"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import '@/lib/utils/number/shorten-format-number'
 
 type MovieCardProps = {
     id: string,
@@ -37,7 +37,7 @@ export const MovieCard = ({ id, src, title, rating, watchCount }: MovieCardProps
                     <div className="font-semibold truncate text-md md:text-large group-hover:text-link">{title}</div>
                     <div className="flex justify-between w-full">
                         <div className="text-small">
-                            {watchCount ? shortenFormatNumber(watchCount) + " watched" : "0 watched"}
+                            {watchCount ? watchCount.shortenFormatNumber() + " watched" : "0 watched"}
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,9 @@
-export function shortenFormatNumber(number: number) {
+interface Number {
+  shortenFormatNumber(): string;
+}
+
+Number.prototype.shortenFormatNumber = function () {
+  const number = this.valueOf();
   if (number < 1000) {
     return number.toString();
   } else if (number < 1000000) {
@@ -32,4 +37,4 @@ export function shortenFormatNumber(number: number) {
       return billions + 'b';
     }
   }
-}
+};
