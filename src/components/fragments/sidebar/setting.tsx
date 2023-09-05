@@ -52,9 +52,8 @@ const SettingSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
                         <CollapsibleTrigger className="w-full">
                             <Button variant="outline" className="justify-start w-full" onClick={toggleCollapsible} asChild>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-lg font-semibold">{pathName.substringAfterLast("/").toTitleCase()}</span>
+                                    <span className="text-lg">{pathName.substringAfterLast("/").toTitleCase()}</span>
                                     {!isCollapsibleOpen ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronUpIcon className="w-4 h-4" />}
-                                    {/* <ChevronDownIcon className="w-4 h-4" /> */}
                                 </div>
                             </Button>
                         </CollapsibleTrigger>

@@ -13,7 +13,9 @@ export default function SettingsLayout({
 }) {
     return (
         <Navbar sidebar={SettingSidebar} className='pt-0 md:pt-10'>
-            {children}
+            <div className="flex flex-col space-y-4">
+                {children}
+            </div>
         </Navbar>
     )
 }

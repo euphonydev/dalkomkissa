@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { RegisterForm } from '@/components/fragments/register-form'
+import { RegisterForm } from '@/components/fragments/form/register'
 
 export const metadata: Metadata = {
     title: 'Register - Dalkom Kissa',

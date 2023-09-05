@@ -1,9 +1,12 @@
+import dynamic from "next/dynamic";
 import { SettingHeader } from "@/components/ui/header/setting";
+const AppearanceSettingForm = dynamic(() => import("@/components/fragments/form/appearance-setting"), { ssr: false });
 
 export default function Page() {
     return (
-        <div className="flex flex-col space-y-4">
+        <>
             <SettingHeader title="Appearance" description="Customize how you see the site." />
-        </div>
+            <AppearanceSettingForm />
+        </>
     )
 }
