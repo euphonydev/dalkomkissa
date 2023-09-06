@@ -14,16 +14,18 @@ import {
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/components/ui/use-toast"
-import { useEffect } from "react"
-
-const FormSchema = z.object({
-    theme: z.string({
-        required_error: "You need to select a theme.",
-    }),
-})
+import { useTranslations } from "next-intl"
 
 export function AppearanceSettingForm() {
     const { theme, setTheme } = useTheme()
+    const t = useTranslations()
+
+    const FormSchema = z.object({
+        theme: z.string({
+            required_error: t("IS_REQUIRED", { field: t("THEME") }),
+        }),
+    })
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -31,22 +33,11 @@ export function AppearanceSettingForm() {
         }
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
-    }
-
     function onThemeChanged(theme: string) {
         form.setValue("theme", theme)
         setTheme(theme)
         toast({
-            description: "You changed the theme to " + theme + " theme.",
+            description: t("THEME_CHANGED_INFO", { theme: theme }),
         })
     }
 
@@ -57,7 +48,7 @@ export function AppearanceSettingForm() {
                 name="theme"
                 render={({ field }) => (
                     <FormItem className="space-y-3">
-                        <FormLabel>Change theme</FormLabel>
+                        <FormLabel>{t("CHANGE_FIELD", { field: t("THEME").toLowerCase() })}</FormLabel>
                         <FormControl>
                             <RadioGroup
                                 defaultValue={field.value}
@@ -69,7 +60,7 @@ export function AppearanceSettingForm() {
                                         <RadioGroupItem value="light" />
                                     </FormControl>
                                     <FormLabel className="font-normal">
-                                        Light mode
+                                        {t("LIGHT_MODE")}
                                     </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center space-x-3 space-y-0">
@@ -77,14 +68,14 @@ export function AppearanceSettingForm() {
                                         <RadioGroupItem value="dark" />
                                     </FormControl>
                                     <FormLabel className="font-normal">
-                                        Dark mode
+                                        {t("DARK_MODE")}
                                     </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center space-x-3 space-y-0">
                                     <FormControl>
                                         <RadioGroupItem value="system" />
                                     </FormControl>
-                                    <FormLabel className="font-normal">System</FormLabel>
+                                    <FormLabel className="font-normal">{t("SYSTEM")}</FormLabel>
                                 </FormItem>
                             </RadioGroup>
                         </FormControl>

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { StarIcon } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useTranslations } from "next-intl"
 import '@/lib/utils/number/shorten-format-number'
 
 type MovieCardProps = {
@@ -14,6 +15,8 @@ type MovieCardProps = {
 }
 
 export const MovieCard = ({ id, src, title, rating, watchCount }: MovieCardProps) => {
+    const t = useTranslations()
+
     return (
         <Link href={`/movies/${id}`} className="w-full">
             <div className="flex flex-col space-y-1 group">
@@ -37,7 +40,7 @@ export const MovieCard = ({ id, src, title, rating, watchCount }: MovieCardProps
                     <div className="font-semibold truncate text-md md:text-large group-hover:text-link">{title}</div>
                     <div className="flex justify-between w-full">
                         <div className="text-small">
-                            {watchCount ? watchCount.shortenFormatNumber() + " watched" : "0 watched"}
+                            {watchCount ? watchCount.shortenFormatNumber() + t('WATCHED') : `0${t('WATCHED')}`}
                         </div>
                     </div>
                 </div>

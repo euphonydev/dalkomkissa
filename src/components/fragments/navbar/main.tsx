@@ -1,18 +1,20 @@
 "use client"
 
 import * as React from "react"
-import Link from 'next/link'
 import Image from 'next/image'
-import { useTheme } from "next-themes"
-import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { AlignLeftIcon, MoonIcon, SunIcon } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuGroup, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu'
 import { SheetTrigger } from "@/components/ui/sheet"
-import { AlignLeftIcon, MoonIcon, SunIcon } from "lucide-react"
+import { cn } from '@/lib/utils'
+import { useTheme } from "next-themes"
+import { useTranslations } from 'next-intl'
 
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const { theme, setTheme } = useTheme()
+    const t = useTranslations()
     return (
         <div className={cn('border-b', className)} {...props} ref={ref} >
             <div className="flex items-center h-16 px-4">
@@ -34,9 +36,9 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                                <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="light">{t('LIGHT_MODE')}</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="dark">{t('DARK_MODE')}</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="system">{t('SYSTEM')}</DropdownMenuRadioItem>
                             </DropdownMenuRadioGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -62,13 +64,13 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuGroup>
                                 <Link href="/settings">
                                     <DropdownMenuItem>
-                                        Settings
+                                        {t('SETTINGS')}
                                     </DropdownMenuItem>
                                 </Link>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                Log out
+                                {t('LOGOUT')}
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

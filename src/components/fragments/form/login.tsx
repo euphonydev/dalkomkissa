@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -9,18 +10,19 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 
-const formSchema = z.object({
-    password: z
-        .string({ required_error: "Password field is required." }),
-    email: z
-        .string({ required_error: "Email field is required." })
-        .email("Must be a valid email"),
-})
-
-type formValues = z.infer<typeof formSchema>
-
 export const LoginForm = () => {
     const { toast } = useToast()
+    const t = useTranslations();
+
+    const formSchema = z.object({
+        password: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) }),
+        email: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
+            .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+    })
+
+    type formValues = z.infer<typeof formSchema>
 
     const form = useForm<formValues>({
         resolver: zodResolver(formSchema),
@@ -46,9 +48,9 @@ export const LoginForm = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t('EMAIL')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="example@mail.com" {...field} />
+                                <Input placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -59,7 +61,7 @@ export const LoginForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t('PASSWORD')}</FormLabel>
                             <FormControl>
                                 <Input type="password" placeholder="********" {...field} />
                             </FormControl>
@@ -67,7 +69,7 @@ export const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='w-full'>Login</Button>
+                <Button type="submit" className='w-full'>{t('LOGIN')}</Button>
             </form>
         </Form >
     )

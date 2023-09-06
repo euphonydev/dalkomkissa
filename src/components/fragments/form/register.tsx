@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
@@ -14,25 +15,26 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
 
-const formSchema = z.object({
-    username: z
-        .string({ required_error: "Username field is required." })
-        .min(3, { message: "Username must be at least 3 characters.", })
-        .max(30, { message: "Username must not be longer than 30 characters." }),
-    password: z
-        .string({ required_error: "Password field is required." })
-        .min(8, "Password must be at least 8 characters."),
-    email: z
-        .string({ required_error: "Email field is required." })
-        .email("Must be a valid email"),
-    dob: z
-        .date({ required_error: "A date of birth is required." }),
-})
-
-type formValues = z.infer<typeof formSchema>
-
 export const RegisterForm = () => {
     const { toast } = useToast()
+    const t = useTranslations();
+
+    const formSchema = z.object({
+        username: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('USERNAME') }) })
+            .min(3, t('IS_TOO_SHORT', { field: t('USERNAME'), length: 3 }))
+            .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 })),
+        password: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) })
+            .min(8, t('IS_TOO_SHORT', { field: t('PASSWORD'), length: 8 })),
+        email: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
+            .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+        dob: z
+            .date({ required_error: t('IS_REQUIRED', { field: t('DATE_OF_BIRTH') }) }),
+    })
+
+    type formValues = z.infer<typeof formSchema>
 
     const form = useForm<formValues>({
         resolver: zodResolver(formSchema),
@@ -58,9 +60,9 @@ export const RegisterForm = () => {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>{t('USERNAME')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="imacool" {...field} />
+                                <Input placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -71,9 +73,9 @@ export const RegisterForm = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t('EMAIL')}</FormLabel>
                             <FormControl>
-                                <Input type="email" placeholder="example@mail.com" {...field} />
+                                <Input type="email" placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -84,7 +86,7 @@ export const RegisterForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t('PASSWORD')}</FormLabel>
                             <FormControl>
                                 <Input type="password" placeholder="********" {...field} />
                             </FormControl>
@@ -97,7 +99,7 @@ export const RegisterForm = () => {
                     name="dob"
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Date of birth</FormLabel>
+                            <FormLabel>{t('DATE_OF_BIRTH')}</FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
@@ -110,7 +112,7 @@ export const RegisterForm = () => {
                                         {field.value ? (
                                             format(field.value, "PPP")
                                         ) : (
-                                            <span>Pick a date</span>
+                                            <span>{t('PICK_DATE')}</span>
                                         )}
                                         <CalendarIcon className="w-4 h-4 ml-auto text-gray-500" />
                                     </Button>
@@ -133,7 +135,7 @@ export const RegisterForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='w-full'>Register</Button>
+                <Button type="submit" className='w-full'>{t('REGISTER')}</Button>
             </form>
         </Form >
     )

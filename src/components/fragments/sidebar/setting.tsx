@@ -9,6 +9,7 @@ import '@/lib/utils/string/substring-after-last'
 import '@/lib/utils/string/to-title-case'
 import Link from 'next/link';
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface SettingMenuProps {
     className?: string;
@@ -16,7 +17,8 @@ interface SettingMenuProps {
 }
 
 const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
-    const paths = ["/settings/profile", "/settings/account", "/settings/appearance"];
+    const t = useTranslations();
+    const paths = [`/settings/${t('PROFILE').toLowerCase()}`, `/settings/${t('ACCOUNT').toLowerCase()}`, `/settings/${t('APPEARANCE').toLowerCase()}`];
 
     return (
         <div className={cn("space-y-1", className)}>
@@ -28,7 +30,7 @@ const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
                     asChild
                 >
                     <Link href={path}>
-                        <div className="text-lg font-semibold">{path.substringAfterLast("/").toTitleCase()}</div>
+                        <div className="text-lg md:font-semibold">{path.substringAfterLast("/").toTitleCase()}</div>
                     </Link>
                 </Button>
             ))
