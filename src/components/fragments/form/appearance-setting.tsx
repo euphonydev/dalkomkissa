@@ -96,4 +96,6 @@ export function AppearanceSettingForm() {
     )
 }
 
+AppearanceSettingForm.displayName = "AppearanceSettingForm"
+
 export default AppearanceSettingForm

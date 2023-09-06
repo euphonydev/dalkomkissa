@@ -33,3 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ className, children, sidebar: SidebarCo
 };
 
 export { Navbar }
+
+Navbar.displayName = "Navbar"
+
+export default Navbar

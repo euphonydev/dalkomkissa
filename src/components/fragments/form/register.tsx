@@ -112,7 +112,7 @@ export const RegisterForm = () => {
                                         ) : (
                                             <span>Pick a date</span>
                                         )}
-                                        <CalendarIcon className="h-4 w-4 text-gray-500 ml-auto" />
+                                        <CalendarIcon className="w-4 h-4 ml-auto text-gray-500" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
@@ -138,3 +138,7 @@ export const RegisterForm = () => {
         </Form >
     )
 }
+
+RegisterForm.displayName = 'RegisterForm'
+
+export default RegisterForm

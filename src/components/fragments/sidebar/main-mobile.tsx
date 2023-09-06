@@ -19,3 +19,7 @@ const MobileMainSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
 ))
 
 export { MobileMainSidebar }
+
+MobileMainSidebar.displayName = "MobileMainSidebar"
+
+export default MobileMainSidebar

@@ -44,17 +44,17 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                                 <Avatar className="w-8 h-8">
-                                    <AvatarImage src="/avatars/01.png" alt="@euphonydev" />
-                                    <AvatarFallback>ED</AvatarFallback>
+                                    <AvatarImage src="/avatars/01.png" alt="@imacool" />
+                                    <AvatarFallback>EU</AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal">
                                 <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none">euphonydev</p>
+                                    <p className="text-sm font-medium leading-none">imacool</p>
                                     <p className="text-xs leading-none text-muted-foreground">
-                                        euphonydev@gmail.com
+                                        example@mail.com
                                     </p>
                                 </div>
                             </DropdownMenuLabel>
@@ -79,3 +79,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 })
 
 export { MainNavbar }
+
+MainNavbar.displayName = "MainNavbar"
+
+export default MainNavbar

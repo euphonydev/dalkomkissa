@@ -68,3 +68,7 @@ const SettingSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
 })
 
 export { SettingSidebar }
+
+SettingSidebar.displayName = "SettingSidebar"
+
+export default SettingSidebar

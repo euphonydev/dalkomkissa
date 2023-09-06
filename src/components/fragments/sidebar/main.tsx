@@ -19,3 +19,7 @@ const MainSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
 ))
 
 export { MainSidebar }
+
+MainSidebar.displayName = "MainSidebar"
+
+export default MainSidebar

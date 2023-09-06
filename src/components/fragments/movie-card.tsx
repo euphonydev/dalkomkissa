@@ -45,3 +45,7 @@ export const MovieCard = ({ id, src, title, rating, watchCount }: MovieCardProps
         </Link >
     )
 }
+
+MovieCard.displayName = "MovieCard"
+
+export default MovieCard

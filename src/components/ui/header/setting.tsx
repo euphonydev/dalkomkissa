@@ -23,3 +23,7 @@ const SettingHeader: React.FC<SettingHeaderProps> = (({ className, title, descri
 })
 
 export { SettingHeader }
+
+SettingHeader.displayName = "SettingHeader"
+
+export default SettingHeader

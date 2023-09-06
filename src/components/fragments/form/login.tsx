@@ -72,3 +72,7 @@ export const LoginForm = () => {
         </Form >
     )
 }
+
+LoginForm.displayName = 'LoginForm'
+
+export default LoginForm
