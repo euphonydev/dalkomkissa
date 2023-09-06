@@ -18,7 +18,7 @@ interface SettingMenuProps {
 
 const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
     const t = useTranslations();
-    const paths = [`/settings/${t('PROFILE').toLowerCase()}`, `/settings/${t('ACCOUNT').toLowerCase()}`, `/settings/${t('APPEARANCE').toLowerCase()}`];
+    const paths = ["/settings/profile", "/settings/account", "/settings/appearance"];
 
     return (
         <div className={cn("space-y-1", className)}>
@@ -30,7 +30,7 @@ const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
                     asChild
                 >
                     <Link href={path}>
-                        <div className="text-lg md:font-semibold">{path.substringAfterLast("/").toTitleCase()}</div>
+                        <div className="text-lg md:font-semibold">{t(path.substringAfterLast("/").toUpperCase()).toTitleCase()}</div>
                     </Link>
                 </Button>
             ))
