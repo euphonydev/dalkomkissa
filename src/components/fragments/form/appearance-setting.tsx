@@ -71,7 +71,7 @@ export function AppearanceSettingForm() {
 
     return (
         <Form {...form}>
-            <div className="space-y-4">
+            <div className="space-y-8">
                 <FormField
                     control={form.control}
                     name="theme"
@@ -140,7 +140,7 @@ export function AppearanceSettingForm() {
                                 </PopoverTrigger>
                                 <PopoverContent className="w-[200px] p-0">
                                     <Command>
-                                        <CommandInput placeholder="Search framework..." />
+                                        <CommandInput placeholder={t("SEARCH_FIELD", { field: t("LANGUAGE").toLowerCase() })} />
                                         <CommandEmpty>No framework found.</CommandEmpty>
                                         <CommandGroup>
                                             {languages.map((language) => (
