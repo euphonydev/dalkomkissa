@@ -7,7 +7,7 @@ export default function Page() {
     const t = useTranslations();
     return (
         <>
-            <SettingHeader title={t('APPEARANCE')} description={t('APPEARANCE_SETTING_DESC')} />
+            <SettingHeader title={t('APPEARANCE')} description={t('APPEARANCE_SETTINGS_DESC')} />
             <AppearanceSettingForm />
         </>
     )

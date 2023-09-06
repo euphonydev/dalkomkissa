@@ -5,7 +5,7 @@ export default function Page() {
     const t = useTranslations();
     return (
         <>
-            <SettingHeader title={t('ACCOUNT')} description={t('ACCOUNT_SETTING_DESC')} />
+            <SettingHeader title={t('ACCOUNT')} description={t('ACCOUNT_SETTINGS_DESC')} />
         </>
     )
 }

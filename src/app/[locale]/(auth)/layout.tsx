@@ -16,7 +16,7 @@ export default function AuthLayout({
     const t = useTranslations();
     return (
         <div className="flex flex-col items-center justify-center w-full min-h-screen">
-            <Card className='w-3/5 md:w-2/5'>
+            <Card className='w-4/5 md:w-2/5'>
                 <CardHeader>
                     <CardTitle className='text-center'>{pathName == '/login' ? t('LOGIN_TITLE') : t('REGISTER_TITLE')}</CardTitle>
                     <CardDescription className='text-center'>{pathName == '/login' ? t('LOGIN_SUBTITLE') : t('REGISTER_SUBTITLE')}</CardDescription>

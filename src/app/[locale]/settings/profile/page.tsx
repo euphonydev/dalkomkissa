@@ -5,7 +5,7 @@ export default function Page() {
     const t = useTranslations();
     return (
         <>
-            <SettingHeader title={t('PROFILE')} description={t('PROFILE_SETTING_DESC')} />
+            <SettingHeader title={t('PROFILE')} description={t('PROFILE_SETTINGS_DESC')} />
         </>
     )
 }
