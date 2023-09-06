@@ -15,14 +15,14 @@ export default function Page() {
             <header className='flex flex-col w-full space-y-2'>
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/discover">{t('DISCOVER')}</BreadcrumbLink>
+                        <BreadcrumbLink href="/discover">discover</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/movies">{t('MOVIES')}</BreadcrumbLink>
+                        <BreadcrumbLink href="/movies">movies</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbItem isCurrentPage>
                         <BreadcrumbLink href="/movies/latest">
-                            Latest
+                            latest
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                 </Breadcrumb>

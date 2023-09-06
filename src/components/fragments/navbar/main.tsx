@@ -36,8 +36,8 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                                <DropdownMenuRadioItem value="light">{t('LIGHT_MODE')}</DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value="dark">{t('DARK_MODE')}</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="light">{t('LIGHT')}</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="dark">{t('DARK')}</DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value="system">{t('SYSTEM')}</DropdownMenuRadioItem>
                             </DropdownMenuRadioGroup>
                         </DropdownMenuContent>
