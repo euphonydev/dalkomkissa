@@ -25,8 +25,8 @@ const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
             {paths.map((path, index) => (
                 <Button
                     key={index}
-                    variant={pathName === path ? "secondary" : "ghost"}
-                    className={cn("justify-start w-full", pathName === path ? "hidden md:block" : "")}
+                    variant={pathName.substringAfterLast("/") === path.substringAfterLast("/") ? "secondary" : "ghost"}
+                    className={cn("justify-start w-full", pathName.substringAfterLast("/") === path.substringAfterLast("/") ? "hidden md:block" : "")}
                     asChild
                 >
                     <Link href={path}>
@@ -41,6 +41,7 @@ const SettingMenu: React.FC<SettingMenuProps> = ({ className, pathName }) => {
 
 const SettingSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const pathName = usePathname();
+    const t = useTranslations();
     const [isCollapsibleOpen, setIsCollapsibleOpen] = React.useState(false)
     const toggleCollapsible = () => {
         setIsCollapsibleOpen(!isCollapsibleOpen);
@@ -54,7 +55,7 @@ const SettingSidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
                         <CollapsibleTrigger className="w-full">
                             <Button variant="outline" className="justify-start w-full" onClick={toggleCollapsible} asChild>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-lg">{pathName.substringAfterLast("/").toTitleCase()}</span>
+                                    <span className="text-lg">{t(pathName.substringAfterLast("/").toUpperCase()).toTitleCase()}</span>
                                     {!isCollapsibleOpen ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronUpIcon className="w-4 h-4" />}
                                 </div>
                             </Button>
