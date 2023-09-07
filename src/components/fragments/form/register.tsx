@@ -11,7 +11,7 @@ import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from '@/components/ui/button'
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
 
