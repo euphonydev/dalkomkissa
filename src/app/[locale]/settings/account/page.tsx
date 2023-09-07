@@ -1,3 +1,4 @@
+import AccountSettingForm from "@/components/fragments/form/account-setting";
 import { SettingHeader } from "@/components/ui/header/setting";
 import { useTranslations } from "next-intl";
 
@@ -6,6 +7,7 @@ export default function Page() {
     return (
         <>
             <SettingHeader title={t('ACCOUNT')} description={t('ACCOUNT_SETTINGS_DESC')} />
+            <AccountSettingForm />
         </>
     )
 }
