@@ -27,11 +27,13 @@ const MainHeader: React.FC<MainHeaderProps> = (({ className, title, description,
             <header className={cn('flex flex-col w-full space-y-4', className)} {...props} ref={ref}>
                 {withBreadcrumb && (
                     <Breadcrumb>
-                        {paths.map((path, index) => (
-                            <BreadcrumbItem key={index}>
-                                <BreadcrumbLink href={`/${paths.slice(0, index + 1).join('/')}`}>{t(path.toUpperCase())}</BreadcrumbLink>
-                            </BreadcrumbItem>
-                        ))}
+                        {paths.map((path, index) =>
+                            path.length > 2 ? (
+                                <BreadcrumbItem key={index}>
+                                    <BreadcrumbLink href={`/${paths.slice(0, index + 1).join('/')}`}>{t(path.toUpperCase())}</BreadcrumbLink>
+                                </BreadcrumbItem>
+                            ) : null
+                        )}
                     </Breadcrumb>
                 )}
                 <div className="flex flex-col">
