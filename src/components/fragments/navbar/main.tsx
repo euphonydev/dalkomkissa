@@ -23,6 +23,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
     const supabase = createClientComponentClient()
     const router = useRouter()
     const [user, setUser] = useState<any>()
+    const [avatar, setAvatar] = useState("")
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
@@ -32,11 +33,16 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                 setIsLoggedIn(true)
                 const { data, error } = await supabase
                     .from('profile')
-                    .select(`name, account (username)`)
+                    .select(`name, photo, account (username)`)
                     .eq('id', user.id)
                     .single()
                 if (!error) {
                     setUser(data)
+                    const { data: photo } = supabase
+                        .storage
+                        .from('avatar')
+                        .getPublicUrl(data.photo)
+                    setAvatar(photo.publicUrl)
                 }
             }
         }
@@ -88,7 +94,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                                     <Avatar className="w-8 h-8">
-                                        <AvatarImage src="/avatars/01.png" alt={'@' + (user?.account.username)} />
+                                        <AvatarImage src={avatar} alt={'@' + (user?.account.username)} />
                                         <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                                     </Avatar>
                                 </Button>
