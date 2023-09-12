@@ -9,10 +9,14 @@ import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation';
 
 export const LoginForm = () => {
     const { toast } = useToast()
     const t = useTranslations();
+    const supabase = createClientComponentClient()
+    const router = useRouter()
 
     const formSchema = z.object({
         password: z
@@ -29,15 +33,19 @@ export const LoginForm = () => {
         mode: "onChange",
     })
 
-    function onSubmit(data: formValues) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
+    async function onSubmit(formData: formValues) {
+        const { error } = await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password,
         })
+        if (!error) {
+            toast({
+                description: (
+                    <p>{t('ACTION_SUCCESS', { action: t('LOGIN').toLowerCase() })}</p>
+                )
+            })
+            router.push('/')
+        }
     }
 
     return (
