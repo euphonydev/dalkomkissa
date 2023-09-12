@@ -29,7 +29,7 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
                 <Button type="button" variant="outline" className="w-full mt-4"><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
             </CardContent>
             <CardFooter>
-                {pathName.substringAfterLast('/') == '/login' ? (
+                {pathName.substringAfterLast('/') == 'login' ? (
                     <div className="w-full text-sm text-center">{t('DONT_HAVE_ACCOUNT')} <Link href="/register" className='font-medium text-link'>{t('REGISTER_HERE')}</Link></div>
                 ) : (
                     <div className="w-full text-sm text-center">{t('HAVE_ACCOUNT')} <Link href="/login" className='font-medium text-link'>{t('LOGIN_HERE')}</Link></div>
