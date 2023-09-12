@@ -47,6 +47,7 @@
   "REGISTER": "Register",
   "REGISTER_HERE": "Register here",
   "REGISTER_SUBTITLE": "Relax, have fun, and enjoy the experience!",
+  "REGISTER_SUCCESS": "Successfully registered your account. Please confirm your email to activate your account.",
   "REGISTER_TITLE": "Let's get started",
   "SAVE_FORM": "Save {form}",
   "SEARCH_FIELD": "Search {field}...",
