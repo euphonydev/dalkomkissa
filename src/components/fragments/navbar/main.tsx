@@ -11,10 +11,30 @@ import { SheetTrigger } from "@/components/ui/sheet"
 import { cn } from '@/lib/utils'
 import { useTheme } from "next-themes"
 import { useTranslations } from 'next-intl'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const { theme, setTheme } = useTheme()
+    const { toast } = useToast()
     const t = useTranslations()
+    const supabase = createClientComponentClient()
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut()
+
+        if (!error) {
+            toast({
+                description: (
+                    <p>{t('ACTION_SUCCESS', { action: t('LOGOUT').toLowerCase() })}</p>
+                ),
+            })
+            router.push('/login')
+        }
+    }
+
     return (
         <div className={cn('border-b', className)} {...props} ref={ref} >
             <div className="flex items-center h-16 px-4">
@@ -70,7 +90,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                {t('LOGOUT')}
+                                <button onClick={handleLogout}>{t('LOGOUT')}</button>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

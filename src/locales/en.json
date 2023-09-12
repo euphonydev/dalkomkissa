@@ -5,6 +5,7 @@
   },
   "ACCOUNT": "Account",
   "ACCOUNT_SETTINGS_DESC": "Update your account settings.",
+  "ACTION_SUCCESS": "Successfully {action}.",
   "APPEARANCE": "Appearance",
   "APPEARANCE_SETTINGS_DESC": "Customize how you see the site.",
   "AVATAR": "Avatar",

@@ -81,8 +81,6 @@ export const RegisterForm = () => {
                         ),
                     })
                     router.push('/login')
-                } else {
-                    console.log(accountInsert.error, entryInsert.error, profileInsert.error)
                 }
             }
         }
