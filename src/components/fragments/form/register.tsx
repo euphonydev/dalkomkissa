@@ -3,6 +3,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
@@ -14,10 +15,13 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export const RegisterForm = () => {
     const { toast } = useToast()
-    const t = useTranslations();
+    const t = useTranslations()
+    const supabase = createClientComponentClient()
+    const router = useRouter()
 
     const formSchema = z.object({
         username: z
@@ -41,15 +45,45 @@ export const RegisterForm = () => {
         mode: "onChange",
     })
 
-    function onSubmit(data: formValues) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
+    async function onSubmit(formData: formValues) {
+        const { data, error } = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password,
+            options: {
+                emailRedirectTo: `${location.origin}/auth/callback`,
+            },
         })
+        if (!error) {
+            if (data.user) {
+                const accountInsert = await supabase.from('account').insert({
+                    id: data.user.id,
+                    email: formData.email,
+                    username: formData.username,
+                })
+
+                const entryInsert = await supabase.from('entry').insert({
+                    id: data.user.id,
+                    type_id: 1,
+                })
+
+                const profileInsert = await supabase.from('profile').insert({
+                    id: data.user.id,
+                    name: formData.username,
+                    birthdate: formData.dob,
+                    gender: '?',
+                    account_id: data.user.id,
+                })
+
+                if (!accountInsert.error && !entryInsert.error && !profileInsert.error) {
+                    toast({
+                        description: (
+                            <p>{t('REGISTER_SUCCESS')}</p>
+                        ),
+                    })
+                    router.push('/login')
+                }
+            }
+        }
     }
 
     return (
