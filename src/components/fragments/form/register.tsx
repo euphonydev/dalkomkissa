@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation'
@@ -16,6 +16,7 @@ import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useDebounce } from 'use-debounce';
 
 export const RegisterForm = () => {
     const { toast } = useToast()
@@ -44,6 +45,29 @@ export const RegisterForm = () => {
         resolver: zodResolver(formSchema),
         mode: "onChange",
     })
+
+    const [usernameError, setUsernameError] = useState<string>('');
+    const [debouncedUsername] = useDebounce(form.watch('username'), 1000); 
+
+    useEffect(() => {
+        const validateUsername = async (username: string) => {
+            if (username) {
+                const { data: existingUser, error: existingUserError } = await supabase
+                    .from('account')
+                    .select('id')
+                    .eq('username', username)
+                    .single();
+
+                if (existingUser) {
+                    setUsernameError(t('USERNAME_ALREADY_EXISTS'));
+                } else {
+                    setUsernameError('');
+                }
+            }
+        };
+
+        validateUsername(debouncedUsername);
+    }, [debouncedUsername, supabase, t]);
 
     async function onSubmit(formData: formValues) {
         const { data, error } = await supabase.auth.signUp({
@@ -98,7 +122,7 @@ export const RegisterForm = () => {
                             <FormControl>
                                 <Input placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage>{usernameError}</FormMessage>
                         </FormItem>
                     )}
                 />

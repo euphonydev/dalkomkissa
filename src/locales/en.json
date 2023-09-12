@@ -60,5 +60,6 @@
   "THEME_CHANGED_INFO": "Successfully changed theme to {theme} theme.",
   "USERNAME": "Username",
   "USERNAME_PLACEHOLDER": "imacool",
+  "USERNAME_ALREADY_EXISTS":"The username is already taken. Please choose another username.",
   "WATCHED": " watched"
 }

@@ -60,5 +60,6 @@
   "THEME_CHANGED_INFO": "Tema berhasil diubah ke tema {theme}.",
   "USERNAME": "Nama pengguna",
   "USERNAME_PLACEHOLDER": "akukeren",
+  "USERNAME_ALREADY_EXISTS":"Nama pengguna ini sudah digunakan. Harap pilih nama pengguna lain.",
   "WATCHED": " ditonton"
 }
