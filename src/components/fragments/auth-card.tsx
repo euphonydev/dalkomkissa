@@ -3,8 +3,6 @@ import Link from "next/link"
 import { ReactNode } from "react"
 import { useTranslations } from "next-intl"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { GoogleIcon } from '@/components/icons'
 import '@/lib/utils/string/substring-after-last'
 import { usePathname } from "next/navigation"
 import { cn } from '@/lib/utils'
@@ -17,7 +15,6 @@ interface AuthCardProps {
 export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
     const t = useTranslations()
     const pathName = usePathname()
-
     return (
         <Card className={cn("w-4/5 md:w-2/5", className)}>
             <CardHeader>
@@ -26,7 +23,6 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
             </CardHeader>
             <CardContent>
                 {children}
-                <Button type="button" variant="outline" className="w-full mt-4"><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
             </CardContent>
             <CardFooter>
                 {pathName.substringAfterLast('/') == 'login' ? (

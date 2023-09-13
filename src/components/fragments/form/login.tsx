@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation';
+import { GoogleIcon } from '@/components/icons'
 
 export const LoginForm = () => {
     const { toast } = useToast()
@@ -48,6 +49,27 @@ export const LoginForm = () => {
         }
     }
 
+    async function onGoogleLogin() {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                    redirectTo: `${location.origin}/auth/callback`
+                },
+            },
+        })
+        if (data) {
+            toast({
+                description: (
+                    <p>{t('ACTION_SUCCESS', { action: t('LOGIN').toLowerCase() })}</p>
+                )
+            })
+            console.log(data)
+        }
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -78,6 +100,7 @@ export const LoginForm = () => {
                     )}
                 />
                 <Button type="submit" className='w-full'>{t('LOGIN')}</Button>
+                <Button type="button" variant="outline" className="w-full mt-4"><GoogleIcon className='w-5 h-5 me-2' onClick={onGoogleLogin} />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
             </form>
         </Form >
     )
