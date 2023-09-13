@@ -60,14 +60,6 @@ export const LoginForm = () => {
                 },
             },
         })
-        if (data) {
-            toast({
-                description: (
-                    <p>{t('ACTION_SUCCESS', { action: t('LOGIN').toLowerCase() })}</p>
-                )
-            })
-            console.log(data)
-        }
     }
 
     return (
@@ -100,7 +92,7 @@ export const LoginForm = () => {
                     )}
                 />
                 <Button type="submit" className='w-full'>{t('LOGIN')}</Button>
-                <Button type="button" variant="outline" className="w-full mt-4"><GoogleIcon className='w-5 h-5 me-2' onClick={onGoogleLogin} />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
+                <Button type="button" variant="outline" className="w-full mt-4" onClick={onGoogleLogin}><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
             </form>
         </Form >
     )
