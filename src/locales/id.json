@@ -60,6 +60,7 @@
   "THEME_CHANGED_INFO": "Tema berhasil diubah ke tema {theme}.",
   "USERNAME": "Nama pengguna",
   "USERNAME_PLACEHOLDER": "akukeren",
-  "USERNAME_ALREADY_EXISTS":"Nama pengguna ini sudah digunakan. Harap pilih nama pengguna lain.",
+  "USERNAME_ALREADY_EXISTS": "Nama pengguna ini sudah digunakan. Harap pilih nama pengguna lain.",
+  "USERNAME_NOT_VALID": "Nama pengguna hanya dapat berisi huruf, angka, dan underscore.",
   "WATCHED": " ditonton"
 }

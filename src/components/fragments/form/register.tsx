@@ -28,7 +28,8 @@ export const RegisterForm = () => {
         username: z
             .string({ required_error: t('IS_REQUIRED', { field: t('USERNAME') }) })
             .min(3, t('IS_TOO_SHORT', { field: t('USERNAME'), length: 3 }))
-            .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 })),
+            .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 }))
+            .regex(/^[a-zA-Z0-9_]+$/, t('USERNAME_NOT_VALID')),
         password: z
             .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) })
             .min(8, t('IS_TOO_SHORT', { field: t('PASSWORD'), length: 8 })),
@@ -47,7 +48,7 @@ export const RegisterForm = () => {
     })
 
     const [usernameError, setUsernameError] = useState<string>('');
-    const [debouncedUsername] = useDebounce(form.watch('username'), 1000); 
+    const [debouncedUsername] = useDebounce(form.watch('username'), 1000);
 
     useEffect(() => {
         const validateUsername = async (username: string) => {
@@ -119,7 +120,11 @@ export const RegisterForm = () => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>{t('USERNAME')}</FormLabel>
-                            <FormControl>
+                            <FormControl onChange={(e) => {
+                                if (e.target instanceof HTMLInputElement) {
+                                    field.onChange(e.target.value.toLowerCase());
+                                }
+                            }}>
                                 <Input placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage>{usernameError}</FormMessage>

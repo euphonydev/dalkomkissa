@@ -36,7 +36,8 @@ export const ProfileSettingForm = () => {
         username: z
             .string({ required_error: t('IS_REQUIRED', { field: t('USERNAME') }) })
             .min(3, t('IS_TOO_SHORT', { field: t('USERNAME'), length: 3 }))
-            .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 })),
+            .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 }))
+            .regex(/^[a-zA-Z0-9_]+$/, t('USERNAME_NOT_VALID')),
         fullname: z
             .string(),
         avatar: z.string(),
@@ -84,16 +85,18 @@ export const ProfileSettingForm = () => {
     useEffect(() => {
         const validateUsername = async (username: string) => {
             if (username) {
-                const { data: existingUser, error: existingUserError } = await supabase
-                    .from('account')
-                    .select('id')
-                    .eq('username', username)
-                    .single();
+                if (username != userData?.account.username) {
+                    const { data: existingUser, error: existingUserError } = await supabase
+                        .from('account')
+                        .select('id')
+                        .eq('username', username)
+                        .single();
 
-                if (existingUser) {
-                    setUsernameError(t('USERNAME_ALREADY_EXISTS'));
-                } else {
-                    setUsernameError('');
+                    if (existingUser) {
+                        setUsernameError(t('USERNAME_ALREADY_EXISTS'));
+                    } else {
+                        setUsernameError('');
+                    }
                 }
             }
         };
@@ -178,7 +181,11 @@ export const ProfileSettingForm = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('USERNAME')}</FormLabel>
-                                    <FormControl>
+                                    <FormControl onChange={(e) => {
+                                        if (e.target instanceof HTMLInputElement) {
+                                            field.onChange(e.target.value.toLowerCase());
+                                        }
+                                    }}>
                                         <Input placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
                                     </FormControl>
                                     <FormMessage>{usernameError}</FormMessage>
