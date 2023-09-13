@@ -1,21 +1,47 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl';
-import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import { Label } from '@/components/ui/label';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export const AccountSettingForm = () => {
     const { toast } = useToast()
+    const [userData, setUserData] = useState<any>()
     const t = useTranslations();
+    const supabase = createClientComponentClient()
 
-    function onChangePassword() {
-        toast({
-            description: t("EMAIL_SENDED"),
-        })
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+                const { data, error } = await supabase
+                    .from('account')
+                    .select(`email`)
+                    .eq('id', user.id)
+                    .single()
+                if (!error) {
+                    setUserData(data)
+                }
+            }
+        }
+        getUser()
+    }, [])
+
+    async function onChangePassword() {
+        if (userData) {
+            const { error } = await supabase.auth.resetPasswordForEmail(userData.email, {
+                redirectTo: `${location.origin}/reset-password`,
+            })
+            if (!error) {
+                console.log(userData.email)
+                toast({
+                    description: t("EMAIL_SENDED"),
+                })
+            }
+        }
     }
 
     return (

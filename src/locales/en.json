@@ -41,6 +41,8 @@
   "LOGOUT": "Logout",
   "MALE": "Male",
   "MOVIES": "Movies",
+  "NEW_PASSWORD": "New password",
+  "OLD_PASSWORD": "Old password",
   "PASSWORD": "Password",
   "PICK_DATE": "Pick a date",
   "PROFILE": "Profile",
