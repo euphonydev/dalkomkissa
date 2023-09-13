@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form'
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { format } from 'date-fns'
 import { CalendarIcon, PencilIcon } from 'lucide-react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -27,6 +26,7 @@ export const ProfileSettingForm = () => {
     const t = useTranslations();
     const supabase = createClientComponentClient()
     const router = useRouter()
+    const format = useFormatter();
     const [userData, setUserData] = useState<any>()
     const [avatar, setAvatar] = useState("")
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -149,7 +149,14 @@ export const ProfileSettingForm = () => {
             })
             .eq('id', userData?.account_id);
 
-        if (!accountError && !profileError && !avatarError) {
+        const { error: entryError } = await supabase
+            .from('entry')
+            .update({
+                updated_at: new Date(),
+            })
+            .eq('id', userData?.account_id);
+
+        if (!accountError && !profileError && !avatarError && !entryError) {
             toast({
                 description: (
                     <p>{t('ACTION_SUCCESS', { action: t('CHANGE_FIELD', { field: t('PROFILE') }).toLowerCase() })}</p>
@@ -260,7 +267,7 @@ export const ProfileSettingForm = () => {
                                                 )}
                                             >
                                                 {field.value ? (
-                                                    format(field.value, "PPP")
+                                                    format.dateTime(field.value, { dateStyle: "long" })
                                                 ) : (
                                                     <span>{t('PICK_DATE')}</span>
                                                 )}

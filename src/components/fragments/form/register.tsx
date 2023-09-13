@@ -2,13 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from '@/components/ui/button'
@@ -23,6 +22,7 @@ export const RegisterForm = () => {
     const t = useTranslations()
     const supabase = createClientComponentClient()
     const router = useRouter()
+    const format = useFormatter();
 
     const formSchema = z.object({
         username: z
@@ -173,7 +173,7 @@ export const RegisterForm = () => {
                                         )}
                                     >
                                         {field.value ? (
-                                            format(field.value, "PPP")
+                                            format.dateTime(field.value, { dateStyle: "long" })
                                         ) : (
                                             <span>{t('PICK_DATE')}</span>
                                         )}
