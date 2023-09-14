@@ -15,22 +15,22 @@ const Navbar: React.FC<NavbarProps> = ({ className, children, sidebar: SidebarCo
     return (
         <div className={cn('h-screen')} {...props}>
             <Sheet>
-                <MainNavbar />
-                <div className="h-full bg-background">
-                    <div className="h-full md:flex">
-                        <SidebarComponent className="md:w-2/5 lg:w-1/5" />
-                        <div className={cn("container pt-10 mx-auto border-l", className)}>
-                            {children}
-                        </div>
-                    </div>
+                <MainNavbar className='sticky top-0 bg-background z-50' />
+                <div className="md:grid md:grid-cols-5">
+                    <aside className="md:self-start md:h-[calc(100vh-theme(spacing.16))] md:col-span-1 md:sticky md:top-16 md:border-r">
+                        <SidebarComponent />
+                    </aside>
+                    <main className={cn("md:h-full md:col-span-4 container pt-10 md:pt-10 pb-16 md:pb-10 mx-auto", className)}>
+                        {children}
+                    </main>
                 </div>
                 <SheetContent side="left">
                     <MobileMainSidebar />
                 </SheetContent>
             </Sheet>
         </div>
-    );
-};
+    )
+}
 
 export { Navbar }
 

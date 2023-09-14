@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation';
+import { id } from 'date-fns/locale';
 
 export const LoginForm = () => {
     const { toast } = useToast()
@@ -56,9 +57,9 @@ export const LoginForm = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{t('EMAIL')}</FormLabel>
+                            <FormLabel htmlFor='email'>{t('EMAIL')}</FormLabel>
                             <FormControl>
-                                <Input placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
+                                <Input autoComplete='email' type='email' id='email' placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -69,9 +70,9 @@ export const LoginForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{t('PASSWORD')}</FormLabel>
+                            <FormLabel htmlFor='password'>{t('PASSWORD')}</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="********" {...field} />
+                                <Input autoComplete="current-password" type="password" id="password" placeholder="********" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

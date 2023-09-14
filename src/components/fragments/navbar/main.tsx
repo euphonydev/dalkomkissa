@@ -12,48 +12,49 @@ import { cn } from '@/lib/utils'
 import { useTheme } from "next-themes"
 import { useTranslations } from 'next-intl'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useUser } from '@/hooks/useUser'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
+import { useDebouncedCallback } from 'use-debounce'
 import '@/lib/utils/string/get-initial-name'
 
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const { theme, setTheme } = useTheme()
     const { toast } = useToast()
+    const { user, avatar, isLoggedIn } = useUser()
     const t = useTranslations()
     const supabase = createClientComponentClient()
     const router = useRouter()
-    const [user, setUser] = useState<any>()
-    const [avatar, setAvatar] = useState("")
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [visible, setVisible] = useState(true)
+    const [prevScrollPos, setPrevScrollPos] = useState(0)
+
+    const debouncedHandleScroll = useDebouncedCallback(
+        (currentScrollPos) => {
+            setVisible(
+                (
+                    prevScrollPos > currentScrollPos &&
+                    prevScrollPos - currentScrollPos > 70
+                ) || currentScrollPos < 10
+            )
+            setPrevScrollPos(currentScrollPos)
+        },
+        100
+    )
 
     useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                const { data, error } = await supabase
-                    .from('profile')
-                    .select(`name, photo, account (username)`)
-                    .eq('id', user.id)
-                    .single()
-                if (!error) {
-                    setUser(data)
-                    const { data: photo } = supabase
-                        .storage
-                        .from('avatar')
-                        .getPublicUrl(data.photo)
-                    setAvatar(photo.publicUrl)
-                }
+        const mdBreakpoint = 768;
+        const shouldHideNavbar = window.innerWidth < mdBreakpoint
+        if (shouldHideNavbar) {
+            window.addEventListener('scroll', () => {
+                const currentScrollPos = window.pageYOffset
+                debouncedHandleScroll(currentScrollPos)
+            })
+
+            return () => {
+                window.removeEventListener('scroll', debouncedHandleScroll)
             }
         }
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (session) {
-                setIsLoggedIn(true)
-                getUser()
-            }
-        }
-        checkSession()
-    }, [])
+    }, [debouncedHandleScroll, prevScrollPos])
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut()
@@ -69,7 +70,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
     }
 
     return (
-        <div className={cn('border-b', className)} {...props} ref={ref} >
+        <div className={cn(`border-b transition-opacity ${!visible ? 'opacity-0' : ''}`, className)} {...props} ref={ref} >
             <div className="flex items-center h-16 px-4">
                 <nav className="flex items-center space-x-4 lg:space-x-6">
                     <SheetTrigger className="block md:hidden">
@@ -100,7 +101,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                                     <Avatar className="w-8 h-8">
-                                        <AvatarImage src={avatar} alt={'@' + (user?.account.username)} />
+                                        <AvatarImage src={avatar?.publicUrl} alt={'@' + (user?.account.username)} />
                                         <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                                     </Avatar>
                                 </Button>
@@ -108,8 +109,8 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuContent className="w-56" align="end" forceMount>
                                 <DropdownMenuLabel className="font-normal">
                                     <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-medium leading-none">{user?.name}</p>
-                                        <p className="text-xs leading-none text-muted-foreground">
+                                        <p className="text-sm font-medium leading-none truncate">{user?.name}</p>
+                                        <p className="text-xs leading-none text-muted-foreground truncate">
                                             {'@' + (user?.account.username)}
                                         </p>
                                     </div>
@@ -123,8 +124,8 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                                     </Link>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <button onClick={handleLogout}>{t('LOGOUT')}</button>
+                                <DropdownMenuItem onClick={handleLogout}>
+                                    {t('LOGOUT')}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

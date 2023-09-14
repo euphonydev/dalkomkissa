@@ -19,7 +19,8 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from "next/navigation"
 import '@/lib/utils/string/get-initial-name'
 import '@/lib/utils/string/substring-after-last'
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from 'use-debounce'
+import { useUser } from '@/hooks/useUser'
 
 export const ProfileSettingForm = () => {
     const { toast } = useToast()
@@ -27,8 +28,7 @@ export const ProfileSettingForm = () => {
     const supabase = createClientComponentClient()
     const router = useRouter()
     const format = useFormatter();
-    const [userData, setUserData] = useState<any>()
-    const [avatar, setAvatar] = useState("")
+    const { user, avatar } = useUser()
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [usernameError, setUsernameError] = useState<string>('');
 
@@ -61,32 +61,10 @@ export const ProfileSettingForm = () => {
     const [debouncedUsername] = useDebounce(form.watch('username'), 1000);
 
     useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                const { data, error } = await supabase
-                    .from('profile')
-                    .select(`name, gender, birthdate, account_id, photo, account (username)`)
-                    .eq('id', user.id)
-                    .single()
-                if (!error) {
-                    setUserData(data)
-                    const { data: photo } = supabase
-                        .storage
-                        .from('avatar')
-                        .getPublicUrl(data.photo)
-                    setAvatar(photo.publicUrl)
-                }
-            }
-        }
-        getUser()
-    }, [])
-
-    useEffect(() => {
         const validateUsername = async (username: string) => {
             if (username) {
-                if (username != userData?.account.username) {
-                    const { data: existingUser, error: existingUserError } = await supabase
+                if (username != user?.account.username) {
+                    const { data: existingUser } = await supabase
                         .from('account')
                         .select('id')
                         .eq('username', username)
@@ -102,28 +80,28 @@ export const ProfileSettingForm = () => {
         };
 
         validateUsername(debouncedUsername);
-    }, [debouncedUsername, supabase, t]);
+    }, [debouncedUsername, supabase, t, user?.account.username]);
 
     useEffect(() => {
-        if (userData) {
-            const birthDate = new Date(userData.birthdate)
-            form.setValue("username", userData.account.username)
-            form.setValue("fullname", userData.name)
+        if (user) {
+            const birthDate = new Date(user.birthdate)
+            form.setValue("username", user.account.username)
+            form.setValue("fullname", user.name)
             form.setValue("dob", birthDate)
-            form.setValue("gender", userData.gender)
+            form.setValue("gender", user.gender)
         }
-    }, [userData, form])
+    }, [user, form])
 
     async function onSubmit(formData: formValues) {
-        const fileName = selectedFile ? `public/avatar/${userData?.account_id}.${selectedFile?.name.substringAfterLast('.')}` : userData?.photo
+        const fileName = selectedFile ? `public/avatar/${user?.account_id}.${selectedFile?.name.substringAfterLast('.')}` : user?.photo
         let avatarError = false
 
         if (fileName && selectedFile) {
-            if (userData?.photo) {
+            if (user?.photo) {
                 await supabase
                     .storage
                     .from('avatar')
-                    .remove([userData?.photo])
+                    .remove([user?.photo])
             }
             const { error } = await supabase
                 .storage
@@ -137,7 +115,7 @@ export const ProfileSettingForm = () => {
         const { error: accountError } = await supabase
             .from('account')
             .update({ username: formData.username })
-            .eq('id', userData?.account_id);
+            .eq('id', user?.account_id);
 
         const { error: profileError } = await supabase
             .from('profile')
@@ -147,14 +125,14 @@ export const ProfileSettingForm = () => {
                 birthdate: formData.dob,
                 photo: fileName
             })
-            .eq('id', userData?.account_id);
+            .eq('id', user?.account_id);
 
         const { error: entryError } = await supabase
             .from('entry')
             .update({
                 updated_at: new Date(),
             })
-            .eq('id', userData?.account_id);
+            .eq('id', user?.account_id);
 
         if (!accountError && !profileError && !avatarError && !entryError) {
             toast({
@@ -162,7 +140,7 @@ export const ProfileSettingForm = () => {
                     <p>{t('ACTION_SUCCESS', { action: t('CHANGE_FIELD', { field: t('PROFILE') }).toLowerCase() })}</p>
                 ),
             })
-            router.refresh()
+            router.push('/settings/profile')
         }
     }
 
@@ -187,13 +165,13 @@ export const ProfileSettingForm = () => {
                             name="username"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t('USERNAME')}</FormLabel>
+                                    <FormLabel htmlFor='username'>{t('USERNAME')}</FormLabel>
                                     <FormControl onChange={(e) => {
                                         if (e.target instanceof HTMLInputElement) {
                                             field.onChange(e.target.value.toLowerCase());
                                         }
                                     }}>
-                                        <Input placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
+                                        <Input type="text" autoComplete='off' id='username' placeholder={t('USERNAME_PLACEHOLDER')} {...field} />
                                     </FormControl>
                                     <FormMessage>{usernameError}</FormMessage>
                                 </FormItem>
@@ -204,9 +182,9 @@ export const ProfileSettingForm = () => {
                             name="fullname"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t('FULL_NAME')}</FormLabel>
+                                    <FormLabel htmlFor='fullname'>{t('FULL_NAME')}</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder={t('FULL_NAME_PLACEHOLDER')} {...field} />
+                                        <Input autoComplete='name' type="text" id='fullname' placeholder={t('FULL_NAME_PLACEHOLDER')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -314,9 +292,9 @@ export const ProfileSettingForm = () => {
                         />
                         <div className="relative w-full">
                             <Avatar className="w-48 h-48 md:mx-auto md:w-56 md:h-56">
-                                <AvatarImage id="avatar" src={selectedFile ? URL.createObjectURL(selectedFile) : avatar}
-                                    alt={'@' + (userData?.account.username)} />
-                                <AvatarFallback>{userData?.name.getInitialName()}</AvatarFallback>
+                                <AvatarImage id="avatar" src={selectedFile ? URL.createObjectURL(selectedFile) : avatar?.publicUrl}
+                                    alt={'@' + (user?.account.username)} />
+                                <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                             </Avatar>
                             <Button type="button" variant="outline" size="xs" className="absolute bottom-4 md:bottom-6" onClick={() => document.getElementById('avatar-input')?.click()}>
                                 <div className='flex items-center'>

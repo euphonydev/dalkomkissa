@@ -6,37 +6,21 @@ import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import { Label } from '@/components/ui/label';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useUser } from '@/hooks/useUser';
 
 export const AccountSettingForm = () => {
     const { toast } = useToast()
-    const [userData, setUserData] = useState<any>()
+    const { user } = useUser()
     const t = useTranslations();
     const supabase = createClientComponentClient()
 
-    useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                const { data, error } = await supabase
-                    .from('account')
-                    .select(`email`)
-                    .eq('id', user.id)
-                    .single()
-                if (!error) {
-                    setUserData(data)
-                }
-            }
-        }
-        getUser()
-    }, [])
-
     async function onChangePassword() {
-        if (userData) {
-            const { error } = await supabase.auth.resetPasswordForEmail(userData.email, {
-                redirectTo: `${location.origin}/reset-password`,
+        if (user) {
+            const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+                redirectTo: `${location.origin}/auth/callback?next=/reset-password`,
             })
             if (!error) {
-                console.log(userData.email)
+                console.log(user.email)
                 toast({
                     description: t("EMAIL_SENDED"),
                 })

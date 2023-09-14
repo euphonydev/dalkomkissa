@@ -11,23 +11,12 @@ export default function ResetPasswordLayout({
     children: React.ReactNode
 }) {
     const supabase = createClientComponentClient()
-    const code = useSearchParams().get('code')
+    const error = useSearchParams().get('error')
     const router = useRouter()
-    const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 
-    useEffect(() => {
-        async function checkCode() {
-            if (code && regex.test(code)) {
-                const { data: { session } } = await supabase.auth.getSession()
-                if (!session) {
-                    router.push('/')
-                }
-            } else {
-                router.push('/')
-            }
-        }
-        checkCode()
-    }, [])
+    if (error) {
+        router.push('/')
+    }
 
     return (
         <div className="flex flex-col items-center justify-center w-4/5 md:w-2/5 mx-auto min-h-screen">
