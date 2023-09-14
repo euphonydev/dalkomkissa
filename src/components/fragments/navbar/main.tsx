@@ -30,7 +30,6 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser()
             if (user) {
-                setIsLoggedIn(true)
                 const { data, error } = await supabase
                     .from('profile')
                     .select(`name, photo, account (username)`)
@@ -46,7 +45,14 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                 }
             }
         }
-        getUser()
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (session) {
+                setIsLoggedIn(true)
+                getUser()
+            }
+        }
+        checkSession()
     }, [])
 
     const handleLogout = async () => {

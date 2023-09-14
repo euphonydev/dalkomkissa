@@ -4,8 +4,11 @@ import { ReactNode } from "react"
 import { useTranslations } from "next-intl"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import '@/lib/utils/string/substring-after-last'
-import { usePathname } from "next/navigation"
+import { usePathname, redirect } from 'next/navigation';
 import { cn } from '@/lib/utils'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { GoogleIcon } from '@/components/icons'
+import { Button } from '@/components/ui/button'
 
 interface AuthCardProps {
     className?: string;
@@ -15,6 +18,20 @@ interface AuthCardProps {
 export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
     const t = useTranslations()
     const pathName = usePathname()
+    const supabase = createClientComponentClient()
+
+    async function onGoogleLogin() {
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${location.origin}/auth/callback`,
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                }
+            }
+        })
+    }
     return (
         <Card className={cn("w-4/5 md:w-2/5", className)}>
             <CardHeader>
@@ -23,6 +40,7 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
             </CardHeader>
             <CardContent>
                 {children}
+                <Button type="button" variant="outline" className="w-full mt-4" onClick={onGoogleLogin}><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
             </CardContent>
             <CardFooter>
                 {pathName.substringAfterLast('/') == 'login' ? (
