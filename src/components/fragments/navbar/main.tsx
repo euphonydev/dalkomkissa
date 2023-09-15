@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from 'next/image'
 import Link from 'next/link'
 import { AlignLeftIcon, MoonIcon, SunIcon, User } from "lucide-react"
@@ -15,7 +15,6 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@/hooks/useUser'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
-import { useDebouncedCallback } from 'use-debounce'
 import '@/lib/utils/string/get-initial-name'
 
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
@@ -25,36 +24,6 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
     const t = useTranslations()
     const supabase = createClientComponentClient()
     const router = useRouter()
-    const [visible, setVisible] = useState(true)
-    const [prevScrollPos, setPrevScrollPos] = useState(0)
-
-    const debouncedHandleScroll = useDebouncedCallback(
-        (currentScrollPos) => {
-            setVisible(
-                (
-                    prevScrollPos > currentScrollPos &&
-                    prevScrollPos - currentScrollPos > 70
-                ) || currentScrollPos < 10
-            )
-            setPrevScrollPos(currentScrollPos)
-        },
-        100
-    )
-
-    useEffect(() => {
-        const mdBreakpoint = 768;
-        const shouldHideNavbar = window.innerWidth < mdBreakpoint
-        if (shouldHideNavbar) {
-            window.addEventListener('scroll', () => {
-                const currentScrollPos = window.pageYOffset
-                debouncedHandleScroll(currentScrollPos)
-            })
-
-            return () => {
-                window.removeEventListener('scroll', debouncedHandleScroll)
-            }
-        }
-    }, [debouncedHandleScroll, prevScrollPos])
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut()
@@ -70,7 +39,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
     }
 
     return (
-        <div className={cn(`border-b transition-opacity ${!visible ? 'opacity-0' : ''}`, className)} {...props} ref={ref} >
+        <div className={cn('border-b', className)} {...props} ref={ref} >
             <div className="flex items-center h-16 px-4">
                 <nav className="flex items-center space-x-4 lg:space-x-6">
                     <SheetTrigger className="block md:hidden">
