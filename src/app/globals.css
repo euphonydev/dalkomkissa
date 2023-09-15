@@ -85,7 +85,7 @@
 
 @layer components {
   .text-link {
-    @apply text-primary hover:text-primary/90;
+    @apply text-primary hover:underline;
   }
   .text-lead {
     @apply text-xl text-muted-foreground;

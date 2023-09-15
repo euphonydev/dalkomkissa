@@ -12,16 +12,16 @@ import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation';
 
-export const ResetPasswordForm = () => {
+export const ChangePasswordForm = () => {
     const { toast } = useToast()
     const t = useTranslations();
     const supabase = createClientComponentClient()
     const router = useRouter()
 
     const formSchema = z.object({
-        email: z
-            .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
-            .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+        password: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) })
+            .min(8, t('IS_TOO_SHORT', { field: t('PASSWORD'), length: 8 })),
     })
 
     type formValues = z.infer<typeof formSchema>
@@ -32,13 +32,16 @@ export const ResetPasswordForm = () => {
     })
 
     async function onSubmit(formData: formValues) {
-        const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: `${location.origin}/auth/callback?next=/reset-password`,
+        const { error } = await supabase.auth.updateUser({
+            password: formData.password
         })
         if (!error) {
             toast({
-                description: t("EMAIL_SENDED"),
+                description: (
+                    <p>{t('ACTION_SUCCESS', { action: t('CHANGE_FIELD', { field: t('PASSWORD') }).toLowerCase() })}</p>
+                )
             })
+            router.push('/')
         }
     }
 
@@ -47,23 +50,23 @@ export const ResetPasswordForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className=" w-full space-y-4">
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel htmlFor='email'>{t('EMAIL')}</FormLabel>
+                            <FormLabel>{t('NEW_PASSWORD')}</FormLabel>
                             <FormControl>
-                                <Input autoComplete='email' type='email' id='email' placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
+                                <Input type="password" placeholder="********" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='w-full'>{t('RESET_PASSWORD_TITLE')}</Button>
+                <Button type="submit" className='w-full'>{t('CHANGE_FIELD', { field: t('PASSWORD').toLowerCase() })}</Button>
             </form>
         </Form >
     )
 }
 
-ResetPasswordForm.displayName = 'ResetPasswordForm'
+ChangePasswordForm.displayName = 'ChangePasswordForm'
 
-export default ResetPasswordForm
+export default ChangePasswordForm

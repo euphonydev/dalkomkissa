@@ -15,10 +15,49 @@ interface AuthCardProps {
     children?: ReactNode;
 }
 
+interface Scenario {
+    title: string;
+    subtitle: string;
+    showGoogleButton: boolean;
+    redirectUrl?: string;
+    redirectPrompt?: string;
+    redirectText?: string;
+}
+
 export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
     const t = useTranslations()
+    const scenarioConfigurations: Record<string, Scenario> = {
+        "login": {
+            title: t('LOGIN_TITLE'),
+            subtitle: t('LOGIN_SUBTITLE'),
+            showGoogleButton: true,
+            redirectUrl: '/register',
+            redirectPrompt: t('DONT_HAVE_ACCOUNT'),
+            redirectText: t('REGISTER_HERE'),
+        },
+        "register": {
+            title: t('REGISTER_TITLE'),
+            subtitle: t('REGISTER_SUBTITLE'),
+            showGoogleButton: false,
+            redirectUrl: '/login',
+            redirectPrompt: t('HAVE_ACCOUNT'),
+            redirectText: t('LOGIN_HERE'),
+        },
+        "reset-password": {
+            title: t('RESET_PASSWORD_TITLE'),
+            subtitle: t('RESET_PASSWORD_SUBTITLE'),
+            showGoogleButton: false,
+        },
+        "change-password": {
+            title: t('CHANGE_FIELD', { field: t('PASSWORD') }),
+            subtitle: t('CHANGE_PASSWORD_SUBTITLE'),
+            showGoogleButton: false,
+        }
+    }
+
     const pathName = usePathname()
     const supabase = createClientComponentClient()
+    const config = scenarioConfigurations[pathName.substringAfterLast('/')]
 
     async function onGoogleLogin() {
         await supabase.auth.signInWithOAuth({
@@ -35,19 +74,17 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
     return (
         <Card className={cn("w-4/5 md:w-2/5", className)}>
             <CardHeader>
-                <CardTitle className='text-center'>{pathName.substringAfterLast('/') == 'login' ? t('LOGIN_TITLE') : t('REGISTER_TITLE')}</CardTitle>
-                <CardDescription className='text-center'>{pathName.substringAfterLast('/') == 'login' ? t('LOGIN_SUBTITLE') : t('REGISTER_SUBTITLE')}</CardDescription>
+                <CardTitle className='text-center'>{config.title}</CardTitle>
+                <CardDescription className='text-center'>{config.subtitle}</CardDescription>
             </CardHeader>
             <CardContent>
                 {children}
-                <Button type="button" variant="outline" className="w-full mt-4" onClick={onGoogleLogin}><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button>
+                {config.showGoogleButton ? <Button type="button" variant="outline" className="w-full mt-4" onClick={onGoogleLogin}><GoogleIcon className='w-5 h-5 me-2' />{t('CONTINUE_WITH', { with: 'Google' })}</Button> : null}
             </CardContent>
             <CardFooter>
-                {pathName.substringAfterLast('/') == 'login' ? (
-                    <div className="w-full text-sm text-center">{t('DONT_HAVE_ACCOUNT')} <Link href="/register" className='font-medium text-link'>{t('REGISTER_HERE')}</Link></div>
-                ) : (
-                    <div className="w-full text-sm text-center">{t('HAVE_ACCOUNT')} <Link href="/login" className='font-medium text-link'>{t('LOGIN_HERE')}</Link></div>
-                )}
+                {config.redirectUrl && config.redirectPrompt && config.redirectText ? (
+                    <div className="w-full text-sm text-center">{config.redirectPrompt} <Link href={config.redirectUrl} className='font-medium text-link'>{config.redirectText}</Link></div>
+                ) : null}
             </CardFooter>
         </Card>
     )

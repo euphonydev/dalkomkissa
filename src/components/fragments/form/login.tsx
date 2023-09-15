@@ -10,8 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation';
-import { id } from 'date-fns/locale';
+import { useRouter } from 'next/navigation'
+import Link from "next/link"
 
 export const LoginForm = () => {
     const { toast } = useToast()
@@ -78,6 +78,13 @@ export const LoginForm = () => {
                         </FormItem>
                     )}
                 />
+                <div className='flex justify-end'>
+                    <Link href="/reset-password">
+                        <Button variant="link" size='xs'>
+                            {t('FORGOT_PASSWORD')}
+                        </Button>
+                    </Link>
+                </div>
                 <Button type="submit" className='w-full'>{t('LOGIN')}</Button>
             </form>
         </Form >
