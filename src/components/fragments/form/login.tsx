@@ -22,9 +22,8 @@ export const LoginForm = () => {
     const formSchema = z.object({
         password: z
             .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) }),
-        email: z
-            .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
-            .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+        identity: z
+            .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) }),
     })
 
     type formValues = z.infer<typeof formSchema>
@@ -34,10 +33,10 @@ export const LoginForm = () => {
         mode: "onChange",
     })
 
-    async function onSubmit(formData: formValues) {
+    async function login(email: string, password: string) {
         const { error } = await supabase.auth.signInWithPassword({
-            email: formData.email,
-            password: formData.password,
+            email: email,
+            password: password,
         })
         if (!error) {
             toast({
@@ -49,17 +48,33 @@ export const LoginForm = () => {
         }
     }
 
+    async function onSubmit(formData: formValues) {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (regex.test(formData.identity)) {
+            login(formData.identity, formData.password);
+        } else {
+            const { data } = await supabase
+                .from('account')
+                .select('email')
+                .eq('username', formData.identity)
+                .single();
+            if (data) {
+                login(data.email, formData.password);
+            }
+        }
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="identity"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel htmlFor='email'>{t('EMAIL')}</FormLabel>
+                            <FormLabel htmlFor='identity'>{t('THIS_OR_THAT', { this: t('EMAIL'), that: t('USERNAME').toLowerCase() })}</FormLabel>
                             <FormControl>
-                                <Input autoComplete='email' type='email' id='email' placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
+                                <Input autoComplete='email' type='text' id='identity' placeholder={t('EMAIL_PLACEHOLDER')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
