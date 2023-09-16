@@ -16,7 +16,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import '@/lib/utils/string/get-initial-name'
 import '@/lib/utils/string/substring-after-last'
 import { useDebounce } from 'use-debounce'
@@ -58,18 +58,17 @@ export const ProfileSettingForm = () => {
         mode: "onChange",
     })
 
-    const [debouncedUsername] = useDebounce(form.watch('username'), 1000);
+    const [debouncedUsername] = useDebounce(form.watch('username'), 200);
 
     useEffect(() => {
         const validateUsername = async (username: string) => {
-            if (username) {
-                if (username != user?.account.username) {
+            if (username && user?.username) {
+                if (username != user?.username) {
                     const { data: existingUser } = await supabase
                         .from('account')
                         .select('id')
                         .eq('username', username)
                         .single();
-
                     if (existingUser) {
                         setUsernameError(t('USERNAME_ALREADY_EXISTS'));
                     } else {
@@ -80,12 +79,12 @@ export const ProfileSettingForm = () => {
         };
 
         validateUsername(debouncedUsername);
-    }, [debouncedUsername, supabase, t, user?.account.username]);
+    }, [debouncedUsername, user?.username]);
 
     useEffect(() => {
         if (user) {
             const birthDate = new Date(user.birthdate)
-            form.setValue("username", user.account.username)
+            form.setValue("username", user.username)
             form.setValue("fullname", user.name)
             form.setValue("dob", birthDate)
             form.setValue("gender", user.gender)
@@ -94,7 +93,7 @@ export const ProfileSettingForm = () => {
 
     async function onSubmit(formData: formValues) {
         const fileName = selectedFile ? `public/avatar/${user?.account_id}.${selectedFile?.name.substringAfterLast('.')}` : user?.photo
-        let avatarError = false
+        let uploadError = false
 
         if (fileName && selectedFile) {
             if (user?.photo) {
@@ -108,39 +107,27 @@ export const ProfileSettingForm = () => {
                 .from('avatar')
                 .upload(fileName, selectedFile, { upsert: true })
             if (error) {
-                avatarError = true
+                uploadError = true
             }
         }
 
-        const { error: accountError } = await supabase
-            .from('account')
-            .update({ username: formData.username })
-            .eq('id', user?.account_id);
-
-        const { error: profileError } = await supabase
-            .from('profile')
-            .update({
-                name: formData.fullname,
-                gender: formData.gender,
-                birthdate: formData.dob,
-                photo: fileName
+        const { error: dataError } = await supabase
+            .rpc('update_user_profile', {
+                user_account_id: user?.account_id,
+                new_username: formData.username,
+                new_name: formData.fullname,
+                new_gender: formData.gender,
+                new_birthdate: formData.dob,
+                new_photo: fileName
             })
-            .eq('id', user?.account_id);
 
-        const { error: entryError } = await supabase
-            .from('entry')
-            .update({
-                updated_at: new Date(),
-            })
-            .eq('id', user?.account_id);
-
-        if (!accountError && !profileError && !avatarError && !entryError) {
+        if (!dataError && !uploadError) {
             toast({
                 description: (
                     <p>{t('ACTION_SUCCESS', { action: t('CHANGE_FIELD', { field: t('PROFILE') }).toLowerCase() })}</p>
                 ),
             })
-            router.push('/settings/profile')
+            window.location.reload()
         }
     }
 
@@ -149,8 +136,6 @@ export const ProfileSettingForm = () => {
             const file = e.target.files[0];
             if (file.type.startsWith("image/")) {
                 setSelectedFile(file);
-            } else {
-                console.error("Selected file is not an image.");
             }
         }
     }
@@ -293,7 +278,7 @@ export const ProfileSettingForm = () => {
                         <div className="relative w-full">
                             <Avatar className="w-48 h-48 md:mx-auto md:w-56 md:h-56">
                                 <AvatarImage id="avatar" src={selectedFile ? URL.createObjectURL(selectedFile) : avatar?.publicUrl}
-                                    alt={'@' + (user?.account.username)} />
+                                    alt={'@' + (user?.username)} />
                                 <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                             </Avatar>
                             <Button type="button" variant="outline" size="xs" className="absolute bottom-4 md:bottom-6" onClick={() => document.getElementById('avatar-input')?.click()}>

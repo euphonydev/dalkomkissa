@@ -70,7 +70,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                                     <Avatar className="w-8 h-8">
-                                        <AvatarImage src={avatar?.publicUrl} alt={'@' + (user?.account.username)} />
+                                        <AvatarImage src={avatar?.publicUrl} alt={'@' + (user?.username)} />
                                         <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                                     </Avatar>
                                 </Button>
@@ -80,7 +80,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                                     <div className="flex flex-col space-y-1">
                                         <p className="text-sm font-medium leading-none truncate">{user?.name}</p>
                                         <p className="text-xs leading-none text-muted-foreground truncate">
-                                            {'@' + (user?.account.username)}
+                                            {'@' + (user?.username)}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>

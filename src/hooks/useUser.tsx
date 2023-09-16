@@ -16,9 +16,9 @@ export const useUser = () => {
             const { data: { user } } = await supabase.auth.getUser()
             if (user) {
                 const { data, error } = await supabase
-                    .from('profile')
-                    .select(`name, photo, birthdate, account_id, gender, account (username, email)`)
-                    .eq('id', user.id)
+                    .from('user_profile')
+                    .select('*')
+                    .eq('account_id', user.id)
                     .single()
                 if (!error) {
                     setUser(data)
