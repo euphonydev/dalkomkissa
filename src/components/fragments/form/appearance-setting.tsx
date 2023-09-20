@@ -66,6 +66,7 @@ export function AppearanceSettingForm() {
             toast({
                 description: t("LANGUAGE_CHANGED_INFO", { language: t(`lang.${language}`) }),
             })
+            router.refresh()
         });
     }
 
