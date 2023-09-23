@@ -21,7 +21,7 @@ export function TableRowAction({ menuItem }: TableRowActionProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 {menuItem.map(({ label, link }) => (
-                    <DropdownMenuItem>{t(label.toUpperCase())}</DropdownMenuItem>
+                    <DropdownMenuItem key={label}>{t(label.toUpperCase())}</DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
         </DropdownMenu>
