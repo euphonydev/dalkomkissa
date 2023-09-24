@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
                         <Link href={newEntryLink}>
                             <Button>
                                 <PlusIcon className="h-4 w-4 md:mr-2" />
-                                    <span className="hidden sm:inline">
+                                    <span className="hidden md:inline">
                                         {t('ADD_NEW_ENTRY', { entry: t(searchPlaceholder.toUpperCase()).toLowerCase() })}
                                     </span>
                             </Button>
