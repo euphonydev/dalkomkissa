@@ -20,7 +20,7 @@ import '@/lib/utils/string/get-initial-name'
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const { theme, setTheme } = useTheme()
     const { toast } = useToast()
-    const { user, avatar, isLoggedIn } = useUser()
+    const { user, avatar, isLoggedIn, userRole } = useUser()
     const t = useTranslations()
     const supabase = createClientComponentClient()
     const router = useRouter()
@@ -86,6 +86,13 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
+                                    {userRole == 'webadmin' ? (
+                                        <Link href="/dashboard">
+                                            <DropdownMenuItem>
+                                                {t('DASHBOARD')}
+                                            </DropdownMenuItem>
+                                        </Link>
+                                    ) : null}
                                     <Link href="/settings">
                                         <DropdownMenuItem>
                                             {t('SETTINGS')}
