@@ -92,7 +92,7 @@ export const ProfileSettingForm = () => {
     }, [user, form])
 
     async function onSubmit(formData: formValues) {
-        const fileName = selectedFile ? `public/avatar/${user?.account_id}.${selectedFile?.name.substringAfterLast('.')}` : user?.photo
+        const fileName = selectedFile ? `${user?.account_id}.${selectedFile?.name.substringAfterLast('.')}` : user?.photo
         let uploadError = false
 
         if (fileName && selectedFile) {
