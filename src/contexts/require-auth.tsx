@@ -8,10 +8,11 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 
 type Props = {
     children: React.ReactNode,
-    redirectTo?: string
+    redirectTo?: string,
+    checkAdmin?: boolean
 }
 
-export async function RequireAuth({ children, redirectTo = '/login' }: Props) {
+export async function RequireAuth({ children, redirectTo = '/login', checkAdmin = false }: Props) {
     const supabase = createServerComponentClient<Database>({
         cookies,
     })
@@ -21,5 +22,16 @@ export async function RequireAuth({ children, redirectTo = '/login' }: Props) {
     if (!session) {
         redirect(redirectTo)
     }
+
+    if (checkAdmin) {
+        const { data } = await supabase
+            .rpc("get_my_claim", {
+                claim: "userrole"
+            })
+        if (data != "webadmin") {
+            redirect(redirectTo)
+        }
+    }
+
     return <>{children}</>
 }
