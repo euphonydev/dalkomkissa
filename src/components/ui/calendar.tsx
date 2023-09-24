@@ -7,12 +7,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker, DropdownProps } from "react-day-picker"
+import { useLocale } from "next-intl"
+import { enUS, id } from 'date-fns/locale';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
+const localeMap = {
+  en: enUS,
+  id: id,
+};
+
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+  const currentLocale = useLocale()
+  const locale = localeMap[currentLocale as keyof typeof localeMap] || enUS;
   return (
     <DayPicker
+      locale={locale}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{

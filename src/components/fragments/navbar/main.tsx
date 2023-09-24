@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from 'next/image'
 import Link from 'next/link'
 import { AlignLeftIcon, MoonIcon, SunIcon, User } from "lucide-react"
@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { useTheme } from "next-themes"
 import { useTranslations } from 'next-intl'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useUser } from '@/hooks/useUser'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 import '@/lib/utils/string/get-initial-name'
@@ -19,29 +20,10 @@ import '@/lib/utils/string/get-initial-name'
 const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     const { theme, setTheme } = useTheme()
     const { toast } = useToast()
+    const { user, avatar, isLoggedIn } = useUser()
     const t = useTranslations()
     const supabase = createClientComponentClient()
     const router = useRouter()
-    const [user, setUser] = useState<any>()
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-    useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                setIsLoggedIn(true)
-                const { data, error } = await supabase
-                    .from('profile')
-                    .select(`name, account (username)`)
-                    .eq('id', user.id)
-                    .single()
-                if (!error) {
-                    setUser(data)
-                }
-            }
-        }
-        getUser()
-    }, [])
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut()
@@ -88,7 +70,7 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                                     <Avatar className="w-8 h-8">
-                                        <AvatarImage src="/avatars/01.png" alt={'@' + (user?.account.username)} />
+                                        <AvatarImage src={avatar?.publicUrl} alt={'@' + (user?.username)} />
                                         <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
                                     </Avatar>
                                 </Button>
@@ -96,9 +78,9 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                             <DropdownMenuContent className="w-56" align="end" forceMount>
                                 <DropdownMenuLabel className="font-normal">
                                     <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-medium leading-none">{user?.name}</p>
-                                        <p className="text-xs leading-none text-muted-foreground">
-                                            {'@' + (user?.account.username)}
+                                        <p className="text-sm font-medium leading-none truncate">{user?.name}</p>
+                                        <p className="text-xs leading-none text-muted-foreground truncate">
+                                            {'@' + (user?.username)}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>
@@ -111,8 +93,8 @@ const MainNavbar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
                                     </Link>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <button onClick={handleLogout}>{t('LOGOUT')}</button>
+                                <DropdownMenuItem onClick={handleLogout}>
+                                    {t('LOGOUT')}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

@@ -1,8 +1,6 @@
 import createMiddleware from 'next-intl/middleware';
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import type { Database } from '@/lib/database.types';
 
 export default async function middleware(req: NextRequest) {
   const handleI18nRouting = createMiddleware({
