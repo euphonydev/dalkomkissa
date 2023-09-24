@@ -10,6 +10,7 @@ export const useUser = () => {
     const [user, setUser] = useState<any | null>(null)
     const [avatar, setAvatar] = useState<Avatar | null>(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [userRole, setUserRole] = useState<string>("user")
 
     useEffect(() => {
         const getUser = async () => {
@@ -22,6 +23,11 @@ export const useUser = () => {
                     .single()
                 if (!error) {
                     setUser(data)
+                    const { data: role } = await supabase
+                        .rpc("get_my_claim", {
+                            claim: "userrole"
+                        })
+                    setUserRole(role)
                     const { data: photo } = await supabase
                         .storage
                         .from('avatar')
@@ -42,5 +48,5 @@ export const useUser = () => {
         checkSession();
     }, []);
 
-    return { user, avatar, isLoggedIn };
+    return { user, avatar, isLoggedIn, userRole };
 };
