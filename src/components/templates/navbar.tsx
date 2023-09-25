@@ -15,7 +15,7 @@ interface NavbarProps {
     sidebar?: React.ComponentType<any>;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ className, children, sidebar: SidebarComponent = MainSidebar, ...props }) => {
+const Navbar: React.FC<NavbarProps> = ({ className, children, sidebar: SidebarComponent, ...props }) => {
     const [visible, setVisible] = useState(true)
     const [prevScrollPos, setPrevScrollPos] = useState(0)
     const [shouldHideNavbar, setShouldHideNavbar] = useState(false)
@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ className, children, sidebar: SidebarCo
                 <MainNavbar className={`sticky top-0 bg-background z-50 transition-all ${!visible && shouldHideNavbar ? 'translate-y-[-100%]' : ''}`} />
                 <div className="md:grid md:grid-cols-5">
                     <aside className="md:self-start md:h-[calc(100vh-theme(spacing.16))] md:col-span-1 md:sticky md:top-16 md:border-r">
-                        <SidebarComponent />
+                        {SidebarComponent ? <SidebarComponent /> : null}
                     </aside>
                     <main className={cn("md:h-full md:col-span-4 container pt-10 md:pt-10 pb-[8vh] md:pb-10 mx-auto", className)}>
                         {children}

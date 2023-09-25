@@ -1,3 +1,4 @@
+import MainSidebar from "@/components/fragments/sidebar/main"
 import { Navbar } from "@/components/templates/navbar"
 
 export default function MoviesLayout({
@@ -6,7 +7,7 @@ export default function MoviesLayout({
     children: React.ReactNode
 }) {
     return (
-        <Navbar>
+        <Navbar sidebar={MainSidebar}>
             {children}
         </Navbar>
     )
