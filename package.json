@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "eslint": "pnpm dlx eslint src --quiet",
+    "eslint:fix": "pnpm run eslint --fix",
+    "prettier": "pnpm dlx prettier src --check",
+    "prettier:fix": "pnpm run prettier --write",
+    "format": "pnpm run prettier:fix && pnpm run eslint:fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -34,13 +39,13 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
-    "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "lucide-react": "^0.274.0",
     "next": "13.4.19",
     "next-intl": "3.0.0-beta.16",
     "next-themes": "^0.2.1",
     "postcss": "8.4.29",
+    "prettier-plugin-tailwindcss": "^0.5.4",
     "react": "18.2.0",
     "react-day-picker": "^8.8.2",
     "react-dom": "18.2.0",
@@ -48,12 +53,20 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.2.2",
     "use-debounce": "^9.0.4",
     "zod": "3.21.4"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "8.48.0",
     "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.3"
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3",
+    "prettier-eslint-cli": "^7.1.0",
+    "typescript": "5.2.2"
   }
 }
