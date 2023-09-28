@@ -3,19 +3,21 @@ import { cookies } from 'next/headers'
 import type { Database } from '@/lib/database.types'
 
 const supabase = createServerComponentClient<Database>({
-    cookies,
+  cookies,
 })
 
 export const useAuth = () => {
-    const isLoggedIn = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return false
-        return true;
-    };
+  const isLoggedIn = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    if (!session) return false
+    return true
+  }
 
-    return {
-        isLoggedIn
-    };
-};
+  return {
+    isLoggedIn,
+  }
+}
 
-export default useAuth;
+export default useAuth

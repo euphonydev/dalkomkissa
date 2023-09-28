@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export type Json =
   | string
   | number
@@ -30,11 +31,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "account_id_fkey"
-            columns: ["id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'account_id_fkey'
+            columns: ['id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       entry: {
@@ -67,17 +68,17 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "entry_rating_id_fkey"
-            columns: ["rating_id"]
-            referencedRelation: "rating"
-            referencedColumns: ["id"]
+            foreignKeyName: 'entry_rating_id_fkey'
+            columns: ['rating_id']
+            referencedRelation: 'rating'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "entry_type_id_fkey"
-            columns: ["type_id"]
-            referencedRelation: "type"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'entry_type_id_fkey'
+            columns: ['type_id']
+            referencedRelation: 'type'
+            referencedColumns: ['id']
+          },
         ]
       }
       entry_detail: {
@@ -107,11 +108,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "entry_detail_entry_id_fkey"
-            columns: ["entry_id"]
-            referencedRelation: "entry"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'entry_detail_entry_id_fkey'
+            columns: ['entry_id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       movie: {
@@ -141,11 +142,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "movie_id_fkey"
-            columns: ["id"]
-            referencedRelation: "entry"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'movie_id_fkey'
+            columns: ['id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       profile: {
@@ -181,17 +182,17 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "profile_account_id_fkey"
-            columns: ["account_id"]
-            referencedRelation: "account"
-            referencedColumns: ["id"]
+            foreignKeyName: 'profile_account_id_fkey'
+            columns: ['account_id']
+            referencedRelation: 'account'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "profile_id_fkey"
-            columns: ["id"]
-            referencedRelation: "entry"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'profile_id_fkey'
+            columns: ['id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       rating: {
@@ -247,11 +248,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "movie_id_fkey"
-            columns: ["id"]
-            referencedRelation: "entry"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'movie_id_fkey'
+            columns: ['id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       user_profile: {
@@ -270,17 +271,17 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "profile_account_id_fkey"
-            columns: ["account_id"]
-            referencedRelation: "account"
-            referencedColumns: ["id"]
+            foreignKeyName: 'profile_account_id_fkey'
+            columns: ['account_id']
+            referencedRelation: 'account'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "profile_id_fkey"
-            columns: ["profile_id"]
-            referencedRelation: "entry"
-            referencedColumns: ["id"]
-          }
+            foreignKeyName: 'profile_id_fkey'
+            columns: ['profile_id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
         ]
       }
     }

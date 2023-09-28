@@ -1,17 +1,22 @@
-import { DataTable } from "@/components/fragments/table/dashboard/data-table"
-import columns from "@/components/fragments/table/dashboard/movies/columns"
-import { getMoviesByLang } from "@/functions/movies"
+import { getMoviesByLang } from '@/functions/movies'
+import { DataTable } from '@/components/fragments/table/dashboard/data-table'
+import { columns } from '@/components/fragments/table/dashboard/movies/columns'
 
 export async function MovieTable() {
-    const data = await getMoviesByLang('default')
-    return (
-        <div className="py-10">
-            <DataTable columns={columns} data={data} searchColumn="title" searchPlaceholder="movie" newEntryLink="/" />
-        </div>
-    )
-
+  const data = await getMoviesByLang('default')
+  return (
+    <div className="py-10">
+      <DataTable
+        columns={columns}
+        data={data}
+        searchColumn="title"
+        searchPlaceholder="movie"
+        newEntryLink="/dashboard/movies/new"
+      />
+    </div>
+  )
 }
 
-MovieTable.displayName = "MovieTable"
+MovieTable.displayName = 'MovieTable'
 
 export default MovieTable

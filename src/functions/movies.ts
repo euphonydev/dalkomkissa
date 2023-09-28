@@ -1,7 +1,7 @@
-import type { Movies } from '@/types/movies';
-import { cookies } from 'next/headers';
-import type { Database } from '@/lib/database.types';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import type { Movies } from '@/types/movies'
+import type { Database } from '@/lib/database.types'
 
 export async function getMoviesByLang(
   lang: string,
@@ -9,16 +9,17 @@ export async function getMoviesByLang(
 ): Promise<Movies[]> {
   const supabase = createServerComponentClient<Database>({
     cookies,
-  });
+  })
   const { data } = await supabase
     .rpc('get_movie_list', {
       lang_param: lang,
       limit_param: limit,
     })
-    .select('*');
+    .select('*')
   if (data) {
-    return data;
-  } else {
-    return [];
+    return data
   }
+  return []
 }
+
+export default getMoviesByLang
