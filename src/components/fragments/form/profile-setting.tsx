@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { CalendarIcon, PencilIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
-import { redirect, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDebounce } from 'use-debounce'
@@ -37,7 +36,6 @@ export function ProfileSettingForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const supabase = createClientComponentClient()
-  const router = useRouter()
   const format = useFormatter()
   const { user, avatar } = useUser()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -74,7 +72,7 @@ export function ProfileSettingForm() {
   useEffect(() => {
     const validateUsername = async (username: string) => {
       if (username && user?.username) {
-        if (username != user?.username) {
+        if (username !== user?.username) {
           const { data: existingUser } = await supabase
             .from('account')
             .select('id')
@@ -323,15 +321,15 @@ export function ProfileSettingForm() {
             />
             <div className="relative w-full">
               <Avatar className="h-48 w-48 md:mx-auto md:h-56 md:w-56">
-                <AvatarImage
-                  id="avatar"
-                  src={
-                    selectedFile
-                      ? URL.createObjectURL(selectedFile)
-                      : avatar?.publicUrl
-                  }
-                  alt={`@${user?.username}`}
-                />
+                {(avatar && selectedFile) || selectedFile || avatar ? (
+                  <AvatarImage
+                    id="avatar"
+                    src={
+                      selectedFile ? URL.createObjectURL(selectedFile) : avatar
+                    }
+                    alt={`@${user?.username}`}
+                  />
+                ) : null}
                 <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
               </Avatar>
               <Button

@@ -1,14 +1,10 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
 
-interface Avatar {
-  publicUrl: string
-}
-
 export const useUser = () => {
   const supabase = createClientComponentClient()
   const [user, setUser] = useState<any | null>(null)
-  const [avatar, setAvatar] = useState<Avatar | null>(null)
+  const [avatar, setAvatar] = useState<string | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState<string>('user')
 
@@ -29,10 +25,16 @@ export const useUser = () => {
             claim: 'userrole',
           })
           setUserRole(role)
-          const { data: photo } = await supabase.storage
-            .from('avatar')
-            .getPublicUrl(data.photo)
-          setAvatar(photo)
+          if (data.photo.startsWith('https')) {
+            setAvatar(data.photo)
+          } else {
+            const { data: photo } = await supabase.storage
+              .from('avatar')
+              .getPublicUrl(data.photo)
+            if (photo) {
+              setAvatar(photo.publicUrl)
+            }
+          }
         }
       }
     }
@@ -48,7 +50,7 @@ export const useUser = () => {
     }
 
     checkSession()
-  }, [])
+  }, [supabase])
 
   return {
     user,
