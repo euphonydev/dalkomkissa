@@ -92,10 +92,12 @@ export function ProfileSettingForm() {
 
   useEffect(() => {
     if (user) {
-      const birthDate = new Date(user.birthdate)
+      if (user.birthdate) {
+        const birthDate = new Date(user.birthdate)
+        form.setValue('dob', birthDate)
+      }
       form.setValue('username', user.username)
       form.setValue('fullname', user.name)
-      form.setValue('dob', birthDate)
       form.setValue('gender', user.gender)
     }
   }, [user, form])
