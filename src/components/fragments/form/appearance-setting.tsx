@@ -162,7 +162,9 @@ export function AppearanceSettingForm() {
                         field: t('LANGUAGE').toLowerCase(),
                       })}
                     />
-                    <CommandEmpty>No framework found.</CommandEmpty>
+                    <CommandEmpty>
+                      {t('FIELD_NOT_FOUND', { field: t('LANGUAGE') })}
+                    </CommandEmpty>
                     <CommandGroup>
                       {languages.map((language) => (
                         <CommandItem
