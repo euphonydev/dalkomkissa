@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { CalendarIcon, PencilIcon } from 'lucide-react'
+import { CalendarIcon, PencilIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,6 +12,15 @@ import { useUser } from '@/hooks/useUser'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -101,6 +110,17 @@ export function ProfileSettingForm() {
       form.setValue('gender', user.gender)
     }
   }, [user, form])
+
+  async function onAvatarDelete() {
+    await supabase.storage.from('avatar').remove([user?.photo])
+    const { error } = await supabase
+      .from('profile')
+      .update({ photo: '' })
+      .eq('account_id', user?.account_id)
+    if (!error) {
+      window.location.reload()
+    }
+  }
 
   async function onSubmit(formData: formValues) {
     const fileName = selectedFile
@@ -327,13 +347,53 @@ export function ProfileSettingForm() {
                   <AvatarImage
                     id="avatar"
                     src={
-                      selectedFile ? URL.createObjectURL(selectedFile) : avatar
+                      selectedFile ? URL.createObjectURL(selectedFile) : avatar!
                     }
                     alt={`@${user?.username}`}
                   />
                 ) : null}
                 <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
               </Avatar>
+              {user?.photo ? (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="xs"
+                      className="absolute right-4 top-4 text-destructive md:right-4 md:top-6 md:px-2 lg:right-6"
+                    >
+                      <div className="flex items-center">
+                        <TrashIcon className="mr-1 h-4 w-4 md:mr-0" />
+                        <span className="md:hidden">{t('DELETE')}</span>
+                      </div>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>
+                        {t('DELETE_CONFIRMATION', {
+                          context: t('AVATAR').toLowerCase(),
+                        })}
+                      </DialogTitle>
+                      <DialogDescription>
+                        {t('DELETE_PERMANENTLY_DESC', {
+                          context: t('AVATAR').toLowerCase(),
+                        })}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={onAvatarDelete}
+                      >
+                        {t('DELETE')}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              ) : null}
               <Button
                 type="button"
                 variant="outline"
