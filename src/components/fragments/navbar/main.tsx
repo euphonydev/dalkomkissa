@@ -107,12 +107,11 @@ const MainNavbar = React.forwardRef<
                   className="relative h-8 w-8 rounded-full"
                 >
                   <Avatar className="h-8 w-8">
-                    {avatar ? (
-                      <AvatarImage
-                        src={avatar}
-                        alt={`@${user?.username}`}
-                      />
-                    ) : null}
+                    <AvatarImage
+                      className="bg-secondary"
+                      src={avatar}
+                      alt={`@${user?.username}`}
+                    />
                     <AvatarFallback>
                       {user?.name.getInitialName()}
                     </AvatarFallback>

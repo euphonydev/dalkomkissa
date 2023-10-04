@@ -343,15 +343,14 @@ export function ProfileSettingForm() {
             />
             <div className="relative w-full">
               <Avatar className="h-48 w-48 md:mx-auto md:h-56 md:w-56">
-                {(avatar && selectedFile) || selectedFile || avatar ? (
-                  <AvatarImage
-                    id="avatar"
-                    src={
-                      selectedFile ? URL.createObjectURL(selectedFile) : avatar!
-                    }
-                    alt={`@${user?.username}`}
-                  />
-                ) : null}
+                <AvatarImage
+                  id="avatar"
+                  className="bg-secondary"
+                  src={
+                    selectedFile ? URL.createObjectURL(selectedFile) : avatar
+                  }
+                  alt={`@${user?.username}`}
+                />
                 <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
               </Avatar>
               {user?.photo ? (

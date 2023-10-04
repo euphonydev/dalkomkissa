@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 export const useUser = () => {
   const supabase = createClientComponentClient()
   const [user, setUser] = useState<any | null>(null)
-  const [avatar, setAvatar] = useState<string | null>(null)
+  const [avatar, setAvatar] = useState<string>()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState<string>('user')
 
@@ -28,11 +28,13 @@ export const useUser = () => {
           if (data.photo.startsWith('https')) {
             setAvatar(data.photo)
           } else {
-            const { data: photo } = await supabase.storage
-              .from('avatar')
-              .getPublicUrl(data.photo)
-            if (photo) {
+            if (data.photo) {
+              const { data: photo } = await supabase.storage
+                .from('avatar')
+                .getPublicUrl(data.photo)
               setAvatar(photo.publicUrl)
+            } else {
+              setAvatar(`https://robohash.org/${data?.profile_id}.png?set=set3`)
             }
           }
         }
