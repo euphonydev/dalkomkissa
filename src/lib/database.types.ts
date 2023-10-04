@@ -190,6 +190,7 @@ export interface Database {
       }
       cover: {
         Row: {
+          created_at: string | null
           id: string
           is_primary: boolean
           lang: string
@@ -198,6 +199,7 @@ export interface Database {
           url: string
         }
         Insert: {
+          created_at?: string | null
           id?: string
           is_primary?: boolean
           lang: string
@@ -206,6 +208,7 @@ export interface Database {
           url: string
         }
         Update: {
+          created_at?: string | null
           id?: string
           is_primary?: boolean
           lang?: string
@@ -304,6 +307,12 @@ export interface Database {
             foreignKeyName: 'episode_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'episode_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
         ]
@@ -461,6 +470,7 @@ export interface Database {
           language: string
           origin_country: string | null
           origin_name: string
+          release_date: string | null
           runtime: number | null
           status: Database['public']['Enums']['publication_status']
         }
@@ -469,6 +479,7 @@ export interface Database {
           language: string
           origin_country?: string | null
           origin_name: string
+          release_date?: string | null
           runtime?: number | null
           status: Database['public']['Enums']['publication_status']
         }
@@ -477,6 +488,7 @@ export interface Database {
           language?: string
           origin_country?: string | null
           origin_name?: string
+          release_date?: string | null
           runtime?: number | null
           status?: Database['public']['Enums']['publication_status']
         }
@@ -513,6 +525,12 @@ export interface Database {
             foreignKeyName: 'movie_alternative_name_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_alternative_name_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
         ]
@@ -556,6 +574,12 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'movie_character_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'movie_character_profile_id_fkey'
             columns: ['profile_id']
             referencedRelation: 'profile'
@@ -593,6 +617,12 @@ export interface Database {
             foreignKeyName: 'movie_company_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_company_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
           {
@@ -635,6 +665,12 @@ export interface Database {
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'movie_cover_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       movie_format: {
@@ -661,6 +697,12 @@ export interface Database {
             foreignKeyName: 'movie_format_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_format_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
         ]
@@ -691,6 +733,12 @@ export interface Database {
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'movie_genre_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       movie_image: {
@@ -719,6 +767,12 @@ export interface Database {
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'movie_image_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       movie_link: {
@@ -745,6 +799,12 @@ export interface Database {
             foreignKeyName: 'movie_link_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_link_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
         ]
@@ -785,6 +845,12 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'movie_list_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'movie_list_profile_id_fkey'
             columns: ['profile_id']
             referencedRelation: 'profile'
@@ -819,6 +885,12 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'movie_review_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'movie_review_review_id_fkey'
             columns: ['review_id']
             referencedRelation: 'review'
@@ -850,6 +922,12 @@ export interface Database {
             foreignKeyName: 'movie_staff_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_staff_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
           {
@@ -893,6 +971,12 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'movie_theme_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'movie_theme_theme_id_fkey'
             columns: ['theme_id']
             referencedRelation: 'theme'
@@ -929,6 +1013,12 @@ export interface Database {
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'movie_translation_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       movie_video: {
@@ -949,6 +1039,12 @@ export interface Database {
             foreignKeyName: 'movie_video_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'movie_video_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
           {
@@ -1188,6 +1284,12 @@ export interface Database {
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'season_movie_id_fkey'
+            columns: ['movie_id']
+            referencedRelation: 'movie_entry'
+            referencedColumns: ['id']
+          },
         ]
       }
       season_episode: {
@@ -1326,6 +1428,35 @@ export interface Database {
       }
     }
     Views: {
+      movie_entry: {
+        Row: {
+          background_url: string | null
+          cover_url: string | null
+          created_at: string | null
+          deleted_at: string | null
+          description: string | null
+          id: string | null
+          lang: string | null
+          origin_country: string | null
+          published: number | null
+          published_at: string | null
+          release_date: string | null
+          runtime: number | null
+          status: Database['public']['Enums']['publication_status'] | null
+          title: string | null
+          type: string | null
+          updated_at: string | null
+          watch_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'movie_id_fkey'
+            columns: ['id']
+            referencedRelation: 'entry'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       user_profile: {
         Row: {
           account_id: string | null

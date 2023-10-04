@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { Movies } from '@/types/movies'
+import { MovieEntry } from '@/types/movies'
 import { TableHeaderData } from '@/components/fragments/table/header'
 import { TableRowData } from '@/components/fragments/table/row'
 import { TableRowAction } from '@/components/fragments/table/row-action'
@@ -16,17 +16,18 @@ const actionMenuItem = [
   },
 ]
 
-export const columns: ColumnDef<Movies>[] = [
+export const columns: ColumnDef<MovieEntry>[] = [
   {
-    accessorKey: 'thumb',
+    accessorKey: 'cover_url',
     header: () => <TableHeaderData label="cover" />,
     cell: ({ row }) => (
       <TableRowImage
-        src={row.getValue('thumb')}
+        src={row.getValue('cover_url')}
         alt={row.getValue('title')}
         ratio={7 / 10}
         width={112}
         height={160}
+        source="cover"
       />
     ),
     enableSorting: false,
@@ -42,12 +43,12 @@ export const columns: ColumnDef<Movies>[] = [
     ),
   },
   {
-    accessorKey: 'format',
+    accessorKey: 'type',
     header: () => <TableHeaderData label="format" />,
     cell: ({ row }) => (
       <TableRowData
-        key="format"
-        label={row.getValue('format')}
+        key="type"
+        label={row.getValue('type')}
       />
     ),
   },
@@ -56,7 +57,7 @@ export const columns: ColumnDef<Movies>[] = [
     header: () => <TableHeaderData label="status" />,
     cell: ({ row }) => (
       <TableRowData
-        label={row.getValue('published')}
+        label={row.getValue('published') ? 'published' : 'draft'}
         textHighlightTrigger="published"
         textHighlight
       />

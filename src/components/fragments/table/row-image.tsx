@@ -5,30 +5,34 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
+type TableRowImageProps = {
+  src: string
+  alt: string
+  ratio: number
+  width: number
+  height: number
+  source?: string
+}
+
 export function TableRowImage({
   src,
   alt,
   ratio,
   width,
   height,
-}: {
-  src: string
-  alt: string
-  ratio: number
-  width: number
-  height: number
-}) {
+  source = 'image',
+}: TableRowImageProps) {
   const [publicUrl, setPublicUrl] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchPublicUrl() {
       const supabase = createClientComponentClient()
-      const { data } = await supabase.storage.from('avatar').getPublicUrl(src)
+      const { data } = await supabase.storage.from(source).getPublicUrl(src)
       setPublicUrl(data.publicUrl)
     }
 
     fetchPublicUrl()
-  }, [src])
+  }, [src, source])
 
   if (!publicUrl) {
     return <div>Loading...</div>

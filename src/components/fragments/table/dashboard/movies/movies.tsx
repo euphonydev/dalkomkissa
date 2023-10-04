@@ -3,7 +3,7 @@ import { DataTable } from '@/components/fragments/table/dashboard/data-table'
 import { columns } from '@/components/fragments/table/dashboard/movies/columns'
 
 export async function MovieTable() {
-  const data = await getMoviesByLang('default')
+  const data = await getMoviesByLang('en')
   return (
     <div className="py-10">
       <DataTable
