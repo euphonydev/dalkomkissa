@@ -1,12 +1,7 @@
 import type { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-} from '@/components/ui/breadcrumb'
 import { MainHeader } from '@/components/ui/main-header'
-import { MovieCard } from '@/components/fragments/movie-card'
+import MovieGrid from '@/components/templates/movie-grid'
 
 export const metadata: Metadata = {
   title: 'Latest Movies - Dalkom Kissa',
@@ -21,9 +16,7 @@ export default function Page() {
         title={t('LATEST_ENTRY', { entry: t('MOVIES') })}
         withBreadcrumb
       />
-      <div className="grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {/* Movie Card Here */}
-      </div>
+      <MovieGrid />
     </div>
   )
 }

@@ -1,27 +1,29 @@
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
+import { MovieEntry } from '@/types/movies'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import type { Database } from '@/lib/database.types'
 import '@/lib/utils/number/shorten-format-number'
 
-type MovieCardProps = {
-  id: string
-  src: string
-  title: string
-  rating?: number
-  watchCount?: number
-}
-
-export function MovieCard({
+export async function MovieCard({
   id,
-  src,
+  cover_url,
   title,
-  rating,
-  watchCount,
-}: MovieCardProps) {
+  average_score,
+  watch_count,
+}: MovieEntry) {
   const t = useTranslations()
+  const supabase = createServerComponentClient<Database>({
+    cookies,
+  })
+  const { data: cover } = await supabase.storage
+    .from('cover')
+    .getPublicUrl(cover_url!)
 
   return (
     <Link
@@ -32,8 +34,8 @@ export function MovieCard({
         <div className="relative w-full overflow-hidden rounded-md hover:ring-2 hover:ring-primary">
           <AspectRatio ratio={7 / 10}>
             <Image
-              src={src}
-              alt={title}
+              src={cover.publicUrl}
+              alt={title!}
               width={182}
               height={160}
               className="h-full w-full rounded-md object-cover"
@@ -45,7 +47,7 @@ export function MovieCard({
               <div className="flex w-full justify-between">
                 <div className="text-small flex items-center font-bold">
                   <StarIcon className="mr-1 h-4 w-4 text-yellow-500" />
-                  {rating || '0.0'}
+                  {average_score || '0.0'}
                 </div>
               </div>
             </div>
@@ -57,9 +59,7 @@ export function MovieCard({
           </div>
           <div className="flex w-full justify-between">
             <div className="text-small">
-              {watchCount
-                ? watchCount.shortenFormatNumber() + t('WATCHED')
-                : `0${t('WATCHED')}`}
+              {watch_count.shortenFormatNumber() + t('WATCHED')}
             </div>
           </div>
         </div>

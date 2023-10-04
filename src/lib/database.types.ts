@@ -408,6 +408,7 @@ export interface Database {
       }
       image: {
         Row: {
+          created_at: string | null
           id: string
           is_primary: boolean
           profile_id: string
@@ -415,6 +416,7 @@ export interface Database {
           url: string
         }
         Insert: {
+          created_at?: string | null
           id?: string
           is_primary?: boolean
           profile_id: string
@@ -422,6 +424,7 @@ export interface Database {
           url: string
         }
         Update: {
+          created_at?: string | null
           id?: string
           is_primary?: boolean
           profile_id?: string
@@ -1430,7 +1433,7 @@ export interface Database {
     Views: {
       movie_entry: {
         Row: {
-          background_url: string | null
+          average_score: number | null
           cover_url: string | null
           created_at: string | null
           deleted_at: string | null
