@@ -249,7 +249,6 @@ export function MovieForm() {
                       form.setValue('age_rating', parseInt(value))
                     }}
                     className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7"
-                    {...field}
                   >
                     {ageRating?.map((age_rating) => (
                       <FormItem
