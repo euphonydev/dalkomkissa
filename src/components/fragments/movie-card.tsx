@@ -27,7 +27,7 @@ export async function MovieCard({
 
   return (
     <Link
-      href={`/movies/${id}`}
+      href={`/`}
       className="w-full"
     >
       <div className="group flex flex-col space-y-1">
@@ -59,7 +59,7 @@ export async function MovieCard({
           </div>
           <div className="flex w-full justify-between">
             <div className="text-small">
-              {watch_count.shortenFormatNumber() + t('WATCHED')}
+              {watch_count?.shortenFormatNumber() + t('WATCHED')}
             </div>
           </div>
         </div>
