@@ -11,7 +11,7 @@ export async function MovieTable() {
         data={data}
         searchColumn="title"
         searchPlaceholder="movie"
-        newEntryLink="/dashboard/movies/"
+        newEntryLink="/movie/new"
       />
     </div>
   )
