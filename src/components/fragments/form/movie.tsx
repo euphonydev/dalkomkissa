@@ -2,31 +2,13 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import {
-  CalendarIcon,
-  CheckIcon,
-  ChevronsUpDownIcon,
-  PencilIcon,
-} from 'lucide-react'
-import { useFormatter, useTranslations } from 'next-intl'
-import { redirect, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDebounce } from 'use-debounce'
 import * as z from 'zod'
 import { AgeRating } from '@/types/age-rating'
 import { Format } from '@/types/format'
-import { useUser } from '@/hooks/useUser'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from '@/components/ui/command'
 import {
   Form,
   FormControl,
@@ -36,11 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
@@ -60,10 +37,6 @@ export function MovieForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const supabase = createClientComponentClient()
-  const router = useRouter()
-  const format = useFormatter()
-  const { user, avatar } = useUser()
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [movieType, setMovieType] = useState<Format[]>()
   const [ageRating, setAgeRating] = useState<AgeRating[]>()
 

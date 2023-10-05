@@ -1,14 +1,14 @@
 'use client'
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { AlignLeftIcon, MoonIcon, SunIcon, User } from 'lucide-react'
+import { AlignLeftIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useUser } from '@/hooks/useUser'
+import { useUserContext } from '@/contexts/user-context'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -33,7 +33,7 @@ const MainNavbar = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { theme, setTheme } = useTheme()
   const { toast } = useToast()
-  const { user, avatar, isLoggedIn, userRole } = useUser()
+  const { userInfo, avatar, isLoggedIn, userRole } = useUserContext()
   const t = useTranslations()
   const supabase = createClientComponentClient()
   const router = useRouter()
@@ -110,10 +110,10 @@ const MainNavbar = React.forwardRef<
                     <AvatarImage
                       className="bg-secondary"
                       src={avatar}
-                      alt={`@${user?.username}`}
+                      alt={`@${userInfo?.username}`}
                     />
                     <AvatarFallback>
-                      {user?.name.getInitialName()}
+                      {userInfo?.name.getInitialName()}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -126,10 +126,10 @@ const MainNavbar = React.forwardRef<
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="truncate text-sm font-medium leading-none">
-                      {user?.name}
+                      {userInfo?.name}
                     </p>
                     <p className="truncate text-xs leading-none text-muted-foreground">
-                      {`@${user?.username}`}
+                      {`@${userInfo?.username}`}
                     </p>
                   </div>
                 </DropdownMenuLabel>

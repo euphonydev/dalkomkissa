@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDebounce } from 'use-debounce'
 import * as z from 'zod'
-import { useUser } from '@/hooks/useUser'
+import { useUserContext } from '@/contexts/user-context'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -46,7 +46,7 @@ export function ProfileSettingForm() {
   const t = useTranslations()
   const supabase = createClientComponentClient()
   const format = useFormatter()
-  const { user, avatar } = useUser()
+  const { userInfo, avatar, getUserInfo } = useUserContext()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [usernameError, setUsernameError] = useState<string>('')
 
@@ -80,8 +80,8 @@ export function ProfileSettingForm() {
 
   useEffect(() => {
     const validateUsername = async (username: string) => {
-      if (username && user?.username) {
-        if (username !== user?.username) {
+      if (username && userInfo?.username) {
+        if (username !== userInfo?.username) {
           const { data: existingUser } = await supabase
             .from('account')
             .select('id')
@@ -97,40 +97,43 @@ export function ProfileSettingForm() {
     }
 
     validateUsername(debouncedUsername)
-  }, [debouncedUsername, user?.username])
+  }, [debouncedUsername, userInfo?.username])
 
   useEffect(() => {
-    if (user) {
-      if (user.birthdate) {
-        const birthDate = new Date(user.birthdate)
+    if (userInfo) {
+      if (userInfo.birthdate) {
+        const birthDate = new Date(userInfo.birthdate)
         form.setValue('dob', birthDate)
       }
-      form.setValue('username', user.username)
-      form.setValue('fullname', user.name)
-      form.setValue('gender', user.gender)
+      form.setValue('username', userInfo.username)
+      form.setValue('fullname', userInfo.name)
+      form.setValue('gender', userInfo.gender)
     }
-  }, [user, form])
+  }, [userInfo, form])
 
   async function onAvatarDelete() {
-    await supabase.storage.from('avatar').remove([user?.photo])
-    const { error } = await supabase
-      .from('profile')
-      .update({ photo: '' })
-      .eq('account_id', user?.account_id)
-    if (!error) {
-      window.location.reload()
+    if (userInfo?.photo) {
+      await supabase.storage.from('avatar').remove([userInfo?.photo])
+      const { error } = await supabase
+        .from('profile')
+        .update({ photo: '' })
+        .eq('account_id', userInfo.account_id)
+      if (!error) {
+        getUserInfo()
+        setSelectedFile(null)
+      }
     }
   }
 
   async function onSubmit(formData: formValues) {
     const fileName = selectedFile
-      ? `${user?.account_id}.${selectedFile?.name.substringAfterLast('.')}`
-      : user?.photo
+      ? `${userInfo?.account_id}.${selectedFile?.name.substringAfterLast('.')}`
+      : userInfo?.photo
     let uploadError = false
 
     if (fileName && selectedFile) {
-      if (user?.photo) {
-        await supabase.storage.from('avatar').remove([user?.photo])
+      if (userInfo?.photo) {
+        await supabase.storage.from('avatar').remove([userInfo?.photo])
       }
       const { error } = await supabase.storage
         .from('avatar')
@@ -141,7 +144,7 @@ export function ProfileSettingForm() {
     }
 
     const { error: dataError } = await supabase.rpc('update_user_profile', {
-      user_account_id: user?.account_id,
+      user_account_id: userInfo?.account_id,
       new_username: formData.username,
       new_name: formData.fullname,
       new_gender: formData.gender,
@@ -150,6 +153,7 @@ export function ProfileSettingForm() {
     })
 
     if (!dataError && !uploadError) {
+      getUserInfo()
       toast({
         description: (
           <p>
@@ -159,7 +163,6 @@ export function ProfileSettingForm() {
           </p>
         ),
       })
-      window.location.reload()
     }
   }
 
@@ -349,11 +352,13 @@ export function ProfileSettingForm() {
                   src={
                     selectedFile ? URL.createObjectURL(selectedFile) : avatar
                   }
-                  alt={`@${user?.username}`}
+                  alt={`@${userInfo?.username}`}
                 />
-                <AvatarFallback>{user?.name.getInitialName()}</AvatarFallback>
+                <AvatarFallback>
+                  {userInfo?.name.getInitialName()}
+                </AvatarFallback>
               </Avatar>
-              {user?.photo ? (
+              {userInfo?.photo ? (
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button

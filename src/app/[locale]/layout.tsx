@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { ThemeProvider } from '@/contexts/theme-provider'
+import { UserProvider } from '@/contexts/user-context'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 
@@ -39,14 +40,16 @@ export default async function RootLayout({
           locale={locale}
           messages={messages}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-          >
-            <main>{children}</main>
-            <Toaster />
-          </ThemeProvider>
+          <UserProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+            >
+              <main>{children}</main>
+              <Toaster />
+            </ThemeProvider>
+          </UserProvider>
         </NextIntlClientProvider>
       </body>
     </html>
