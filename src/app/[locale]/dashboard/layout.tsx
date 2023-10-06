@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import { RequireAuth } from '@/contexts/require-auth'
 import { DashboardSidebar } from '@/components/fragments/sidebar/dashboard'
 import { Navbar } from '@/components/templates/navbar'
 
@@ -14,16 +13,11 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <RequireAuth
-      redirectTo="/"
-      checkAdmin
+    <Navbar
+      sidebar={DashboardSidebar}
+      className="pt-0 md:pt-10"
     >
-      <Navbar
-        sidebar={DashboardSidebar}
-        className="pt-0 md:pt-10"
-      >
-        <div className="flex flex-col space-y-4">{children}</div>
-      </Navbar>
-    </RequireAuth>
+      <div className="flex flex-col space-y-4">{children}</div>
+    </Navbar>
   )
 }
