@@ -104,6 +104,9 @@ dependencies:
   react:
     specifier: 18.2.0
     version: 18.2.0
+  react-circle-flags:
+    specifier: ^0.0.19
+    version: 0.0.19(react@18.2.0)
   react-day-picker:
     specifier: ^8.8.2
     version: 8.8.2(date-fns@2.30.0)(react@18.2.0)
@@ -4354,6 +4357,15 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
     dev: true
+
+  /react-circle-flags@0.0.19(react@18.2.0):
+    resolution: {integrity: sha512-QJ96+CIEpHZ/QmgB7tXaaHFvaCNGS06kJHQJ7q7a60bXjcImQTrPxcO//b/d4hFrVmHeL61viJtUYYHKcLZszQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-day-picker@8.8.2(date-fns@2.30.0)(react@18.2.0):
     resolution: {integrity: sha512-sK5M5PNZaLiszmACUKUpVu1eX3eFDVV+WLdWQ3BxTPbEC9jhuawmlgpbSXX5dIIQQwJpZ4wwP5+vsMVOwa1IRw==}

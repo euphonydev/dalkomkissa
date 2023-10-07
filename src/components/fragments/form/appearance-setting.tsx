@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next-intl/client'
 import { useTheme } from 'next-themes'
 import { useTransition } from 'react'
+import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
@@ -129,7 +130,9 @@ export function AppearanceSettingForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                {t('CHANGE_FIELD', { field: t('LANGUAGE').toLowerCase() })}
+                {t('CHANGE_FIELD', {
+                  field: t('LANGUAGE').toLowerCase(),
+                })}
               </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -142,15 +145,21 @@ export function AppearanceSettingForm() {
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {field.value
-                        ? t(
-                            `lang.${languages.find(
-                              (language) => language.value === field.value,
-                            )?.value}`,
-                          )
-                        : t('SELECT_FIELD', {
-                            field: t('LANGUAGE').toLowerCase(),
-                          })}
+                      {field.value ? (
+                        <div className="flex items-center">
+                          <CircleFlag
+                            countryCode={
+                              field.value === 'en' ? 'gb' : field.value
+                            }
+                            className="mr-2 h-4 w-4"
+                          />
+                          {t(`lang.${field.value}`)}
+                        </div>
+                      ) : (
+                        t('SELECT_FIELD', {
+                          field: t('LANGUAGE').toLowerCase(),
+                        })
+                      )}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -182,7 +191,15 @@ export function AppearanceSettingForm() {
                                 : 'opacity-0',
                             )}
                           />
-                          {t(`lang.${language.value}`)}
+                          <div className="flex items-center">
+                            <CircleFlag
+                              countryCode={
+                                language.value === 'en' ? 'gb' : language.value
+                              }
+                              className="mr-2 h-4 w-4"
+                            />
+                            {t(`lang.${language.value}`)}
+                          </div>
                         </CommandItem>
                       ))}
                     </CommandGroup>
