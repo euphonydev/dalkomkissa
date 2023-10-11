@@ -11,12 +11,14 @@
     "eslint:fix": "pnpm run eslint --fix",
     "prettier": "pnpm dlx prettier src --check",
     "prettier:fix": "pnpm run prettier --write",
-    "format": "pnpm run prettier:fix && pnpm run eslint:fix"
+    "format": "pnpm run prettier:fix && pnpm run eslint:fix",
+    "update-types": "pnpm dlx supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" > src/lib/database.types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.3",
+    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-collapsible": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
@@ -51,6 +53,7 @@
     "react-day-picker": "^8.8.2",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.1",
+    "react-image-size": "^2.0.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",

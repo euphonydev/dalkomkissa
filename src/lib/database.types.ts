@@ -373,24 +373,6 @@ export interface Database {
           },
         ]
       }
-      format: {
-        Row: {
-          id: number
-          name: string
-          type: string | null
-        }
-        Insert: {
-          id?: number
-          name: string
-          type?: string | null
-        }
-        Update: {
-          id?: number
-          name?: string
-          type?: string | null
-        }
-        Relationships: []
-      }
       genre: {
         Row: {
           id: number
@@ -476,6 +458,7 @@ export interface Database {
           release_date: string | null
           runtime: number | null
           status: Database['public']['Enums']['publication_status']
+          type: Database['public']['Enums']['movie_type'] | null
         }
         Insert: {
           id: string
@@ -485,6 +468,7 @@ export interface Database {
           release_date?: string | null
           runtime?: number | null
           status: Database['public']['Enums']['publication_status']
+          type?: Database['public']['Enums']['movie_type'] | null
         }
         Update: {
           id?: string
@@ -494,6 +478,7 @@ export interface Database {
           release_date?: string | null
           runtime?: number | null
           status?: Database['public']['Enums']['publication_status']
+          type?: Database['public']['Enums']['movie_type'] | null
         }
         Relationships: [
           {
@@ -670,40 +655,6 @@ export interface Database {
           },
           {
             foreignKeyName: 'movie_cover_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_format: {
-        Row: {
-          format_id: number
-          movie_id: string
-        }
-        Insert: {
-          format_id: number
-          movie_id: string
-        }
-        Update: {
-          format_id?: number
-          movie_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_format_format_id_fkey'
-            columns: ['format_id']
-            referencedRelation: 'format'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_format_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_format_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie_entry'
             referencedColumns: ['id']
@@ -953,7 +904,7 @@ export interface Database {
           },
         ]
       }
-      movie_theme: {
+      movie_tag: {
         Row: {
           movie_id: string
           theme_id: number
@@ -968,21 +919,21 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'movie_theme_movie_id_fkey'
+            foreignKeyName: 'movie_tag_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'movie_theme_movie_id_fkey'
+            foreignKeyName: 'movie_tag_movie_id_fkey'
             columns: ['movie_id']
             referencedRelation: 'movie_entry'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'movie_theme_theme_id_fkey'
+            foreignKeyName: 'movie_tag_theme_id_fkey'
             columns: ['theme_id']
-            referencedRelation: 'theme'
+            referencedRelation: 'tag'
             referencedColumns: ['id']
           },
         ]
@@ -1372,18 +1323,21 @@ export interface Database {
         }
         Relationships: []
       }
-      theme: {
+      tag: {
         Row: {
           id: number
           name: string
+          type: string | null
         }
         Insert: {
           id?: number
           name: string
+          type?: string | null
         }
         Update: {
           id?: number
           name?: string
+          type?: string | null
         }
         Relationships: []
       }
@@ -1447,7 +1401,7 @@ export interface Database {
           runtime: number | null
           status: Database['public']['Enums']['publication_status'] | null
           title: string | null
-          type: string | null
+          type: Database['public']['Enums']['movie_type'] | null
           updated_at: string | null
           watch_count: number | null
         }
@@ -1547,6 +1501,7 @@ export interface Database {
       }
     }
     Enums: {
+      movie_type: 'series' | 'featured_film' | 'short_film' | 'mini_series'
       publication_status:
         | 'upcoming'
         | 'ongoing'
