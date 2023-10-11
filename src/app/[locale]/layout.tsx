@@ -1,4 +1,4 @@
-import '@/app/globals.css'
+import '@/assets/globals.css'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, useLocale } from 'next-intl'
 import { Inter } from 'next/font/google'

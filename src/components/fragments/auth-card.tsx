@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/substring-after-last'
+import { substringAfterLast } from '@/lib/utils/string'
 
 interface AuthCardProps {
   className?: string
@@ -37,36 +37,36 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
   const t = useTranslations()
   const scenarioConfigurations: Record<string, Scenario> = {
     login: {
-      title: t('LOGIN_TITLE'),
-      subtitle: t('LOGIN_SUBTITLE'),
+      title: t('login_title'),
+      subtitle: t('login_subtitle'),
       showGoogleButton: true,
       redirectUrl: '/register',
-      redirectPrompt: t('DONT_HAVE_ACCOUNT'),
-      redirectText: t('REGISTER_HERE'),
+      redirectPrompt: t('dont_have_account'),
+      redirectText: t('register_here'),
     },
     register: {
-      title: t('REGISTER_TITLE'),
-      subtitle: t('REGISTER_SUBTITLE'),
+      title: t('register_title'),
+      subtitle: t('register_subtitle'),
       showGoogleButton: false,
       redirectUrl: '/login',
-      redirectPrompt: t('HAVE_ACCOUNT'),
-      redirectText: t('LOGIN_HERE'),
+      redirectPrompt: t('have_account'),
+      redirectText: t('login_here'),
     },
     'reset-password': {
-      title: t('RESET_PASSWORD_TITLE'),
-      subtitle: t('RESET_PASSWORD_SUBTITLE'),
+      title: t('reset_password_title'),
+      subtitle: t('reset_password_subtitle'),
       showGoogleButton: false,
     },
     'change-password': {
-      title: t('CHANGE_FIELD', { field: t('PASSWORD') }),
-      subtitle: t('CHANGE_PASSWORD_SUBTITLE'),
+      title: t('change_field', { field: t('password') }),
+      subtitle: t('change_password_subtitle'),
       showGoogleButton: false,
     },
   }
 
   const pathName = usePathname()
   const supabase = createClientComponentClient()
-  const config = scenarioConfigurations[pathName.substringAfterLast('/')]
+  const config = scenarioConfigurations[substringAfterLast(pathName, '/')]
 
   async function onGoogleLogin() {
     await supabase.auth.signInWithOAuth({
@@ -98,7 +98,7 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
             onClick={onGoogleLogin}
           >
             <GoogleIcon className="me-2 h-5 w-5" />
-            {t('CONTINUE_WITH', { with: 'Google' })}
+            {t('continue_with', { with: 'Google' })}
           </Button>
         ) : null}
       </CardContent>

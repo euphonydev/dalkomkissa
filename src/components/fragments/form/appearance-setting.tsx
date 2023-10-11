@@ -9,6 +9,7 @@ import { useTransition } from 'react'
 import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { interface_languages } from '@/types/enums/languages'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -32,7 +33,6 @@ import {
 } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
-import { languages } from '@/lib/languages'
 import { cn } from '@/lib/utils'
 
 export function AppearanceSettingForm() {
@@ -45,10 +45,10 @@ export function AppearanceSettingForm() {
 
   const FormSchema = z.object({
     theme: z.string({
-      required_error: t('IS_REQUIRED', { field: t('THEME') }),
+      required_error: t('is_required', { field: t('theme') }),
     }),
     language: z.string({
-      required_error: t('IS_REQUIRED', { field: t('LANGUAGE') }),
+      required_error: t('is_required', { field: t('language') }),
     }),
   })
 
@@ -64,8 +64,8 @@ export function AppearanceSettingForm() {
     form.setValue('theme', theme)
     setTheme(theme)
     toast({
-      description: t('THEME_CHANGED_INFO', {
-        theme: t(theme.toUpperCase()).toLowerCase(),
+      description: t('theme_changed_info', {
+        theme: t(theme).toLowerCase(),
       }),
     })
   }
@@ -75,8 +75,8 @@ export function AppearanceSettingForm() {
     startTransition(() => {
       router.replace(pathname, { locale: language })
       toast({
-        description: t('LANGUAGE_CHANGED_INFO', {
-          language: t(`lang.${language}`),
+        description: t('language_changed_info', {
+          language: t(`Lang.${language}`),
         }),
       })
       router.refresh()
@@ -92,7 +92,7 @@ export function AppearanceSettingForm() {
           render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel>
-                {t('CHANGE_FIELD', { field: t('THEME').toLowerCase() })}
+                {t('change_field', { field: t('theme').toLowerCase() })}
               </FormLabel>
               <FormControl>
                 <RadioGroup
@@ -104,19 +104,19 @@ export function AppearanceSettingForm() {
                     <FormControl>
                       <RadioGroupItem value="light" />
                     </FormControl>
-                    <FormLabel className="font-normal">{t('LIGHT')}</FormLabel>
+                    <FormLabel className="font-normal">{t('light')}</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="dark" />
                     </FormControl>
-                    <FormLabel className="font-normal">{t('DARK')}</FormLabel>
+                    <FormLabel className="font-normal">{t('dark')}</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="system" />
                     </FormControl>
-                    <FormLabel className="font-normal">{t('SYSTEM')}</FormLabel>
+                    <FormLabel className="font-normal">{t('system')}</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -130,8 +130,8 @@ export function AppearanceSettingForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                {t('CHANGE_FIELD', {
-                  field: t('LANGUAGE').toLowerCase(),
+                {t('change_field', {
+                  field: t('language').toLowerCase(),
                 })}
               </FormLabel>
               <Popover>
@@ -153,11 +153,11 @@ export function AppearanceSettingForm() {
                             }
                             className="mr-2 h-4 w-4"
                           />
-                          {t(`lang.${field.value}`)}
+                          {t(`Lang.${field.value}`)}
                         </div>
                       ) : (
                         t('SELECT_FIELD', {
-                          field: t('LANGUAGE').toLowerCase(),
+                          field: t('language').toLowerCase(),
                         })
                       )}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -167,38 +167,36 @@ export function AppearanceSettingForm() {
                 <PopoverContent className="w-[200px] p-0">
                   <Command>
                     <CommandInput
-                      placeholder={t('SEARCH_FIELD', {
-                        field: t('LANGUAGE').toLowerCase(),
+                      placeholder={t('search_field', {
+                        field: t('language').toLowerCase(),
                       })}
                     />
                     <CommandEmpty>
-                      {t('FIELD_NOT_FOUND', { field: t('LANGUAGE') })}
+                      {t('field_not_found', { field: t('language') })}
                     </CommandEmpty>
                     <CommandGroup>
-                      {languages.map((language) => (
+                      {interface_languages.map((language) => (
                         <CommandItem
-                          value={t(`lang.${language.value}`)}
-                          key={language.value}
+                          value={t(`Lang.${language}`)}
+                          key={language}
                           onSelect={() => {
-                            onLanguageChanged(language.value)
+                            onLanguageChanged(language)
                           }}
                         >
                           <CheckIcon
                             className={cn(
                               'mr-2 h-4 w-4',
-                              language.value === field.value
+                              language === field.value
                                 ? 'opacity-100'
                                 : 'opacity-0',
                             )}
                           />
                           <div className="flex items-center">
                             <CircleFlag
-                              countryCode={
-                                language.value === 'en' ? 'gb' : language.value
-                              }
+                              countryCode={language === 'en' ? 'gb' : language}
                               className="mr-2 h-4 w-4"
                             />
-                            {t(`lang.${language.value}`)}
+                            {t(`Lang.${language}`)}
                           </div>
                         </CommandItem>
                       ))}

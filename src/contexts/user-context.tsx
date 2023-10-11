@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { UserInfo } from '@/types/user'
+import { UserInfo } from '@/types/user.types'
 
 interface UserContextType {
   userInfo: UserInfo | null

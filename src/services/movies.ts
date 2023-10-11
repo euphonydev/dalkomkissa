@@ -1,7 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import type { MovieEntry } from '@/types/movies'
-import type { Database } from '@/lib/database.types'
+import type { Database } from '@/types/database.types'
+import type { MovieEntry } from '@/types/movies.types'
 
 export async function getMoviesByLang(lang: string): Promise<MovieEntry[]> {
   const supabase = createServerComponentClient<Database>({
@@ -16,5 +16,3 @@ export async function getMoviesByLang(lang: string): Promise<MovieEntry[]> {
   }
   return []
 }
-
-export default getMoviesByLang

@@ -12,8 +12,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/substring-after-last'
-import '@/lib/utils/string/to-title-case'
+import { substringAfterLast, toTitleCase } from '@/lib/utils/string'
 
 interface DashboardMenuProps {
   className?: string
@@ -33,13 +32,13 @@ const DashboardMenu: React.FC<DashboardMenuProps> = ({
         <Button
           key={index}
           variant={
-            pathName.substringAfterLast('/') === path.substringAfterLast('/')
+            substringAfterLast(pathName, '/') === substringAfterLast(path, '/')
               ? 'secondary'
               : 'ghost'
           }
           className={cn(
             'w-full justify-start',
-            pathName.substringAfterLast('/') === path.substringAfterLast('/')
+            substringAfterLast(pathName, '/') === substringAfterLast(path, '/')
               ? 'hidden md:block'
               : '',
           )}
@@ -47,7 +46,7 @@ const DashboardMenu: React.FC<DashboardMenuProps> = ({
         >
           <Link href={path}>
             <div className="text-lg md:font-semibold">
-              {t(path.substringAfterLast('/').toUpperCase()).toTitleCase()}
+              {toTitleCase(t(substringAfterLast(path, '/')))}
             </div>
           </Link>
         </Button>
@@ -88,9 +87,7 @@ const DashboardSidebar = React.forwardRef<
               >
                 <div className="flex items-center justify-between">
                   <span className="text-lg">
-                    {t(
-                      pathName.substringAfterLast('/').toUpperCase(),
-                    ).toTitleCase()}
+                    {toTitleCase(t(substringAfterLast(pathName, '/')))}
                   </span>
                   {!isCollapsibleOpen ? (
                     <ChevronDownIcon className="h-4 w-4" />

@@ -1,5 +1,6 @@
 import { MoreVerticalIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,7 +12,7 @@ import {
 type TableRowActionProps = {
   menuItem: {
     label: string
-    link?: string
+    link: string
   }[]
 }
 
@@ -29,9 +30,12 @@ export function TableRowAction({ menuItem }: TableRowActionProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {menuItem.map(({ label, link }) => (
-          <DropdownMenuItem key={label}>
-            {t(label.toUpperCase())}
-          </DropdownMenuItem>
+          <Link
+            key={label}
+            href={link}
+          >
+            <DropdownMenuItem key={label}>{t(label)}</DropdownMenuItem>
+          </Link>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -10,9 +10,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { AgeRating } from '@/types/age-rating'
-import { Format } from '@/types/format'
-import { Genre } from '@/types/genre'
+import { AgeRating } from '@/types/age-rating.types'
+import { movie_type } from '@/types/enums/movie-type'
+import { publication_status } from '@/types/enums/publication-status'
+import { Genre } from '@/types/genre.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -26,7 +27,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -42,11 +42,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
-import { movie_type } from '@/lib/enums/movie-type'
-import { publication_status } from '@/lib/enums/publication-status'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/get-initial-name'
-import '@/lib/utils/string/substring-after-last'
 
 export function MovieForm() {
   const { toast } = useToast()
@@ -67,20 +63,20 @@ export function MovieForm() {
     age_rating: z.number(),
     cover: z.object({
       language: z.string({
-        required_error: t('IS_REQUIRED', { field: t('LANGUAGE') }),
+        required_error: t('is_required', { field: t('language') }),
       }),
       name: z.string({
-        required_error: t('IS_REQUIRED', { field: t('COVER') }),
+        required_error: t('is_required', { field: t('cover') }),
       }),
       url: z.string({
-        required_error: t('IS_REQUIRED', { field: t('COVER') }),
+        required_error: t('is_required', { field: t('cover') }),
       }),
     }),
     genres: z.array(z.number()).refine((value) => value.some((item) => item), {
-      message: t('MUST_SELECT_FIELD', { field: t('GENRE').toLowerCase() }),
+      message: t('must_select_field', { field: t('genre').toLowerCase() }),
     }),
     release_date: z.date({
-      required_error: t('IS_REQUIRED', { field: t('release_date') }),
+      required_error: t('is_required', { field: t('release_date') }),
     }),
   })
 
@@ -129,7 +125,7 @@ export function MovieForm() {
             name="cover"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel htmlFor="cover">{t('COVER')}</FormLabel>
+                <FormLabel htmlFor="cover">{t('cover')}</FormLabel>
                 {field.value ? (
                   <div className="relative w-full rounded-md sm:w-48 md:w-56">
                     <AspectRatio ratio={7 / 10}>
@@ -162,15 +158,15 @@ export function MovieForm() {
                     >
                       <div className="flex items-center">
                         <PencilIcon className="mr-1 h-4 w-4" />
-                        {t('CHANGE_FIELD', { field: '' })}
+                        {t('change_field', { field: '' })}
                       </div>
                     </Button>
                   </div>
                 ) : null}
                 <ImageMultiLangModal
                   className={field.value ? 'hidden' : ''}
-                  label={t('ADD_NEW_ENTRY', {
-                    entry: t('COVER').toLowerCase(),
+                  label={t('add_new_entry', {
+                    entry: t('cover').toLowerCase(),
                   })}
                   onModalSubmit={handleNewCover}
                   openModalRef={openModalRef}
@@ -184,7 +180,7 @@ export function MovieForm() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="title">{t('ORIGINAL_TITLE')}</FormLabel>
+                <FormLabel htmlFor="title">{t('original_title')}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
@@ -202,8 +198,8 @@ export function MovieForm() {
             name="english_title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="english_title">{`${t('TITLE')} (${t(
-                  'lang.en',
+                <FormLabel htmlFor="english_title">{`${t('title')} (${t(
+                  'Lang.en',
                 )})`}</FormLabel>
                 <FormControl>
                   <Input
@@ -222,8 +218,8 @@ export function MovieForm() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="description">{`${t('DESCRIPTION')} (${t(
-                  'lang.en',
+                <FormLabel htmlFor="description">{`${t('description')} (${t(
+                  'Lang.en',
                 )})`}</FormLabel>
                 <FormControl>
                   <Textarea
@@ -253,7 +249,7 @@ export function MovieForm() {
                       {field.value ? (
                         format.dateTime(field.value, { dateStyle: 'long' })
                       ) : (
-                        <span>{t('PICK_DATE')}</span>
+                        <span>{t('pick_date')}</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 text-gray-500" />
                     </Button>
@@ -286,7 +282,7 @@ export function MovieForm() {
               render={() => (
                 <div className="flex w-full">
                   <FormItem className="flex w-full flex-col">
-                    <FormLabel>{t('MOVIE_TYPE')}</FormLabel>
+                    <FormLabel>{t('movie_type')}</FormLabel>
                     <Select
                       onValueChange={(value) => {
                         form.setValue('movie_type', value)
@@ -295,8 +291,8 @@ export function MovieForm() {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
-                            placeholder={t('SELECT_FIELD', {
-                              field: t('MOVIE_TYPE').toLowerCase(),
+                            placeholder={t('select_field', {
+                              field: t('movie_type').toLowerCase(),
                             })}
                           />
                         </SelectTrigger>
@@ -304,10 +300,10 @@ export function MovieForm() {
                       <SelectContent>
                         {movie_type.map((movie_type) => (
                           <SelectItem
-                            value={`${movie_type.value}`}
-                            key={movie_type.value}
+                            value={`${movie_type}`}
+                            key={movie_type}
                           >
-                            {t(movie_type.value.toUpperCase())}
+                            {t(movie_type)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -323,13 +319,13 @@ export function MovieForm() {
               render={({ field }) => (
                 <div className="flex w-full">
                   <FormItem className="flex w-full flex-col">
-                    <FormLabel>{t('STATUS')}</FormLabel>
+                    <FormLabel>{t('status')}</FormLabel>
                     <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
-                            placeholder={t('SELECT_FIELD', {
-                              field: t('STATUS').toLowerCase(),
+                            placeholder={t('select_field', {
+                              field: t('status').toLowerCase(),
                             })}
                           />
                         </SelectTrigger>
@@ -337,10 +333,10 @@ export function MovieForm() {
                       <SelectContent>
                         {publication_status.map((publication_status) => (
                           <SelectItem
-                            value={publication_status.value}
-                            key={publication_status.value}
+                            value={publication_status}
+                            key={publication_status}
                           >
-                            {t(publication_status.value.toUpperCase())}
+                            {t(publication_status)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -356,7 +352,7 @@ export function MovieForm() {
             name="age_rating"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel>{t('AGE_RATING')}</FormLabel>
+                <FormLabel>{t('age_rating')}</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={(value) => {
@@ -376,7 +372,7 @@ export function MovieForm() {
                           />
                         </FormControl>
                         <FormLabel className="font-normal">
-                          {age_rating.name.toUpperCase()}
+                          {age_rating.name}
                         </FormLabel>
                       </FormItem>
                     ))}
@@ -391,7 +387,7 @@ export function MovieForm() {
             name="genres"
             render={() => (
               <FormItem>
-                <FormLabel>{t('GENRE')}</FormLabel>
+                <FormLabel>{t('genre')}</FormLabel>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
                   {genre?.map((item) => (
                     <FormField
@@ -422,7 +418,7 @@ export function MovieForm() {
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {t(`genre.${item.name.toUpperCase()}`)}
+                              {t(`Genre.${item.name}`)}
                             </FormLabel>
                           </FormItem>
                         )
@@ -435,7 +431,7 @@ export function MovieForm() {
             )}
           />
           <Button type="submit">
-            {t('SAVE_FORM', { form: t('MOVIE').toLowerCase() })}
+            {t('save_form', { form: t('movie').toLowerCase() })}
           </Button>
         </div>
       </form>

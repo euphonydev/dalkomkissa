@@ -38,8 +38,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/get-initial-name'
-import '@/lib/utils/string/substring-after-last'
+import { getNameInitial, substringAfterLast } from '@/lib/utils/string'
 
 export function ProfileSettingForm() {
   const { toast } = useToast()
@@ -52,17 +51,17 @@ export function ProfileSettingForm() {
 
   const formSchema = z.object({
     username: z
-      .string({ required_error: t('IS_REQUIRED', { field: t('USERNAME') }) })
-      .min(3, t('IS_TOO_SHORT', { field: t('USERNAME'), length: 3 }))
-      .max(30, t('IS_TOO_LONG', { field: t('USERNAME'), length: 30 }))
-      .regex(/^[a-zA-Z0-9_]+$/, t('USERNAME_NOT_VALID')),
+      .string({ required_error: t('is_required', { field: t('username') }) })
+      .min(3, t('is_too_short', { field: t('username'), length: 3 }))
+      .max(30, t('is_too_long', { field: t('username'), length: 30 }))
+      .regex(/^[a-zA-Z0-9_]+$/, t('username_not_valid')),
     fullname: z.string(),
     avatar: z.string(),
     dob: z.date({
-      required_error: t('IS_REQUIRED', { field: t('DATE_OF_BIRTH') }),
+      required_error: t('is_required', { field: t('date_of_birth') }),
     }),
     gender: z.string({
-      required_error: t('IS_REQUIRED', { field: t('GENDER') }),
+      required_error: t('is_required', { field: t('gender') }),
     }),
   })
 
@@ -88,7 +87,7 @@ export function ProfileSettingForm() {
             .eq('username', username)
             .single()
           if (existingUser) {
-            setUsernameError(t('USERNAME_ALREADY_EXISTS'))
+            setUsernameError(t('username_already_exists'))
           } else {
             setUsernameError('')
           }
@@ -127,7 +126,7 @@ export function ProfileSettingForm() {
 
   async function onSubmit(formData: formValues) {
     const fileName = selectedFile
-      ? `${userInfo?.account_id}.${selectedFile?.name.substringAfterLast('.')}`
+      ? `${userInfo?.account_id}.${substringAfterLast(selectedFile.name, '.')}`
       : userInfo?.photo
     let uploadError = false
 
@@ -157,8 +156,8 @@ export function ProfileSettingForm() {
       toast({
         description: (
           <p>
-            {t('ACTION_SUCCESS', {
-              action: t('CHANGE_FIELD', { field: t('PROFILE') }).toLowerCase(),
+            {t('action_success', {
+              action: t('change_field', { field: t('profile') }).toLowerCase(),
             })}
           </p>
         ),
@@ -185,7 +184,7 @@ export function ProfileSettingForm() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="username">{t('USERNAME')}</FormLabel>
+                  <FormLabel htmlFor="username">{t('username')}</FormLabel>
                   <FormControl
                     onChange={(e) => {
                       if (e.target instanceof HTMLInputElement) {
@@ -197,7 +196,7 @@ export function ProfileSettingForm() {
                       type="text"
                       autoComplete="off"
                       id="username"
-                      placeholder={t('USERNAME_PLACEHOLDER')}
+                      placeholder={t('username_placeholder')}
                       {...field}
                     />
                   </FormControl>
@@ -210,13 +209,13 @@ export function ProfileSettingForm() {
               name="fullname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="fullname">{t('FULL_NAME')}</FormLabel>
+                  <FormLabel htmlFor="fullname">{t('full_name')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="name"
                       type="text"
                       id="fullname"
-                      placeholder={t('FULL_NAME_PLACEHOLDER')}
+                      placeholder={t('full_name_placeholder')}
                       {...field}
                     />
                   </FormControl>
@@ -230,7 +229,7 @@ export function ProfileSettingForm() {
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>
-                    {t('CHANGE_FIELD', { field: t('GENDER').toLowerCase() })}
+                    {t('change_field', { field: t('gender').toLowerCase() })}
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
@@ -245,7 +244,7 @@ export function ProfileSettingForm() {
                           />
                         </FormControl>
                         <FormLabel className="font-normal">
-                          {t('MALE')}
+                          {t('male')}
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -256,7 +255,7 @@ export function ProfileSettingForm() {
                           />
                         </FormControl>
                         <FormLabel className="font-normal">
-                          {t('FEMALE')}
+                          {t('female')}
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -267,7 +266,7 @@ export function ProfileSettingForm() {
                           />
                         </FormControl>
                         <FormLabel className="font-normal">
-                          {t('SECRET')}
+                          {t('secret')}
                         </FormLabel>
                       </FormItem>
                     </RadioGroup>
@@ -281,7 +280,7 @@ export function ProfileSettingForm() {
               name="dob"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>{t('DATE_OF_BIRTH')}</FormLabel>
+                  <FormLabel>{t('date_of_birth')}</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -294,7 +293,7 @@ export function ProfileSettingForm() {
                         {field.value ? (
                           format.dateTime(field.value, { dateStyle: 'long' })
                         ) : (
-                          <span>{t('PICK_DATE')}</span>
+                          <span>{t('pick_date')}</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 text-gray-500" />
                       </Button>
@@ -321,7 +320,7 @@ export function ProfileSettingForm() {
               )}
             />
             <Button type="submit">
-              {t('SAVE_FORM', { form: t('PROFILE').toLowerCase() })}
+              {t('save_form', { form: t('profile').toLowerCase() })}
             </Button>
           </div>
           <div className="w-full md:w-2/5">
@@ -330,7 +329,7 @@ export function ProfileSettingForm() {
               name="avatar"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('AVATAR')}</FormLabel>
+                  <FormLabel>{t('avatar')}</FormLabel>
                   <FormControl onChange={handleAvatarChange}>
                     <Input
                       type="file"
@@ -355,7 +354,7 @@ export function ProfileSettingForm() {
                   alt={`@${userInfo?.username}`}
                 />
                 <AvatarFallback>
-                  {userInfo?.name.getInitialName()}
+                  {userInfo ? getNameInitial(userInfo.name) : ''}
                 </AvatarFallback>
               </Avatar>
               {userInfo?.photo ? (
@@ -369,20 +368,20 @@ export function ProfileSettingForm() {
                     >
                       <div className="flex items-center">
                         <TrashIcon className="mr-1 h-4 w-4 md:mr-0" />
-                        <span className="md:hidden">{t('DELETE')}</span>
+                        <span className="md:hidden">{t('delete')}</span>
                       </div>
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>
-                        {t('DELETE_CONFIRMATION', {
-                          context: t('AVATAR').toLowerCase(),
+                        {t('delete_confirmation', {
+                          context: t('avatar').toLowerCase(),
                         })}
                       </DialogTitle>
                       <DialogDescription>
-                        {t('DELETE_PERMANENTLY_DESC', {
-                          context: t('AVATAR').toLowerCase(),
+                        {t('delete_permanently_desc', {
+                          context: t('avatar').toLowerCase(),
                         })}
                       </DialogDescription>
                     </DialogHeader>
@@ -392,7 +391,7 @@ export function ProfileSettingForm() {
                         variant="destructive"
                         onClick={onAvatarDelete}
                       >
-                        {t('DELETE')}
+                        {t('delete')}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -407,7 +406,7 @@ export function ProfileSettingForm() {
               >
                 <div className="flex items-center">
                   <PencilIcon className="mr-1 h-4 w-4" />
-                  {t('CHANGE_FIELD', { field: '' })}
+                  {t('change_field', { field: '' })}
                 </div>
               </Button>
             </div>

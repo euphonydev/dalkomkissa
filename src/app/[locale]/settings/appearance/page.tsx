@@ -12,8 +12,8 @@ export default function Page() {
   return (
     <>
       <MainHeader
-        title={t('APPEARANCE')}
-        description={t('APPEARANCE_SETTINGS_DESC')}
+        title={t('appearance')}
+        description={t('appearance_setting_desc')}
       />
       <AppearanceSettingForm />
     </>

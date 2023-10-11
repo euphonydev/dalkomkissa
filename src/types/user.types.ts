@@ -1,5 +1,3 @@
-import { Database } from '@/lib/database.types'
-
 export type UserInfo = {
   account_id: string
   background: string | null

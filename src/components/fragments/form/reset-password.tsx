@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -23,12 +22,11 @@ export function ResetPasswordForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const supabase = createClientComponentClient()
-  const router = useRouter()
 
   const formSchema = z.object({
     email: z
-      .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
-      .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+      .string({ required_error: t('is_required', { field: t('email') }) })
+      .email(t('is_invalid', { field: t('email').toLowerCase() })),
   })
 
   type formValues = z.infer<typeof formSchema>
@@ -47,7 +45,7 @@ export function ResetPasswordForm() {
     )
     if (!error) {
       toast({
-        description: t('EMAIL_SENDED'),
+        description: t('email_sended'),
       })
     }
   }
@@ -63,13 +61,13 @@ export function ResetPasswordForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">{t('EMAIL')}</FormLabel>
+              <FormLabel htmlFor="email">{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="email"
                   type="email"
                   id="email"
-                  placeholder={t('EMAIL_PLACEHOLDER')}
+                  placeholder={t('email_placeholder')}
                   {...field}
                 />
               </FormControl>
@@ -81,7 +79,7 @@ export function ResetPasswordForm() {
           type="submit"
           className="w-full"
         >
-          {t('RESET_PASSWORD_TITLE')}
+          {t('reset_password_title')}
         </Button>
       </form>
     </Form>

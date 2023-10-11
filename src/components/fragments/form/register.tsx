@@ -28,17 +28,17 @@ export function RegisterForm() {
   const formSchema = z
     .object({
       password: z
-        .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) })
-        .min(8, t('IS_TOO_SHORT', { field: t('PASSWORD'), length: 8 })),
+        .string({ required_error: t('is_required', { field: t('password') }) })
+        .min(8, t('is_too_short', { field: t('password'), length: 8 })),
       confirm_password: z.string({
-        required_error: t('IS_REQUIRED', { field: t('CONFIRM_PASSWORD') }),
+        required_error: t('is_required', { field: t('confirm_password') }),
       }),
       email: z
-        .string({ required_error: t('IS_REQUIRED', { field: t('EMAIL') }) })
-        .email(t('IS_INVALID', { field: t('EMAIL').toLowerCase() })),
+        .string({ required_error: t('is_required', { field: t('email') }) })
+        .email(t('is_invalid', { field: t('email').toLowerCase() })),
     })
     .refine((data: any) => data.password === data.confirm_password, {
-      message: t('PASSWORD_NOT_MATCH'),
+      message: t('password_not_match'),
       path: ['confirm_password'],
     })
 
@@ -59,7 +59,7 @@ export function RegisterForm() {
     })
     if (!error) {
       toast({
-        description: <p>{t('REGISTER_SUCCESS')}</p>,
+        description: <p>{t('register_success')}</p>,
       })
       router.push('/login')
     }
@@ -76,13 +76,13 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">{t('EMAIL')}</FormLabel>
+              <FormLabel htmlFor="email">{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="email"
                   type="email"
                   id="email"
-                  placeholder={t('EMAIL_PLACEHOLDER')}
+                  placeholder={t('email_placeholder')}
                   {...field}
                 />
               </FormControl>
@@ -95,7 +95,7 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">{t('PASSWORD')}</FormLabel>
+              <FormLabel htmlFor="password">{t('password')}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="new-password"
@@ -115,7 +115,7 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="confirm_password">
-                {t('CONFIRM_PASSWORD')}
+                {t('confirm_password')}
               </FormLabel>
               <FormControl>
                 <Input
@@ -134,7 +134,7 @@ export function RegisterForm() {
           type="submit"
           className="w-full"
         >
-          {t('REGISTER')}
+          {t('register')}
         </Button>
       </form>
     </Form>

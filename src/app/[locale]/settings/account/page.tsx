@@ -7,8 +7,8 @@ export default function Page() {
   return (
     <>
       <MainHeader
-        title={t('ACCOUNT')}
-        description={t('ACCOUNT_SETTINGS_DESC')}
+        title={t('account')}
+        description={t('account_setting_desc')}
       />
       <AccountSettingForm />
     </>

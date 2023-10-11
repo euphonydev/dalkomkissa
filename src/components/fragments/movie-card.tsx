@@ -1,14 +1,12 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { getImagePublicUrl } from '@/services/common'
 import { StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MovieEntry } from '@/types/movies'
+import { MovieEntry } from '@/types/movies.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import type { Database } from '@/lib/database.types'
-import '@/lib/utils/number/shorten-format-number'
+import { shortenFormatNumber } from '@/lib/utils/number'
 
 export async function MovieCard({
   id,
@@ -18,23 +16,19 @@ export async function MovieCard({
   watch_count,
 }: MovieEntry) {
   const t = useTranslations()
-  const supabase = createServerComponentClient<Database>({
-    cookies,
-  })
-  const { data: cover } = await supabase.storage
-    .from('cover')
-    .getPublicUrl(cover_url!)
+  const cover = await getImagePublicUrl('cover', cover_url!)
 
   return (
     <Link
       href={`/`}
       className="w-full"
+      key={id}
     >
       <div className="group flex flex-col space-y-1">
         <div className="relative w-full overflow-hidden rounded-md hover:ring-2 hover:ring-primary">
           <AspectRatio ratio={7 / 10}>
             <Image
-              src={cover.publicUrl}
+              src={cover}
               alt={title!}
               width={182}
               height={160}
@@ -59,7 +53,7 @@ export async function MovieCard({
           </div>
           <div className="flex w-full justify-between">
             <div className="text-small">
-              {watch_count?.shortenFormatNumber() + t('WATCHED')}
+              {`${shortenFormatNumber(watch_count || 0)} x ${t('watched')}`}
             </div>
           </div>
         </div>

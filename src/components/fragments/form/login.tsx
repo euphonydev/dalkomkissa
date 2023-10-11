@@ -28,10 +28,10 @@ export function LoginForm() {
 
   const formSchema = z.object({
     password: z.string({
-      required_error: t('IS_REQUIRED', { field: t('PASSWORD') }),
+      required_error: t('is_required', { field: t('password') }),
     }),
     identity: z.string({
-      required_error: t('IS_REQUIRED', { field: t('EMAIL') }),
+      required_error: t('is_required', { field: t('email') }),
     }),
   })
 
@@ -50,7 +50,7 @@ export function LoginForm() {
     if (!error) {
       toast({
         description: (
-          <p>{t('ACTION_SUCCESS', { action: t('LOGIN').toLowerCase() })}</p>
+          <p>{t('action_success', { action: t('login').toLowerCase() })}</p>
         ),
       })
       router.push('/')
@@ -85,9 +85,9 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="identity">
-                {t('THIS_OR_THAT', {
-                  this: t('EMAIL'),
-                  that: t('USERNAME').toLowerCase(),
+                {t('this_or_that', {
+                  this: t('email'),
+                  that: t('username').toLowerCase(),
                 })}
               </FormLabel>
               <FormControl>
@@ -95,7 +95,7 @@ export function LoginForm() {
                   autoComplete="email"
                   type="text"
                   id="identity"
-                  placeholder={t('EMAIL_PLACEHOLDER')}
+                  placeholder={t('email_placeholder')}
                   {...field}
                 />
               </FormControl>
@@ -108,7 +108,7 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">{t('PASSWORD')}</FormLabel>
+              <FormLabel htmlFor="password">{t('password')}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="current-password"
@@ -128,7 +128,7 @@ export function LoginForm() {
               variant="link"
               size="xs"
             >
-              {t('FORGOT_PASSWORD')}
+              {t('forgot_password')}
             </Button>
           </Link>
         </div>
@@ -136,7 +136,7 @@ export function LoginForm() {
           type="submit"
           className="w-full"
         >
-          {t('LOGIN')}
+          {t('login')}
         </Button>
       </form>
     </Form>

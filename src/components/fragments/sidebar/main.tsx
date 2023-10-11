@@ -24,7 +24,7 @@ const MainSidebar = React.forwardRef<
               className="w-full justify-start"
             >
               <CompassIcon className="mr-2 h-4 w-4" />
-              <div className="text-lg font-semibold">{t('DISCOVER')}</div>
+              <div className="text-lg font-semibold">{t('discover')}</div>
             </Button>
           </div>
         </div>

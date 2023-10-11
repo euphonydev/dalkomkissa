@@ -1,4 +1,4 @@
-import { getMoviesByLang } from '@/functions/movies'
+import { getMoviesByLang } from '@/services/movies'
 import { DataTable } from '@/components/fragments/table/dashboard/data-table'
 import { columns } from '@/components/fragments/table/dashboard/movies/columns'
 

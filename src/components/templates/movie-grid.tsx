@@ -1,4 +1,4 @@
-import { getMoviesByLang } from '@/functions/movies'
+import { getMoviesByLang } from '@/services/movies'
 import { MovieCard } from '@/components/fragments/movie-card'
 
 export async function MovieGrid() {

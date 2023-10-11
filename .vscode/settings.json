@@ -4,12 +4,11 @@
   "editor.formatOnSave": false,
   "eslint.validate": ["typescript", "typescriptreact"],
   "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"],
-  "cSpell.words": ["supabase", "nextjs", "hookform"],
+  "cSpell.words": ["hookform", "nextjs", "supabase", "tanstack"],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "problems.showCurrentInStatus": false
+  }
 }

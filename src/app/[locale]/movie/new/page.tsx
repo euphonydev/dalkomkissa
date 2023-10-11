@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <MainHeader
-        title={t('ADD_NEW_ENTRY', { entry: t('MOVIE').toLowerCase() })}
+        title={t('add_new_entry', { entry: t('movie').toLowerCase() })}
       />
       <MovieForm />
     </>

@@ -9,6 +9,7 @@ import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import { getImageSize } from 'react-image-size'
 import * as z from 'zod'
+import { languages } from '@/types/enums/languages'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader } from '@/components/ui/card'
@@ -42,15 +43,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { languages } from '@/lib/enums/languages'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/number/convert-file-size'
-import '@/lib/utils/string/substring-after-last'
+import { convertFileSize } from '@/lib/utils/number'
+import { substringAfterLast } from '@/lib/utils/string'
 
 type Props = {
   label: string
   onModalSubmit: (value: any, file: File) => void
-  openModalRef: RefObject<HTMLButtonElement>
+  openModalRef: React.RefObject<HTMLButtonElement>
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const ImageMultiLangModal = ({
@@ -123,13 +123,13 @@ const ImageMultiLangModal = ({
       if (!formData.cover.language) {
         form.setError('cover.language', {
           type: 'manual',
-          message: t('IS_REQUIRED', { field: t('LANGUAGE') }),
+          message: t('is_required', { field: t('language') }),
         })
       }
       if (!formData.cover.name) {
         form.setError('cover.name', {
           type: 'manual',
-          message: t('IS_REQUIRED', { field: t('COVER') }),
+          message: t('is_required', { field: t('cover') }),
         })
       }
       return false
@@ -173,7 +173,7 @@ const ImageMultiLangModal = ({
                     name="cover.language"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
-                        <FormLabel>{t('LANGUAGE')}</FormLabel>
+                        <FormLabel>{t('language')}</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
@@ -195,11 +195,11 @@ const ImageMultiLangModal = ({
                                       }
                                       className="mr-2 h-4 w-4"
                                     />
-                                    {t(`lang.${field.value}`)}
+                                    {t(`Lang.${field.value}`)}
                                   </div>
                                 ) : (
-                                  t('SELECT_FIELD', {
-                                    field: t('LANGUAGE').toLowerCase(),
+                                  t('select_field', {
+                                    field: t('language').toLowerCase(),
                                   })
                                 )}
                                 <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -209,30 +209,27 @@ const ImageMultiLangModal = ({
                           <PopoverContent className="w-[200px] p-0">
                             <Command>
                               <CommandInput
-                                placeholder={t('SEARCH_FIELD', {
-                                  field: t('LANGUAGE').toLowerCase(),
+                                placeholder={t('search_field', {
+                                  field: t('language').toLowerCase(),
                                 })}
                               />
                               <CommandEmpty>
-                                {t('FIELD_NOT_FOUND', { field: t('LANGUAGE') })}
+                                {t('field_not_found', { field: t('language') })}
                               </CommandEmpty>
                               <CommandGroup>
                                 {languages.map((language) => (
                                   <CommandItem
-                                    value={t(`lang.${language.value}`)}
-                                    key={language.value}
+                                    value={t(`Lang.${language}`)}
+                                    key={language}
                                     onSelect={() => {
-                                      form.setValue(
-                                        'cover.language',
-                                        language.value,
-                                      )
+                                      form.setValue('cover.language', language)
                                       form.clearErrors('cover.language')
                                     }}
                                   >
                                     <CheckIcon
                                       className={cn(
                                         'mr-2 h-4 w-4',
-                                        language.value === field.value
+                                        language === field.value
                                           ? 'opacity-100'
                                           : 'opacity-0',
                                       )}
@@ -240,13 +237,11 @@ const ImageMultiLangModal = ({
                                     <div className="flex items-center">
                                       <CircleFlag
                                         countryCode={
-                                          language.value === 'en'
-                                            ? 'gb'
-                                            : language.value
+                                          language === 'en' ? 'gb' : language
                                         }
                                         className="mr-2 h-4 w-4"
                                       />
-                                      {t(`lang.${language.value}`)}
+                                      {t(`Lang.${language}`)}
                                     </div>
                                   </CommandItem>
                                 ))}
@@ -263,7 +258,7 @@ const ImageMultiLangModal = ({
                     name="cover.name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="cover">{t('COVER')}</FormLabel>
+                        <FormLabel htmlFor="cover">{t('cover')}</FormLabel>
                         <FormControl onChange={handleImageChange}>
                           <Input
                             type="file"
@@ -284,7 +279,7 @@ const ImageMultiLangModal = ({
                             <AspectRatio ratio={1 / 1}>
                               <Image
                                 src={URL.createObjectURL(selectedFile)}
-                                alt={selectedFile.name.substringAfterLast('.')}
+                                alt={substringAfterLast(selectedFile.name, '.')}
                                 width={100}
                                 height={100}
                                 className="h-full w-full rounded-md object-cover"
@@ -297,7 +292,7 @@ const ImageMultiLangModal = ({
                             <div className="text-alt">
                               {`${
                                 imageResolution || 'Loading...'
-                              } • ${selectedFile.size.convertFileSize()}`}
+                              } • ${convertFileSize(selectedFile.size)}`}
                             </div>
                           </div>
                           <Button
@@ -321,7 +316,7 @@ const ImageMultiLangModal = ({
                 type="button"
                 onClick={handleSubmit}
               >
-                {t('SAVE_FORM', { form: t('IMAGE').toLowerCase() })}
+                {t('save_form', { form: t('image').toLowerCase() })}
               </Button>
             </DialogFooter>
           </form>

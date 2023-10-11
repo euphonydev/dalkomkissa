@@ -12,7 +12,7 @@
     "prettier": "pnpm dlx prettier src --check",
     "prettier:fix": "pnpm run prettier --write",
     "format": "pnpm run prettier:fix && pnpm run eslint:fix",
-    "update-types": "pnpm dlx supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" > src/lib/database.types.ts"
+    "update-types": "pnpm dlx supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" > src/types/database.types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",

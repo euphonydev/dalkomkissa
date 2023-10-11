@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <div className="flex flex-col space-y-4">
       <MainHeader
-        title={t('LATEST_ENTRY', { entry: t('MOVIES') })}
+        title={t('latest_entry', { entry: t('movies') })}
         withBreadcrumb
       />
       <MovieGrid />

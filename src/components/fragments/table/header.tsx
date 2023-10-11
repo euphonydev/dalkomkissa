@@ -16,11 +16,11 @@ export function TableHeaderData({ label, column }: TableHeaderDataProps) {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          {t(label.toUpperCase())}
+          {t(label)}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ) : (
-        t(label.toUpperCase())
+        t(label)
       )}
     </>
   )

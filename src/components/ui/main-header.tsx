@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/get-all-path'
+import { getAllPathFromUrl } from '@/lib/utils/string'
 
 interface MainHeaderProps {
   className?: string
@@ -32,7 +32,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({
 }) => {
   const t = useTranslations()
   const pathName = usePathname()
-  const paths = pathName.getAllPath()
+  const paths = getAllPathFromUrl(pathName)
   return (
     <>
       <header
@@ -48,7 +48,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({
                   <BreadcrumbLink
                     href={`/${paths.slice(0, index + 1).join('/')}`}
                   >
-                    {t(path.toUpperCase())}
+                    {t(path)}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
               ) : null,

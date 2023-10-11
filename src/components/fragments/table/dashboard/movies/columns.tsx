@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { MovieEntry } from '@/types/movies'
+import { MovieEntry } from '@/types/movies.types'
 import { TableHeaderData } from '@/components/fragments/table/header'
 import { TableRowData } from '@/components/fragments/table/row'
 import { TableRowAction } from '@/components/fragments/table/row-action'
@@ -10,9 +10,11 @@ import { TableRowImage } from '@/components/fragments/table/row-image'
 const actionMenuItem = [
   {
     label: 'edit',
+    link: '/dashboard/movies',
   },
   {
     label: 'publish_now',
+    link: '/dashboard/movies',
   },
 ]
 

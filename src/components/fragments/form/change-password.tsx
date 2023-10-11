@@ -27,8 +27,8 @@ export function ChangePasswordForm() {
 
   const formSchema = z.object({
     password: z
-      .string({ required_error: t('IS_REQUIRED', { field: t('PASSWORD') }) })
-      .min(8, t('IS_TOO_SHORT', { field: t('PASSWORD'), length: 8 })),
+      .string({ required_error: t('ise_required', { field: t('password') }) })
+      .min(8, t('is_too_short', { field: t('password'), length: 8 })),
   })
 
   type formValues = z.infer<typeof formSchema>
@@ -46,8 +46,8 @@ export function ChangePasswordForm() {
       toast({
         description: (
           <p>
-            {t('ACTION_SUCCESS', {
-              action: t('CHANGE_FIELD', { field: t('PASSWORD') }).toLowerCase(),
+            {t('action_success', {
+              action: t('change_field', { field: t('password') }).toLowerCase(),
             })}
           </p>
         ),
@@ -67,7 +67,7 @@ export function ChangePasswordForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('NEW_PASSWORD')}</FormLabel>
+              <FormLabel>{t('new_password')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -83,7 +83,7 @@ export function ChangePasswordForm() {
           type="submit"
           className="w-full"
         >
-          {t('CHANGE_FIELD', { field: t('PASSWORD').toLowerCase() })}
+          {t('change_field', { field: t('password').toLowerCase() })}
         </Button>
       </form>
     </Form>

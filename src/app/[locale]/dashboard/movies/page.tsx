@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <MainHeader
-        title={t('MOVIES')}
+        title={t('movies')}
         withBreadcrumb
       />
       <MovieTable />

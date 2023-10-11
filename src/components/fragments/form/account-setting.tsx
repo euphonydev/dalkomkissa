@@ -9,7 +9,7 @@ export function AccountSettingForm() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col space-y-3">
-        <Label>{t('PASSWORD')}</Label>
+        <Label>{t('password')}</Label>
         <Link
           href="/change-password"
           target="_blank"
@@ -18,7 +18,7 @@ export function AccountSettingForm() {
             size="xs"
             variant="secondary"
           >
-            {t('CHANGE_FIELD', { field: t('PASSWORD').toLowerCase() })}
+            {t('change_field', { field: t('password').toLowerCase() })}
           </Button>
         </Link>
       </div>

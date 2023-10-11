@@ -62,8 +62,8 @@ export function DataTable<TData, TValue>({
       {searchColumn ? (
         <div className="flex items-center justify-between py-4">
           <Input
-            placeholder={t('SEARCH_FIELD', {
-              field: t(searchPlaceholder.toUpperCase()).toLowerCase(),
+            placeholder={t('search_field', {
+              field: t(searchPlaceholder).toLowerCase(),
             })}
             value={
               (table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''
@@ -78,8 +78,8 @@ export function DataTable<TData, TValue>({
               <Button>
                 <PlusIcon className="h-4 w-4 md:mr-2" />
                 <span className="hidden md:inline">
-                  {t('ADD_NEW_ENTRY', {
-                    entry: t(searchPlaceholder.toUpperCase()).toLowerCase(),
+                  {t('add_new_entry', {
+                    entry: t(searchPlaceholder).toLowerCase(),
                   })}
                 </span>
               </Button>
@@ -128,8 +128,8 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {t('FIELD_NOT_FOUND', {
-                    field: t(searchPlaceholder.toUpperCase()),
+                  {t('field_not_found', {
+                    field: t(searchPlaceholder),
                   })}
                 </TableCell>
               </TableRow>
@@ -145,7 +145,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            {t('PREVIOUS')}
+            {t('previous')}
           </Button>
           <Button
             variant="outline"
@@ -153,7 +153,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            {t('NEXT')}
+            {t('next')}
           </Button>
         </div>
       </div>

@@ -20,10 +20,10 @@ export function TableRowData({
             label === textHighlightTrigger ? 'text-primary' : 'opacity-80'
           }
         >
-          {t(label.toUpperCase())}
+          {t(label)}
         </span>
       ) : (
-        t(label.toUpperCase())
+        t(label)
       )}
     </>
   )

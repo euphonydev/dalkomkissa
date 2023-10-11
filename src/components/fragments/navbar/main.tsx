@@ -25,7 +25,7 @@ import {
 import { SheetTrigger } from '@/components/ui/sheet'
 import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import '@/lib/utils/string/get-initial-name'
+import { getNameInitial } from '@/lib/utils/string'
 
 const MainNavbar = React.forwardRef<
   HTMLDivElement,
@@ -44,7 +44,7 @@ const MainNavbar = React.forwardRef<
     if (!error) {
       toast({
         description: (
-          <p>{t('ACTION_SUCCESS', { action: t('LOGOUT').toLowerCase() })}</p>
+          <p>{t('action_success', { action: t('logout').toLowerCase() })}</p>
         ),
       })
       router.push('/login')
@@ -88,13 +88,13 @@ const MainNavbar = React.forwardRef<
                 onValueChange={setTheme}
               >
                 <DropdownMenuRadioItem value="light">
-                  {t('LIGHT')}
+                  {t('light')}
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="dark">
-                  {t('DARK')}
+                  {t('dark')}
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="system">
-                  {t('SYSTEM')}
+                  {t('system')}
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
@@ -113,7 +113,7 @@ const MainNavbar = React.forwardRef<
                       alt={`@${userInfo?.username}`}
                     />
                     <AvatarFallback>
-                      {userInfo?.name.getInitialName()}
+                      {userInfo ? getNameInitial(userInfo.name) : ''}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -135,24 +135,24 @@ const MainNavbar = React.forwardRef<
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  {userRole == 'webadmin' ? (
+                  {userRole === 'webadmin' ? (
                     <Link href="/dashboard">
-                      <DropdownMenuItem>{t('DASHBOARD')}</DropdownMenuItem>
+                      <DropdownMenuItem>{t('dashboard')}</DropdownMenuItem>
                     </Link>
                   ) : null}
                   <Link href="/settings">
-                    <DropdownMenuItem>{t('SETTINGS')}</DropdownMenuItem>
+                    <DropdownMenuItem>{t('settings')}</DropdownMenuItem>
                   </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
-                  {t('LOGOUT')}
+                  {t('logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Link href="/login">
-              <Button variant="outline">{t('LOGIN')}</Button>
+              <Button variant="outline">{t('login')}</Button>
             </Link>
           )}
         </div>

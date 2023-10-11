@@ -2,8 +2,8 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React from 'react'
+import type { Database } from '@/types/database.types'
 import AuthCard from '@/components/fragments/auth-card'
-import type { Database } from '@/lib/database.types'
 
 export default async function AuthLayout({
   children,

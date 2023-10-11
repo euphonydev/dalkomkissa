@@ -7,8 +7,8 @@ export default function Page() {
   return (
     <>
       <MainHeader
-        title={t('PROFILE')}
-        description={t('PROFILE_SETTINGS_DESC')}
+        title={t('profile')}
+        description={t('profile_setting_desc')}
       />
       <ProfileSettingForm />
     </>
