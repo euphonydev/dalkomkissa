@@ -113,7 +113,7 @@ const MainNavbar = React.forwardRef<
                       alt={`@${userInfo?.username}`}
                     />
                     <AvatarFallback>
-                      {userInfo?.name ? getNameInitial(userInfo.name) : ''}
+                      {userInfo ? getNameInitial(userInfo.name) : ''}
                     </AvatarFallback>
                   </Avatar>
                 </Button>

@@ -60,7 +60,7 @@ export const updateUserProfile = async (
   username: string,
   fullName: string,
   gender: string,
-  birthDate: string,
+  birthDate: Date,
   fileName: string,
 ): Promise<Boolean> => {
   const { error } = await supabase.rpc('update_user_profile', {
@@ -68,12 +68,14 @@ export const updateUserProfile = async (
     new_username: username,
     new_name: fullName,
     new_gender: gender,
+    // @ts-ignore
     new_birthdate: birthDate,
     new_photo: fileName,
   })
   if (!error) {
     return true
   } else {
+    console.log(error.message)
     return false
   }
 }

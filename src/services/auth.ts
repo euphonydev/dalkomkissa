@@ -128,6 +128,7 @@ export const getCurrentUser = async (
         userInfo.profile_id!,
       )
       const userRole = role ? role.toString() : 'user'
+      // @ts-ignore
       return {
         ...userInfo,
         avatar: avatar,

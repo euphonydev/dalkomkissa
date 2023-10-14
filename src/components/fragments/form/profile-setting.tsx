@@ -108,9 +108,9 @@ export function ProfileSettingForm() {
         const birthDate = new Date(userInfo.birthdate)
         form.setValue('dob', birthDate)
       }
-      userInfo.username && form.setValue('username', userInfo.username)
-      userInfo.name && form.setValue('fullName', userInfo.name)
-      userInfo.gender && form.setValue('gender', userInfo.gender)
+      form.setValue('username', userInfo.username)
+      form.setValue('fullName', userInfo.name)
+      form.setValue('gender', userInfo.gender)
     }
   }, [userInfo, form])
 
@@ -155,7 +155,7 @@ export function ProfileSettingForm() {
       formData.username,
       formData.fullName,
       formData.gender,
-      formData.dob.toString(),
+      formData.dob,
       fileName ? fileName : '',
     )
 
@@ -362,7 +362,7 @@ export function ProfileSettingForm() {
                   alt={`@${userInfo?.username}`}
                 />
                 <AvatarFallback>
-                  {userInfo?.name ? getNameInitial(userInfo.name) : ''}
+                  {userInfo ? getNameInitial(userInfo.name) : ''}
                 </AvatarFallback>
               </Avatar>
               {userInfo?.photo ? (
