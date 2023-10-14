@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { MovieEntry } from '@/types/movies.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { supabase } from '@/lib/supabase/clients/server-component-client'
 import { shortenFormatNumber } from '@/lib/utils/number'
 
 export async function MovieCard({
@@ -16,7 +17,7 @@ export async function MovieCard({
   watch_count,
 }: MovieEntry) {
   const t = useTranslations()
-  const cover = await getImagePublicUrl('cover', cover_url!)
+  const cover = await getImagePublicUrl(supabase, 'cover', cover_url!)
 
   return (
     <Link

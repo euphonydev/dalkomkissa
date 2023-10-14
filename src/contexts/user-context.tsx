@@ -1,6 +1,6 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { getCurrentSession, getCurrentUser } from '@/services/auth'
 import React, {
   ReactNode,
   createContext,
@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react'
 import { UserInfo } from '@/types/user.types'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 interface UserContextType {
   userInfo: UserInfo | null
@@ -29,12 +30,9 @@ export function UserProvider({ children }: UserProviderProps) {
   const [avatar, setAvatar] = useState<string>()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState<string>('user')
-  const supabase = createClientComponentClient()
 
   const checkSession = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    const session = await getCurrentSession(supabase)
     if (session) {
       setIsLoggedIn(true)
       getUserInfo()
@@ -42,34 +40,11 @@ export function UserProvider({ children }: UserProviderProps) {
   }
 
   const getUserInfo = async () => {
-    const {
-      data: { user: userData },
-    } = await supabase.auth.getUser()
-    if (userData) {
-      const { data, error } = await supabase
-        .from('user_profile')
-        .select('*')
-        .eq('account_id', userData.id)
-        .single()
-      if (!error) {
-        setUserInfo(data)
-        const { data: role } = await supabase.rpc('get_my_claim', {
-          claim: 'userrole',
-        })
-        setUserRole(role)
-        if (data.photo.startsWith('https')) {
-          setAvatar(data.photo)
-        } else {
-          if (data.photo) {
-            const { data: photo } = await supabase.storage
-              .from('avatar')
-              .getPublicUrl(data.photo)
-            setAvatar(photo.publicUrl)
-          } else {
-            setAvatar(`https://robohash.org/${data?.profile_id}.png?set=set3`)
-          }
-        }
-      }
+    const data = await getCurrentUser(supabase)
+    if (data) {
+      setUserInfo(data)
+      data.role && setUserRole(data.role)
+      data.avatar && setAvatar(data.avatar)
     }
   }
 

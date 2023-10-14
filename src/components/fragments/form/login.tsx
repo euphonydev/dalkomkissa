@@ -1,7 +1,10 @@
 'use client'
 
+import {
+  signInWithEmailAndPassword,
+  signInWithUsernameAndPassword,
+} from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -19,11 +22,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 export function LoginForm() {
   const { toast } = useToast()
   const t = useTranslations()
-  const supabase = createClientComponentClient()
   const router = useRouter()
 
   const formSchema = z.object({
@@ -42,34 +45,27 @@ export function LoginForm() {
     mode: 'onChange',
   })
 
-  async function login(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-    if (!error) {
+  async function onSubmit(formData: formValues) {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    const success = regex.test(formData.identity)
+      ? await signInWithEmailAndPassword(
+          supabase,
+          formData.identity,
+          formData.password,
+        )
+      : await signInWithUsernameAndPassword(
+          supabase,
+          formData.identity,
+          formData.password,
+        )
+
+    if (success) {
       toast({
         description: (
           <p>{t('action_success', { action: t('login').toLowerCase() })}</p>
         ),
       })
       router.push('/')
-    }
-  }
-
-  async function onSubmit(formData: formValues) {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    if (regex.test(formData.identity)) {
-      login(formData.identity, formData.password)
-    } else {
-      const { data } = await supabase
-        .from('account')
-        .select('email')
-        .eq('username', formData.identity)
-        .single()
-      if (data) {
-        login(data.email, formData.password)
-      }
     }
   }
 

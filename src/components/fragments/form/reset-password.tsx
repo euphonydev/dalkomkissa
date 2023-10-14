@@ -1,7 +1,7 @@
 'use client'
 
+import { sendPasswordRecoveryEmail } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,11 +17,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 export function ResetPasswordForm() {
   const { toast } = useToast()
   const t = useTranslations()
-  const supabase = createClientComponentClient()
 
   const formSchema = z.object({
     email: z
@@ -37,13 +37,8 @@ export function ResetPasswordForm() {
   })
 
   async function onSubmit(formData: formValues) {
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      formData.email,
-      {
-        redirectTo: `${location.origin}/auth/callback?next=/reset-password`,
-      },
-    )
-    if (!error) {
+    const success = await sendPasswordRecoveryEmail(supabase, formData.email)
+    if (success) {
       toast({
         description: t('email_sended'),
       })

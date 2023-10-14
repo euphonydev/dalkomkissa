@@ -1,9 +1,10 @@
 import { getMoviesByLang } from '@/services/movies'
 import { DataTable } from '@/components/fragments/table/dashboard/data-table'
 import { columns } from '@/components/fragments/table/dashboard/movies/columns'
+import { supabase } from '@/lib/supabase/clients/server-component-client'
 
 export async function MovieTable() {
-  const data = await getMoviesByLang('en')
+  const data = await getMoviesByLang(supabase, 'en')
   return (
     <div className="py-10">
       <DataTable

@@ -1,6 +1,6 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { signOut } from '@/services/auth'
 import { AlignLeftIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SheetTrigger } from '@/components/ui/sheet'
 import { useToast } from '@/components/ui/use-toast'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { getNameInitial } from '@/lib/utils/string'
 
@@ -35,13 +36,12 @@ const MainNavbar = React.forwardRef<
   const { toast } = useToast()
   const { userInfo, avatar, isLoggedIn, userRole } = useUserContext()
   const t = useTranslations()
-  const supabase = createClientComponentClient()
   const router = useRouter()
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut()
+    const success = await signOut(supabase)
 
-    if (!error) {
+    if (success) {
       toast({
         description: (
           <p>{t('action_success', { action: t('logout').toLowerCase() })}</p>
@@ -113,7 +113,7 @@ const MainNavbar = React.forwardRef<
                       alt={`@${userInfo?.username}`}
                     />
                     <AvatarFallback>
-                      {userInfo ? getNameInitial(userInfo.name) : ''}
+                      {userInfo?.name ? getNameInitial(userInfo.name) : ''}
                     </AvatarFallback>
                   </Avatar>
                 </Button>

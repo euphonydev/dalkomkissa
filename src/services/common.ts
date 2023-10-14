@@ -1,15 +1,11 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import type { Database } from '@/types/database.types'
+import { AppSupabaseClient } from '@/lib/supabase/types'
 
-export async function getImagePublicUrl(
+export const getImagePublicUrl = async (
+  supabase: AppSupabaseClient,
   from: string,
   url: string,
   callbackUrl: string | null = null,
-): Promise<string> {
-  const supabase = createServerComponentClient<Database>({
-    cookies,
-  })
+): Promise<string> => {
   const { data } = await supabase.storage.from(from).getPublicUrl(url)
   if (data) {
     return data.publicUrl
@@ -19,5 +15,34 @@ export async function getImagePublicUrl(
     } else {
       return ''
     }
+  }
+}
+
+export const removeImage = async (
+  supabase: AppSupabaseClient,
+  from: string,
+  fileName: string,
+): Promise<boolean> => {
+  const { error } = await supabase.storage.from(from).remove([fileName])
+  if (!error) {
+    return true
+  } else {
+    return false
+  }
+}
+
+export const uploadImage = async (
+  supabase: AppSupabaseClient,
+  from: string,
+  fileName: string,
+  file: File,
+): Promise<boolean> => {
+  const { error } = await supabase.storage
+    .from(from)
+    .upload(fileName, file, { upsert: true })
+  if (!error) {
+    return true
+  } else {
+    return false
   }
 }

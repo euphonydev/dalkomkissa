@@ -1,7 +1,12 @@
 'use client'
 
+import { removeImage, uploadImage } from '@/services/common'
+import {
+  checkUsernameAvailability,
+  removeUserAvatar,
+  updateUserProfile,
+} from '@/services/user'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { CalendarIcon, PencilIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
@@ -37,13 +42,13 @@ import {
 } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useToast } from '@/components/ui/use-toast'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { getNameInitial, substringAfterLast } from '@/lib/utils/string'
 
 export function ProfileSettingForm() {
   const { toast } = useToast()
   const t = useTranslations()
-  const supabase = createClientComponentClient()
   const format = useFormatter()
   const { userInfo, avatar, getUserInfo } = useUserContext()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -55,7 +60,7 @@ export function ProfileSettingForm() {
       .min(3, t('is_too_short', { field: t('username'), length: 3 }))
       .max(30, t('is_too_long', { field: t('username'), length: 30 }))
       .regex(/^[a-zA-Z0-9_]+$/, t('username_not_valid')),
-    fullname: z.string(),
+    fullName: z.string(),
     avatar: z.string(),
     dob: z.date({
       required_error: t('is_required', { field: t('date_of_birth') }),
@@ -81,12 +86,11 @@ export function ProfileSettingForm() {
     const validateUsername = async (username: string) => {
       if (username && userInfo?.username) {
         if (username !== userInfo?.username) {
-          const { data: existingUser } = await supabase
-            .from('account')
-            .select('id')
-            .eq('username', username)
-            .single()
-          if (existingUser) {
+          const isAvailable = await checkUsernameAvailability(
+            supabase,
+            username,
+          )
+          if (!isAvailable) {
             setUsernameError(t('username_already_exists'))
           } else {
             setUsernameError('')
@@ -104,20 +108,20 @@ export function ProfileSettingForm() {
         const birthDate = new Date(userInfo.birthdate)
         form.setValue('dob', birthDate)
       }
-      form.setValue('username', userInfo.username)
-      form.setValue('fullname', userInfo.name)
-      form.setValue('gender', userInfo.gender)
+      userInfo.username && form.setValue('username', userInfo.username)
+      userInfo.name && form.setValue('fullName', userInfo.name)
+      userInfo.gender && form.setValue('gender', userInfo.gender)
     }
   }, [userInfo, form])
 
   async function onAvatarDelete() {
-    if (userInfo?.photo) {
-      await supabase.storage.from('avatar').remove([userInfo?.photo])
-      const { error } = await supabase
-        .from('profile')
-        .update({ photo: '' })
-        .eq('account_id', userInfo.account_id)
-      if (!error) {
+    if (userInfo?.photo && userInfo?.account_id) {
+      const success = await removeUserAvatar(
+        supabase,
+        userInfo.photo,
+        userInfo.account_id,
+      )
+      if (success) {
         getUserInfo()
         setSelectedFile(null)
       }
@@ -132,26 +136,30 @@ export function ProfileSettingForm() {
 
     if (fileName && selectedFile) {
       if (userInfo?.photo) {
-        await supabase.storage.from('avatar').remove([userInfo?.photo])
+        await removeImage(supabase, 'avatar', userInfo.photo)
       }
-      const { error } = await supabase.storage
-        .from('avatar')
-        .upload(fileName, selectedFile, { upsert: true })
-      if (error) {
+      const success = await uploadImage(
+        supabase,
+        'avatar',
+        fileName,
+        selectedFile,
+      )
+      if (!success) {
         uploadError = true
       }
     }
 
-    const { error: dataError } = await supabase.rpc('update_user_profile', {
-      user_account_id: userInfo?.account_id,
-      new_username: formData.username,
-      new_name: formData.fullname,
-      new_gender: formData.gender,
-      new_birthdate: formData.dob,
-      new_photo: fileName,
-    })
+    const success = await updateUserProfile(
+      supabase,
+      userInfo?.account_id!,
+      formData.username,
+      formData.fullName,
+      formData.gender,
+      formData.dob.toString(),
+      fileName ? fileName : '',
+    )
 
-    if (!dataError && !uploadError) {
+    if (success && !uploadError) {
       getUserInfo()
       toast({
         description: (
@@ -206,15 +214,15 @@ export function ProfileSettingForm() {
             />
             <FormField
               control={form.control}
-              name="fullname"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="fullname">{t('full_name')}</FormLabel>
+                  <FormLabel htmlFor="fullName">{t('full_name')}</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="name"
                       type="text"
-                      id="fullname"
+                      id="fullName"
                       placeholder={t('full_name_placeholder')}
                       {...field}
                     />
@@ -354,7 +362,7 @@ export function ProfileSettingForm() {
                   alt={`@${userInfo?.username}`}
                 />
                 <AvatarFallback>
-                  {userInfo ? getNameInitial(userInfo.name) : ''}
+                  {userInfo?.name ? getNameInitial(userInfo.name) : ''}
                 </AvatarFallback>
               </Avatar>
               {userInfo?.photo ? (

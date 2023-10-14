@@ -1,7 +1,7 @@
 'use client'
 
 import { GoogleIcon } from '@/components/icons'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { signInWithGoogle } from '@/services/auth'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { substringAfterLast } from '@/lib/utils/string'
 
@@ -65,20 +66,10 @@ export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
   }
 
   const pathName = usePathname()
-  const supabase = createClientComponentClient()
   const config = scenarioConfigurations[substringAfterLast(pathName, '/')]
 
   async function onGoogleLogin() {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${location.origin}/auth/callback`,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    })
+    await signInWithGoogle(supabase)
   }
   return (
     <Card className={cn('w-4/5 md:w-2/5', className)}>
