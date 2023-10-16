@@ -451,6 +451,7 @@ export interface Database {
       }
       movie: {
         Row: {
+          default_cover_id: string | null
           id: string
           language: string
           origin_country: string | null
@@ -461,6 +462,7 @@ export interface Database {
           type: Database['public']['Enums']['movie_type'] | null
         }
         Insert: {
+          default_cover_id?: string | null
           id: string
           language: string
           origin_country?: string | null
@@ -471,6 +473,7 @@ export interface Database {
           type?: Database['public']['Enums']['movie_type'] | null
         }
         Update: {
+          default_cover_id?: string | null
           id?: string
           language?: string
           origin_country?: string | null
@@ -481,6 +484,12 @@ export interface Database {
           type?: Database['public']['Enums']['movie_type'] | null
         }
         Relationships: [
+          {
+            foreignKeyName: 'movie_default_cover_id_fkey'
+            columns: ['default_cover_id']
+            referencedRelation: 'cover'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'movie_id_fkey'
             columns: ['id']

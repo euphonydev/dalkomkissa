@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next-intl/client'
 import { useTheme } from 'next-themes'
 import { useTransition } from 'react'
-import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { interface_languages } from '@/types/enums/languages'
@@ -145,21 +144,11 @@ export function AppearanceSettingForm() {
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {field.value ? (
-                        <div className="flex items-center">
-                          <CircleFlag
-                            countryCode={
-                              field.value === 'en' ? 'gb' : field.value
-                            }
-                            className="mr-2 h-4 w-4"
-                          />
-                          {t(`Lang.${field.value}`)}
-                        </div>
-                      ) : (
-                        t('SELECT_FIELD', {
-                          field: t('language').toLowerCase(),
-                        })
-                      )}
+                      {field.value
+                        ? t(`Lang.${field.value}`)
+                        : t('SELECT_FIELD', {
+                            field: t('language').toLowerCase(),
+                          })}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -191,13 +180,7 @@ export function AppearanceSettingForm() {
                                 : 'opacity-0',
                             )}
                           />
-                          <div className="flex items-center">
-                            <CircleFlag
-                              countryCode={language === 'en' ? 'gb' : language}
-                              className="mr-2 h-4 w-4"
-                            />
-                            {t(`Lang.${language}`)}
-                          </div>
+                          {t(`Lang.${language}`)}
                         </CommandItem>
                       ))}
                     </CommandGroup>

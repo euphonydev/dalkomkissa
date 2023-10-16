@@ -1,4 +1,4 @@
-import { getMoviesByLang } from '@/services/movies'
+import { getMoviesByLang } from '@/services/movie'
 import { MovieCard } from '@/components/fragments/movie-card'
 import { supabase } from '@/lib/supabase/clients/server-component-client'
 

@@ -105,6 +105,18 @@ export const getCurrentSession = async (
     return false
   }
 }
+export const getCurrentUserId = async (
+  supabase: AppSupabaseClient,
+): Promise<string | null> => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (user) {
+    return user.id
+  } else {
+    return null
+  }
+}
 
 export const getCurrentUser = async (
   supabase: AppSupabaseClient,

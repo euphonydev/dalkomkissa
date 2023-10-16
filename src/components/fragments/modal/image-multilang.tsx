@@ -5,7 +5,6 @@ import { CheckIcon, ChevronsUpDownIcon, PlusIcon, XIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import React from 'react'
-import { CircleFlag } from 'react-circle-flags'
 import { useForm } from 'react-hook-form'
 import { getImageSize } from 'react-image-size'
 import * as z from 'zod'
@@ -43,6 +42,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { convertFileSize } from '@/lib/utils/number'
 import { substringAfterLast } from '@/lib/utils/string'
@@ -71,6 +71,7 @@ const ImageMultiLangModal = ({
       language: z.string(),
       name: z.string(),
       url: z.string(),
+      size: z.string(),
     }),
   })
 
@@ -105,6 +106,7 @@ const ImageMultiLangModal = ({
     const { width, height } = await getImageSize(url)
     if (width && height) {
       setImageResolution(`${width}x${height}`)
+      form.setValue('cover.size', `${width}x${height}`)
     }
   }
 
@@ -185,23 +187,11 @@ const ImageMultiLangModal = ({
                                   !field.value && 'text-muted-foreground',
                                 )}
                               >
-                                {field.value ? (
-                                  <div className="flex items-center">
-                                    <CircleFlag
-                                      countryCode={
-                                        field.value === 'en'
-                                          ? 'gb'
-                                          : field.value
-                                      }
-                                      className="mr-2 h-4 w-4"
-                                    />
-                                    {t(`Lang.${field.value}`)}
-                                  </div>
-                                ) : (
-                                  t('select_field', {
-                                    field: t('language').toLowerCase(),
-                                  })
-                                )}
+                                {field.value
+                                  ? t(`Lang.${field.value}`)
+                                  : t('select_field', {
+                                      field: t('language').toLowerCase(),
+                                    })}
                                 <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                               </Button>
                             </FormControl>
@@ -213,39 +203,38 @@ const ImageMultiLangModal = ({
                                   field: t('language').toLowerCase(),
                                 })}
                               />
-                              <CommandEmpty>
-                                {t('field_not_found', { field: t('language') })}
-                              </CommandEmpty>
-                              <CommandGroup>
-                                {languages.map((language) => (
-                                  <CommandItem
-                                    value={t(`Lang.${language}`)}
-                                    key={language}
-                                    onSelect={() => {
-                                      form.setValue('cover.language', language)
-                                      form.clearErrors('cover.language')
-                                    }}
-                                  >
-                                    <CheckIcon
-                                      className={cn(
-                                        'mr-2 h-4 w-4',
-                                        language === field.value
-                                          ? 'opacity-100'
-                                          : 'opacity-0',
-                                      )}
-                                    />
-                                    <div className="flex items-center">
-                                      <CircleFlag
-                                        countryCode={
-                                          language === 'en' ? 'gb' : language
-                                        }
-                                        className="mr-2 h-4 w-4"
+                              <ScrollArea className="h-64 w-full">
+                                <CommandEmpty>
+                                  {t('field_not_found', {
+                                    field: t('language'),
+                                  })}
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {languages.map((language) => (
+                                    <CommandItem
+                                      value={t(`Lang.${language}`)}
+                                      key={language}
+                                      onSelect={() => {
+                                        form.setValue(
+                                          'cover.language',
+                                          language,
+                                        )
+                                        form.clearErrors('cover.language')
+                                      }}
+                                    >
+                                      <CheckIcon
+                                        className={cn(
+                                          'mr-2 h-4 w-4',
+                                          language === field.value
+                                            ? 'opacity-100'
+                                            : 'opacity-0',
+                                        )}
                                       />
                                       {t(`Lang.${language}`)}
-                                    </div>
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </ScrollArea>
                             </Command>
                           </PopoverContent>
                         </Popover>

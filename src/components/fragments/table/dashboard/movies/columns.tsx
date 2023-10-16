@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { MovieEntry } from '@/types/movies.types'
+import { MovieEntry } from '@/types/movie.types'
 import { TableHeaderData } from '@/components/fragments/table/header'
 import { TableRowData } from '@/components/fragments/table/row'
 import { TableRowAction } from '@/components/fragments/table/row-action'
