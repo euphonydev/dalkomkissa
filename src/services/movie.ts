@@ -37,20 +37,17 @@ export async function insertMovie(
         true,
       )
       if (coverData) {
+        const { error } = await supabase.from('movie').insert({
+          id: entryData.id,
+          origin_country: movie.country,
+          origin_name: movie.title,
+          language: movie.language,
+          status: movie.movie_status,
+          release_date: movie.release_date,
+          type: movie.movie_type,
+          default_cover_id: coverData.id,
+        })
         await insertMovieCover(supabase, entryData.id, coverData.id)
-        const { error } = await supabase
-          .from('movie')
-          .insert({
-            id: entryData.id,
-            origin_country: movie.country,
-            origin_name: movie.title,
-            language: movie.language,
-            status: movie.movie_status,
-            release_date: movie.release_date,
-            type: movie.movie_type,
-            default_cover_id: coverData.id,
-          })
-          .select()
         if (!error) {
           movie.genres.forEach(async (genreId) => {
             await insertMovieGenre(supabase, entryData.id, genreId)
