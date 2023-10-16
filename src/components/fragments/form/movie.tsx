@@ -325,15 +325,11 @@ export function MovieForm() {
             <FormField
               control={form.control}
               name="movie_type"
-              render={() => (
+              render={({ field }) => (
                 <div className="flex w-full">
                   <FormItem className="flex w-full flex-col">
                     <FormLabel>{t('movie_type')}</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        form.setValue('movie_type', value)
-                      }}
-                    >
+                    <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
