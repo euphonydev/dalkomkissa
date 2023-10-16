@@ -34,7 +34,8 @@ const MainNavbar = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { theme, setTheme } = useTheme()
   const { toast } = useToast()
-  const { userInfo, avatar, isLoggedIn, userRole } = useUserContext()
+  const { userInfo, avatar, isLoggedIn, userRole, getUserInfo } =
+    useUserContext()
   const t = useTranslations()
   const router = useRouter()
 
@@ -47,7 +48,8 @@ const MainNavbar = React.forwardRef<
           <p>{t('action_success', { action: t('logout').toLowerCase() })}</p>
         ),
       })
-      router.push('/login')
+      getUserInfo()
+      router.refresh()
     }
   }
 

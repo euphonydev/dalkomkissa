@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useUserContext } from '@/contexts/user-context'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -28,6 +29,7 @@ export function LoginForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const router = useRouter()
+  const { getUserInfo } = useUserContext()
 
   const formSchema = z.object({
     password: z.string({
@@ -60,13 +62,13 @@ export function LoginForm() {
         )
 
     if (success) {
+      getUserInfo()
+      router.push('/')
       toast({
         description: (
           <p>{t('action_success', { action: t('login').toLowerCase() })}</p>
         ),
       })
-      router.push('/')
-      router.refresh()
     }
   }
 

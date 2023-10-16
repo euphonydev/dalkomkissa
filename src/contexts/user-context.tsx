@@ -45,12 +45,21 @@ export function UserProvider({ children }: UserProviderProps) {
       setUserInfo(data)
       data.role && setUserRole(data.role)
       data.avatar && setAvatar(data.avatar)
+    } else {
+      setIsLoggedIn(false)
+      setUserInfo(null)
+      setUserRole('user')
+      setAvatar(undefined)
     }
   }
 
   useEffect(() => {
     checkSession()
   }, [supabase])
+
+  supabase.auth.onAuthStateChange(() => {
+    checkSession()
+  })
 
   return (
     <UserContext.Provider
