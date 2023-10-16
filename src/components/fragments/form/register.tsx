@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useUserContext } from '@/contexts/user-context'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -24,6 +25,7 @@ export function RegisterForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const router = useRouter()
+  const { getUserInfo } = useUserContext()
 
   const formSchema = z
     .object({
@@ -59,7 +61,8 @@ export function RegisterForm() {
       toast({
         description: <p>{t('register_success')}</p>,
       })
-      router.push('/login')
+      getUserInfo()
+      router.refresh()
     }
   }
 
