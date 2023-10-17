@@ -8,7 +8,7 @@ import { useTheme } from 'next-themes'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { interface_languages } from '@/types/enums/languages'
+import { locales } from '@/types/enums/languages'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -164,7 +164,7 @@ export function AppearanceSettingForm() {
                       {t('field_not_found', { field: t('language') })}
                     </CommandEmpty>
                     <CommandGroup>
-                      {interface_languages.map((language) => (
+                      {locales.map((language) => (
                         <CommandItem
                           value={t(`Lang.${language}`)}
                           key={language}

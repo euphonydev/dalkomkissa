@@ -1,8 +1,8 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import createIntlMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
+import { locales } from '@/types/enums/languages'
 
-const locales = ['en', 'id']
 const adminPages = ['/dashboard', '/movie/new']
 const protectedPages = ['/settings', '/change-password']
 const preLoginPages = ['/login', '/register']

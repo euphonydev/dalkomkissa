@@ -1,3 +1,5 @@
+import { locales } from '@/types/enums/languages'
+
 /**
  * #### getAllPathFromUrl
  *
@@ -100,4 +102,9 @@ export function toTitleCase(str: string): string {
     /\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
   )
+}
+
+export function testPathRegex(path: string, currentPath: string): boolean {
+  const pathRegex = new RegExp(`^(/(${locales.join('|')}))?${path}(/.*)?$`, 'i')
+  return pathRegex.test(currentPath)
 }

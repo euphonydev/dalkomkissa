@@ -38,4 +38,4 @@ export const languages = [
   'uk', // Ukrainian
 ] as const
 
-export const interface_languages = ['en', 'id'] as const
+export const locales = ['en', 'id'] as const

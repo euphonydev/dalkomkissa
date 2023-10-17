@@ -6,7 +6,6 @@ import { useDebouncedCallback } from 'use-debounce'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { MainNavbar } from '@/components/fragments/navbar/main'
-import { MainSidebar } from '@/components/fragments/sidebar/main'
 import { MobileMainSidebar } from '@/components/fragments/sidebar/main-mobile'
 import { cn } from '@/lib/utils'
 
