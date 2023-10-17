@@ -52,6 +52,7 @@
   "latest_entry": "Latest {entry}",
   "light": "Light mode",
   "login": "Login",
+  "login_failed": "Username or email and password do not match.",
   "login_here": "Login here",
   "login_subtitle": "Login to your account and stay connected!",
   "login_title": "Welcome back!",

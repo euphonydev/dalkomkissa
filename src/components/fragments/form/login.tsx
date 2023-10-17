@@ -69,6 +69,11 @@ export function LoginForm() {
           <p>{t('action_success', { action: t('login').toLowerCase() })}</p>
         ),
       })
+    } else {
+      router.refresh()
+      toast({
+        description: <p>{t('login_failed')}</p>,
+      })
     }
   }
 

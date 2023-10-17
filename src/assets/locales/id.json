@@ -52,6 +52,7 @@
   "latest_entry": "{entry} Terbaru",
   "light": "Mode terang",
   "login": "Masuk",
+  "login_failed": "Nama pengguna atau email dengan kata sandi tidak cocok.",
   "login_here": "Masuk di sini",
   "login_subtitle": "Masuk ke akun Anda dan tetap terhubung!",
   "login_title": "Selamat kembali!",
