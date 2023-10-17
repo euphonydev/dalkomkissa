@@ -7,14 +7,12 @@ import { MovieEntry } from '@/types/movie.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { supabase } from '@/lib/supabase/clients/server-component-client'
-import { shortenFormatNumber } from '@/lib/utils/number'
 
 export async function MovieCard({
   id,
   cover_url,
   title,
   average_score,
-  watch_count,
 }: MovieEntry) {
   const t = useTranslations()
   const cover = await getImagePublicUrl(supabase, 'cover', cover_url!)
@@ -38,24 +36,19 @@ export async function MovieCard({
           </AspectRatio>
           <div className="absolute inset-0 flex rounded-md bg-black bg-opacity-50 p-2 text-white opacity-0 backdrop-blur-xs transition-opacity duration-300 hover:opacity-100">
             <div className="flex flex-col justify-between">
-              <ScrollArea className="h-full text-white">{title}</ScrollArea>
+              <ScrollArea className="h-full">{title}</ScrollArea>
               <div className="flex w-full justify-between">
-                <div className="text-small flex items-center font-bold">
+                <div className="text-alt flex items-center">
                   <StarIcon className="mr-1 h-4 w-4 text-yellow-500" />
-                  {average_score || '0.0'}
+                  {average_score || t('not_rated')}
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div className="text-md md:text-large group-hover:text-link truncate font-semibold">
+          <div className="text-small md:text-regular group-hover:text-link truncate">
             {title}
-          </div>
-          <div className="flex w-full justify-between">
-            <div className="text-small">
-              {`${shortenFormatNumber(watch_count || 0)} x ${t('watched')}`}
-            </div>
           </div>
         </div>
       </div>

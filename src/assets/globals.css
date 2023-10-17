@@ -93,8 +93,11 @@
   .text-large {
     @apply text-lg font-semibold;
   }
+  .text-regular {
+    @apply text-base leading-7;
+  }
   .text-small {
-    @apply text-sm font-medium leading-none;
+    @apply text-sm font-medium leading-5;
   }
   .text-alt {
     @apply text-xs text-muted-foreground;
