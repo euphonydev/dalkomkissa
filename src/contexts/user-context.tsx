@@ -42,6 +42,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const getUserInfo = async () => {
     const data = await getCurrentUser(supabase)
     if (data) {
+      setIsLoggedIn(true)
       setUserInfo(data)
       data.role && setUserRole(data.role)
       data.avatar && setAvatar(data.avatar)
@@ -56,10 +57,6 @@ export function UserProvider({ children }: UserProviderProps) {
   useEffect(() => {
     checkSession()
   }, [supabase])
-
-  supabase.auth.onAuthStateChange(() => {
-    checkSession()
-  })
 
   return (
     <UserContext.Provider
