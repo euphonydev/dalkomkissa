@@ -42,6 +42,7 @@
   "gender": "Jenis kelamin",
   "genre": "Genre",
   "have_account": "Sudah punya akun?",
+  "home_page": "Beranda",
   "image": "Gambar",
   "is_invalid": "Harus merupakan {field} yang valid",
   "is_required": "{field} wajib diisi",

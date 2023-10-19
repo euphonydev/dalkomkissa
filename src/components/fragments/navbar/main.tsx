@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { useUserContext } from '@/contexts/user-context'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -26,7 +26,7 @@ import { SheetTrigger } from '@/components/ui/sheet'
 import { useToast } from '@/components/ui/use-toast'
 import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
-import { getNameInitial } from '@/lib/utils/string'
+import { getNameInitial, testPathRegex } from '@/lib/utils/string'
 
 const MainNavbar = React.forwardRef<
   HTMLDivElement,
@@ -38,6 +38,7 @@ const MainNavbar = React.forwardRef<
     useUserContext()
   const t = useTranslations()
   const router = useRouter()
+  const pathName = usePathname()
 
   const handleLogout = async () => {
     const success = await signOut(supabase)
@@ -138,9 +139,15 @@ const MainNavbar = React.forwardRef<
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   {userRole === 'webadmin' ? (
-                    <Link href="/dashboard">
-                      <DropdownMenuItem>{t('dashboard')}</DropdownMenuItem>
-                    </Link>
+                    testPathRegex('/dashboard', pathName) ? (
+                      <Link href="/">
+                        <DropdownMenuItem>{t('home_page')}</DropdownMenuItem>
+                      </Link>
+                    ) : (
+                      <Link href="/dashboard">
+                        <DropdownMenuItem>{t('dashboard')}</DropdownMenuItem>
+                      </Link>
+                    )
                   ) : null}
                   <Link href="/settings">
                     <DropdownMenuItem>{t('settings')}</DropdownMenuItem>

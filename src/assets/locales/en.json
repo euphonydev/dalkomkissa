@@ -42,6 +42,7 @@
   "gender": "Gender",
   "genre": "Genre",
   "have_account": "Already have an account?",
+  "home_page": "Home",
   "image": "Image",
   "is_invalid": "Must be a valid {field}",
   "is_required": "{field} is required",
