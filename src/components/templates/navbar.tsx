@@ -6,19 +6,21 @@ import { useDebouncedCallback } from 'use-debounce'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { MainNavbar } from '@/components/fragments/navbar/main'
-import { MobileMainSidebar } from '@/components/fragments/sidebar/main-mobile'
+import { MobileMainSidebar } from '@/components/fragments/sidebar/mobile/main'
 import { cn } from '@/lib/utils'
 
 interface NavbarProps {
   className?: string
   children?: ReactNode
   sidebar?: React.ComponentType<any>
+  mobileSidebar?: React.ComponentType<any>
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   className,
   children,
   sidebar: SidebarComponent,
+  mobileSidebar: MobileSidebarComponent,
   ...props
 }) => {
   const [visible, setVisible] = useState(true)
@@ -89,7 +91,11 @@ const Navbar: React.FC<NavbarProps> = ({
           </main>
         </div>
         <SheetContent side="left">
-          <MobileMainSidebar />
+          {MobileSidebarComponent ? (
+            <MobileSidebarComponent />
+          ) : (
+            <MobileMainSidebar />
+          )}
         </SheetContent>
       </Sheet>
     </div>
