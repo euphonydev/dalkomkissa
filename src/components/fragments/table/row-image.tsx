@@ -1,10 +1,10 @@
 'use client'
 
 import { getImagePublicUrl } from '@/services/common'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 type TableRowImageProps = {
   src: string
@@ -24,6 +24,7 @@ export function TableRowImage({
   source = 'image',
 }: TableRowImageProps) {
   const [publicUrl, setPublicUrl] = useState<string | null>(null)
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
     async function fetchPublicUrl() {

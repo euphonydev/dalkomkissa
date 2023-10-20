@@ -1,14 +1,18 @@
 import { getCurrentSession } from '@/services/auth'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import AuthCard from '@/components/fragments/auth-card'
-import { supabase } from '@/lib/supabase/clients/server-component-client'
 
 export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabase = createServerComponentClient({
+    cookies,
+  })
   const session = await getCurrentSession(supabase)
 
   if (session) {

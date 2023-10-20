@@ -7,6 +7,7 @@ import {
   updateUserProfile,
 } from '@/services/user'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { CalendarIcon, PencilIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
@@ -42,11 +43,11 @@ import {
 } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useToast } from '@/components/ui/use-toast'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { getNameInitial, substringAfterLast } from '@/lib/utils/string'
 
 export function ProfileSettingForm() {
+  const supabase = createClientComponentClient()
   const { toast } = useToast()
   const t = useTranslations()
   const format = useFormatter()

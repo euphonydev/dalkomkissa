@@ -2,6 +2,7 @@
 
 import { sendPasswordRecoveryEmail } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,9 +18,9 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 export function ResetPasswordForm() {
+  const supabase = createClientComponentClient()
   const { toast } = useToast()
   const t = useTranslations()
 

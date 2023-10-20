@@ -1,6 +1,7 @@
 'use client'
 
 import { signOut } from '@/services/auth'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { AlignLeftIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
@@ -24,7 +25,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SheetTrigger } from '@/components/ui/sheet'
 import { useToast } from '@/components/ui/use-toast'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { getNameInitial, testPathRegex } from '@/lib/utils/string'
 
@@ -32,6 +32,7 @@ const MainNavbar = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
+  const supabase = createClientComponentClient()
   const { theme, setTheme } = useTheme()
   const { toast } = useToast()
   const { userInfo, avatar, isLoggedIn, userRole, getUserInfo } =

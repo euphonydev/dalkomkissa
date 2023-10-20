@@ -1,8 +1,12 @@
 import { getMoviesByLang } from '@/services/movie'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { MovieCard } from '@/components/fragments/movie-card'
-import { supabase } from '@/lib/supabase/clients/server-component-client'
 
 export async function MovieGrid() {
+  const supabase = createServerComponentClient({
+    cookies,
+  })
   const data = await getMoviesByLang(supabase, 'en')
   return (
     <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 md:gap-5 lg:grid-cols-5 lg:gap-6 xl:grid-cols-6">

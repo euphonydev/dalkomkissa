@@ -2,6 +2,7 @@
 
 import { changeUserPassword } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -18,9 +19,9 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 export function ChangePasswordForm() {
+  const supabase = createClientComponentClient()
   const { toast } = useToast()
   const t = useTranslations()
   const router = useRouter()

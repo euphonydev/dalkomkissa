@@ -2,6 +2,7 @@
 
 import { GoogleIcon } from '@/components/icons'
 import { signInWithGoogle } from '@/services/auth'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 import { cn } from '@/lib/utils'
 import { substringAfterLast } from '@/lib/utils/string'
 
@@ -35,6 +35,7 @@ interface Scenario {
 }
 
 export const AuthCard: React.FC<AuthCardProps> = ({ className, children }) => {
+  const supabase = createClientComponentClient()
   const t = useTranslations()
   const scenarioConfigurations: Record<string, Scenario> = {
     login: {

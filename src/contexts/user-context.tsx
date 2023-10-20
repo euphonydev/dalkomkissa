@@ -1,6 +1,7 @@
 'use client'
 
 import { getCurrentSession, getCurrentUser } from '@/services/auth'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, {
   ReactNode,
   createContext,
@@ -9,7 +10,6 @@ import React, {
   useState,
 } from 'react'
 import { UserInfo } from '@/types/user.types'
-import { supabase } from '@/lib/supabase/clients/client-component-client'
 
 interface UserContextType {
   userInfo: UserInfo | null
@@ -30,6 +30,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [avatar, setAvatar] = useState<string>()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState<string>('user')
+  const supabase = createClientComponentClient()
 
   const checkSession = async () => {
     const session = await getCurrentSession(supabase)

@@ -1,12 +1,13 @@
 import { getImagePublicUrl } from '@/services/common'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MovieEntry } from '@/types/movie.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { supabase } from '@/lib/supabase/clients/server-component-client'
 
 export async function MovieCard({
   id,
@@ -14,6 +15,9 @@ export async function MovieCard({
   title,
   average_score,
 }: MovieEntry) {
+  const supabase = createServerComponentClient({
+    cookies,
+  })
   const t = useTranslations()
   const cover = await getImagePublicUrl(supabase, 'cover', cover_url!)
 
