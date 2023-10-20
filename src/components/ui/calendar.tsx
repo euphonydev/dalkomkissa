@@ -1,6 +1,8 @@
 'use client'
 
+import { enUS, id } from 'date-fns/locale'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import { useLocale } from 'next-intl'
 import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 import { buttonVariants } from '@/components/ui/button'
@@ -32,9 +34,16 @@ function Calendar({
     } as React.ChangeEvent<HTMLSelectElement>
     _e(_event)
   }
+  const localeMap = {
+    en: enUS,
+    id: id,
+  }
+  const currentLocale = useLocale()
+  const locale = localeMap[currentLocale as keyof typeof localeMap] || enUS
 
   return (
     <DayPicker
+      locale={locale}
       showOutsideDays={showOutsideDays}
       className={cn('p-3', className)}
       classNames={{
