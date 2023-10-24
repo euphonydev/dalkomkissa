@@ -1,5 +1,3 @@
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
-import { FormTooltip } from '@/components/elements/form-tooltip'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { Control, FieldValues } from 'react-hook-form'
@@ -11,6 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 
 interface RadioItem {
@@ -52,20 +51,14 @@ const FormCheckbox = ({
         className,
       )}
     >
-      <div className="flex w-full items-baseline justify-between">
-        <FormLabel htmlFor={id}>
-          <div className="flex items-center">
-            {label}
-            {helpText ? <FormTooltip content={helpText} /> : null}
-          </div>
-        </FormLabel>
-        {showLockIcon ? (
-          <FormLockIcon
-            isLocked={isLocked}
-            onLockClick={onLockClick}
-          />
-        ) : null}
-      </div>
+      <FormInputHeader
+        label={label}
+        id={id}
+        helpText={helpText}
+        showLockIcon={showLockIcon}
+        isLocked={isLocked}
+        onLockClick={onLockClick}
+      />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
         {data?.map((item) => (
           <FormField

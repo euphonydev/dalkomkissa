@@ -1,13 +1,7 @@
-import { FormTooltip } from './form-tooltip'
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
 import React from 'react'
-import {
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 
 interface Props extends React.InputHTMLAttributes<HTMLTextAreaElement> {
@@ -40,20 +34,14 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, Props>(
           className,
         )}
       >
-        <div className="flex w-full items-baseline justify-between">
-          <FormLabel htmlFor={id}>
-            <div className="flex items-center">
-              {label}
-              {helpText ? <FormTooltip content={helpText} /> : null}
-            </div>
-          </FormLabel>
-          {showLockIcon ? (
-            <FormLockIcon
-              isLocked={isLocked}
-              onLockClick={onLockClick}
-            />
-          ) : null}
-        </div>
+        <FormInputHeader
+          label={label}
+          id={id}
+          helpText={helpText}
+          showLockIcon={showLockIcon}
+          isLocked={isLocked}
+          onLockClick={onLockClick}
+        />
         <FormControl>
           <Textarea
             ref={ref}

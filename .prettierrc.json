@@ -17,6 +17,7 @@
     "^@/functions/(.*)$",
     "^@/hooks/(.*)$",
     "^@/components/ui/(.*)$",
+    "^@/components/elements/(.*)$",
     "^@/components/fragments/(.*)$",
     "^@/components/templates/(.*)$",
     "^@/locales/(.*)$",

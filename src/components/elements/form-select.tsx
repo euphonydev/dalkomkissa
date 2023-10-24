@@ -1,13 +1,6 @@
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
-import { FormTooltip } from '@/components/elements/form-tooltip'
 import { useTranslations } from 'next-intl'
 import React from 'react'
-import {
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
 import {
   Select,
   SelectContent,
@@ -15,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 import { Enum } from '@/lib/utils/type'
 
@@ -52,20 +46,14 @@ const FormSelect = ({
         className,
       )}
     >
-      <div className="flex w-full items-baseline justify-between">
-        <FormLabel htmlFor={id}>
-          <div className="flex items-center">
-            {label}
-            {helpText ? <FormTooltip content={helpText} /> : null}
-          </div>
-        </FormLabel>
-        {showLockIcon ? (
-          <FormLockIcon
-            isLocked={isLocked}
-            onLockClick={onLockClick}
-          />
-        ) : null}
-      </div>
+      <FormInputHeader
+        label={label}
+        id={id}
+        helpText={helpText}
+        showLockIcon={showLockIcon}
+        isLocked={isLocked}
+        onLockClick={onLockClick}
+      />
       <Select onValueChange={onChange}>
         <FormControl>
           <SelectTrigger>

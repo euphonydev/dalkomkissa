@@ -1,6 +1,3 @@
-import { ScrollArea } from '../ui/scroll-area'
-import { FormTooltip } from './form-tooltip'
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import React from 'react'
@@ -13,17 +10,14 @@ import {
   CommandInput,
   CommandItem,
 } from '@/components/ui/command'
-import {
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 import { Enum } from '@/lib/utils/type'
 
@@ -69,20 +63,14 @@ const FormDataList = ({
         className,
       )}
     >
-      <div className="flex w-full items-baseline justify-between">
-        <FormLabel htmlFor={id}>
-          <div className="flex items-center">
-            {label}
-            {helpText ? <FormTooltip content={helpText} /> : null}
-          </div>
-        </FormLabel>
-        {showLockIcon ? (
-          <FormLockIcon
-            isLocked={isLocked}
-            onLockClick={onLockClick}
-          />
-        ) : null}
-      </div>
+      <FormInputHeader
+        label={label}
+        id={id}
+        helpText={helpText}
+        showLockIcon={showLockIcon}
+        isLocked={isLocked}
+        onLockClick={onLockClick}
+      />
       <Popover>
         <PopoverTrigger asChild>
           <FormControl>

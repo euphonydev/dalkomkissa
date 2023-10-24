@@ -1,18 +1,16 @@
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { FormTooltip } from './form-tooltip'
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
 import { CalendarIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import React from 'react'
 import { Matcher, SelectSingleEventHandler } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
 import {
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -50,20 +48,14 @@ const FormInputDate = ({
         className,
       )}
     >
-      <div className="flex w-full items-baseline justify-between">
-        <FormLabel htmlFor={id}>
-          <div className="flex items-center">
-            {label}
-            {helpText ? <FormTooltip content={helpText} /> : null}
-          </div>
-        </FormLabel>
-        {showLockIcon ? (
-          <FormLockIcon
-            isLocked={isLocked}
-            onLockClick={onLockClick}
-          />
-        ) : null}
-      </div>
+      <FormInputHeader
+        label={label}
+        id={id}
+        helpText={helpText}
+        showLockIcon={showLockIcon}
+        isLocked={isLocked}
+        onLockClick={onLockClick}
+      />
       <FormControl>
         <Popover>
           <PopoverTrigger asChild>

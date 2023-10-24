@@ -1,5 +1,3 @@
-import { FormLockIcon } from '@/components/elements/form-lock-icon'
-import { FormTooltip } from '@/components/elements/form-tooltip'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import {
@@ -9,6 +7,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
 
 interface RadioItem {
@@ -50,20 +49,14 @@ const FormRadioButton = ({
         className,
       )}
     >
-      <div className="flex w-full items-baseline justify-between">
-        <FormLabel htmlFor={id}>
-          <div className="flex items-center">
-            {label}
-            {helpText ? <FormTooltip content={helpText} /> : null}
-          </div>
-        </FormLabel>
-        {showLockIcon ? (
-          <FormLockIcon
-            isLocked={isLocked}
-            onLockClick={onLockClick}
-          />
-        ) : null}
-      </div>
+      <FormInputHeader
+        label={label}
+        id={id}
+        helpText={helpText}
+        showLockIcon={showLockIcon}
+        isLocked={isLocked}
+        onLockClick={onLockClick}
+      />
       <FormControl>
         <RadioGroup
           id={id}
