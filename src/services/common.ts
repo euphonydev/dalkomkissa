@@ -50,29 +50,29 @@ export const uploadImage = async (
   }
 }
 
-export const insertCover = async (
+export const insertImage = async (
   supabase: AppSupabaseClient,
   file: File,
-  profileId: string,
-  size: string,
-  lang: string,
+  bucket: string,
   path: string,
-  isPrimary: boolean | null,
+  dimension: string,
+  size: number,
+  accountId: string,
 ): Promise<Cover | null> => {
   const generatedId = uuidv4()
   const fileExtension = substringAfterLast(file.name, '.')
   const pathUrl = `${path}/${generatedId}.${fileExtension}`
-  const uploadSuccess = await uploadImage(supabase, 'cover', pathUrl, file)
+  const uploadSuccess = await uploadImage(supabase, bucket, pathUrl, file)
   if (uploadSuccess) {
     const { error, data } = await supabase
-      .from('cover')
+      .from('images')
       .insert({
         id: generatedId,
-        profile_id: profileId,
+        bucket: bucket,
+        dimension: dimension,
         size: size,
         url: pathUrl,
-        lang: lang,
-        is_primary: isPrimary ? isPrimary : false,
+        account_id: accountId,
       })
       .select()
       .single()

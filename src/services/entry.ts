@@ -4,13 +4,13 @@ import { AppSupabaseClient } from '@/lib/supabase/types'
 export const insertEntry = async (
   supabase: AppSupabaseClient,
   type_id: number,
-  age_rating_id: number | null,
+  is_adult: boolean,
 ): Promise<Entry | null> => {
   const { data, error } = await supabase
-    .from('entry')
+    .from('entries')
     .insert({
       type_id: type_id,
-      age_rating_id: age_rating_id ? age_rating_id : 1,
+      is_adult: is_adult,
     })
     .select()
     .single()

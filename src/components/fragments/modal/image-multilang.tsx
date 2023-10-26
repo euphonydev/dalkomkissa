@@ -71,7 +71,8 @@ const ImageMultiLangModal = ({
       language: z.string(),
       name: z.string(),
       url: z.string(),
-      size: z.string(),
+      size: z.number(),
+      dimension: z.string(),
     }),
   })
 
@@ -86,6 +87,7 @@ const ImageMultiLangModal = ({
       const file = e.target.files[0]
       if (file.type.startsWith('image/')) {
         form.setValue('cover.url', URL.createObjectURL(file))
+        form.setValue('cover.size', file.size)
         form.clearErrors()
         fetchImageSize(URL.createObjectURL(file))
         setSelectedFile(file)
@@ -106,7 +108,7 @@ const ImageMultiLangModal = ({
     const { width, height } = await getImageSize(url)
     if (width && height) {
       setImageResolution(`${width}x${height}`)
-      form.setValue('cover.size', `${width}x${height}`)
+      form.setValue('cover.dimension', `${width}x${height}`)
     }
   }
 

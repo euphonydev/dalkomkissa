@@ -25,7 +25,7 @@ export const removeUserAvatar = async (
   const success = await removeImage(supabase, 'avatar', fileName)
   if (success) {
     const { error } = await supabase
-      .from('profile')
+      .from('profiles')
       .update({ photo: '' })
       .eq('account_id', accountId)
     if (!error) {
@@ -43,7 +43,7 @@ export const checkUsernameAvailability = async (
   username: string,
 ): Promise<Boolean> => {
   const { data } = await supabase
-    .from('account')
+    .from('accounts')
     .select('id')
     .eq('username', username)
     .single()

@@ -1,13 +1,6 @@
 'use client'
 
 import ImageMultiLangModal from '../modal/image-multilang'
-import { FormCheckbox } from '@/components/elements/form-checkbox'
-import { FormDataList } from '@/components/elements/form-data-list'
-import { FormInput } from '@/components/elements/form-input'
-import { FormInputDate } from '@/components/elements/form-input-date'
-import { FormRadioButton } from '@/components/elements/form-radio-button'
-import { FormSelect } from '@/components/elements/form-select'
-import { FormTextarea } from '@/components/elements/form-textarea'
 import { insertMovie } from '@/services/movie'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
@@ -17,7 +10,7 @@ import Image from 'next/image'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { AgeRating } from '@/types/age-rating.types'
+import { age_rating } from '@/types/enums/age-rating'
 import { countries } from '@/types/enums/countries'
 import { languages } from '@/types/enums/languages'
 import { movie_type } from '@/types/enums/movie-type'
@@ -25,70 +18,104 @@ import { publication_status } from '@/types/enums/publication-status'
 import { Genre } from '@/types/genre.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
+import { FormCheckbox } from '@/components/elements/form-checkbox'
+import { FormDataList } from '@/components/elements/form-data-list'
+import { FormInput } from '@/components/elements/form-input'
+import { FormInputDate } from '@/components/elements/form-input-date'
+import { FormInputHeader } from '@/components/elements/form-input-header'
+import { FormRadioButton } from '@/components/elements/form-radio-button'
+import { FormSelect } from '@/components/elements/form-select'
+import { FormTextarea } from '@/components/elements/form-textarea'
 
 export function MovieForm() {
   const { toast } = useToast()
   const t = useTranslations()
   const supabase = createClientComponentClient()
-  const [ageRating, setAgeRating] = React.useState<AgeRating[] | null>(null)
   const [genre, setGenre] = React.useState<Genre[] | null>(null)
   const [selectedCover, setSelectedCover] = React.useState<File | null>(null)
   const openModalRef = React.useRef<HTMLButtonElement | null>(null)
 
   const formSchema = z.object({
-    title: z.string({
-      required_error: t('is_required', { field: t('title') }),
-    }),
-    english_title: z.string({
-      required_error: t('is_required', {
-        field: `${t('title')} (${t('Lang.en')})`,
+    original_title: z.object({
+      value: z.string({
+        required_error: t('is_required', { field: t('title') }),
       }),
+      locked: z.boolean(),
     }),
-    description: z.string({
-      required_error: t('is_required', { field: t('description') }),
+    english_title: z.object({
+      value: z.string({
+        required_error: t('is_required', {
+          field: `${t('title')} (${t('Lang.en')})`,
+        }),
+      }),
+      locked: z.boolean(),
     }),
-    movie_type: z.enum(movie_type, {
-      required_error: t('is_required', { field: t('movie_type') }),
+    english_description: z.object({
+      value: z.string({
+        required_error: t('is_required', { field: t('description') }),
+      }),
+      locked: z.boolean(),
     }),
-    movie_status: z.enum(publication_status, {
-      required_error: t('is_required', { field: t('status') }),
+    format: z.object({
+      value: z.enum(movie_type, {
+        required_error: t('is_required', { field: t('movie_type') }),
+      }),
+      locked: z.boolean(),
     }),
-    language: z.string({
-      required_error: t('is_required', { field: t('language') }),
+    status: z.object({
+      value: z.enum(publication_status, {
+        required_error: t('is_required', { field: t('status') }),
+      }),
+      locked: z.boolean(),
     }),
-    country: z.string({
-      required_error: t('is_required', { field: t('country') }),
-    }),
-    age_rating: z.number({
-      required_error: t('is_required', { field: t('age_rating') }),
-    }),
-    cover: z.object({
-      language: z.string({
+    original_language: z.object({
+      value: z.string({
         required_error: t('is_required', { field: t('language') }),
       }),
-      name: z.string({
-        required_error: t('is_required', { field: t('cover') }),
+      locked: z.boolean(),
+    }),
+    original_country: z.object({
+      value: z.enum(countries, {
+        required_error: t('is_required', { field: t('country') }),
       }),
-      url: z.string({
-        required_error: t('is_required', { field: t('cover') }),
+      locked: z.boolean(),
+    }),
+    age_rating: z.object({
+      value: z.enum(age_rating, {
+        required_error: t('is_required', { field: t('age_rating') }),
       }),
-      size: z.string({
-        required_error: t('is_required', { field: t('cover') }),
+      locked: z.boolean(),
+    }),
+    default_cover: z.object({
+      value: z.object({
+        language: z.string({
+          required_error: t('is_required', { field: t('language') }),
+        }),
+        name: z.string({
+          required_error: t('is_required', { field: t('cover') }),
+        }),
+        url: z.string({
+          required_error: t('is_required', { field: t('cover') }),
+        }),
+        dimension: z.string({
+          required_error: t('is_required', { field: t('cover') }),
+        }),
+        size: z.number({
+          required_error: t('is_required', { field: t('cover') }),
+        }),
       }),
+      locked: z.boolean(),
     }),
     genres: z.array(z.number()).refine((value) => value.some((item) => item), {
       message: t('must_select_field', { field: t('genre').toLowerCase() }),
     }),
-    release_date: z.date({
-      required_error: t('is_required', { field: t('release_date') }),
+    original_airdate: z.object({
+      value: z.date({
+        required_error: t('is_required', { field: t('release_date') }),
+      }),
+      locked: z.boolean(),
     }),
   })
 
@@ -96,28 +123,33 @@ export function MovieForm() {
 
   const form = useForm<formValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      original_title: { locked: false },
+      english_title: { locked: false },
+      english_description: { locked: false },
+      format: { locked: false },
+      status: { locked: false },
+      original_language: { locked: false },
+      original_country: { locked: false },
+      age_rating: { locked: false },
+      default_cover: { locked: false },
+      original_airdate: { locked: false },
+    },
     mode: 'onChange',
   })
 
   React.useEffect(() => {
-    const getAgeRating = async () => {
-      const { data } = await supabase.from('age_rating').select('*')
-      if (data) {
-        setAgeRating(data)
-      }
-    }
     const getGenre = async () => {
-      const { data } = await supabase.from('genre').select('*')
+      const { data } = await supabase.from('genres').select('*')
       if (data) {
         setGenre(data)
       }
     }
     getGenre()
-    getAgeRating()
   }, [supabase])
 
   const handleNewCover = (value: any, file: File) => {
-    form.setValue('cover', value)
+    form.setValue('default_cover.value', value)
     setSelectedCover(file)
   }
 
@@ -126,7 +158,10 @@ export function MovieForm() {
       supabase,
       {
         ...formData,
-        release_date: formData.release_date.toISOString(),
+        original_airdate: {
+          value: formData.original_airdate.value.toISOString(),
+          locked: formData.original_airdate.locked,
+        },
       },
       selectedCover!,
     )
@@ -137,6 +172,7 @@ export function MovieForm() {
             {t('action_success', {
               action: t('add_new_entry', { entry: t('movie') }).toLowerCase(),
             })}
+            {JSON.stringify(formData)}
           </p>
         ),
       })
@@ -149,10 +185,20 @@ export function MovieForm() {
         <div className="w-full space-y-8">
           <FormField
             control={form.control}
-            name="cover"
+            name="default_cover.value"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel htmlFor="cover">{t('cover')}</FormLabel>
+                <FormInputHeader
+                  label={t('cover')}
+                  isLocked={form.watch('default_cover.locked')}
+                  onLockClick={() =>
+                    form.setValue(
+                      'default_cover.locked',
+                      !form.watch('default_cover.locked'),
+                    )
+                  }
+                  showLockIcon
+                />
                 {field.value ? (
                   <div className="relative w-full rounded-md sm:w-48 md:w-56">
                     <AspectRatio ratio={7 / 10}>
@@ -196,84 +242,126 @@ export function MovieForm() {
           />
           <FormField
             control={form.control}
-            name="title"
+            name="original_title.value"
             render={({ field }) => (
               <FormInput
                 type="text"
                 id="title"
                 label={t('title')}
                 autoComplete="off"
+                isLocked={form.watch('original_title.locked')}
+                onLockClick={() =>
+                  form.setValue(
+                    'original_title.locked',
+                    !form.watch('original_title.locked'),
+                  )
+                }
+                showLockIcon
                 {...field}
               />
             )}
           />
           <FormField
             control={form.control}
-            name="english_title"
+            name="english_title.value"
             render={({ field }) => (
               <FormInput
                 type="text"
                 id="english_title"
                 label={`${t('title')} (${t('Lang.en')})`}
                 autoComplete="off"
+                isLocked={form.watch('english_title.locked')}
+                onLockClick={() =>
+                  form.setValue(
+                    'english_title.locked',
+                    !form.watch('english_title.locked'),
+                  )
+                }
+                showLockIcon
                 {...field}
               />
             )}
           />
           <FormField
             control={form.control}
-            name="description"
+            name="english_description.value"
             render={({ field }) => (
               <FormTextarea
                 id="description"
                 label={`${t('description')} (${t('Lang.en')})`}
+                isLocked={form.watch('english_description.locked')}
+                onLockClick={() =>
+                  form.setValue(
+                    'english_description.locked',
+                    !form.watch('english_description.locked'),
+                  )
+                }
+                showLockIcon
                 {...field}
               />
             )}
           />
           <FormField
             control={form.control}
-            name="release_date"
+            name="original_airdate.value"
             render={({ field }) => (
               <FormInputDate
-                id="release_date"
+                id="original_airdate"
                 label={t('release_date')}
                 value={field.value}
                 onChange={field.onChange}
                 disabledDate={(date) =>
                   date > new Date() || date < new Date('1900-01-01')
                 }
+                isLocked={form.watch('original_airdate.locked')}
+                onLockClick={() =>
+                  form.setValue(
+                    'original_airdate.locked',
+                    !form.watch('original_airdate.locked'),
+                  )
+                }
+                showLockIcon
               />
             )}
           />
           <div className="flex w-full space-x-4">
             <FormField
               control={form.control}
-              name="movie_type"
+              name="format.value"
               render={({ field }) => (
                 <FormSelect
-                  id="movie_type"
+                  id="format"
                   label={t('movie_type')}
                   placeholder={t('select_field', {
                     field: t('movie_type').toLowerCase(),
                   })}
                   data={movie_type}
                   onChange={field.onChange}
+                  isLocked={form.watch('format.locked')}
+                  onLockClick={() =>
+                    form.setValue('format.locked', !form.watch('format.locked'))
+                  }
+                  showLockIcon
                 />
               )}
             />
             <FormField
               control={form.control}
-              name="movie_status"
+              name="status.value"
               render={({ field }) => (
                 <FormSelect
-                  id="movie_status"
+                  id="status"
                   label={t('status')}
                   placeholder={t('select_field', {
                     field: t('status').toLowerCase(),
                   })}
                   data={publication_status}
                   onChange={field.onChange}
+                  isLocked={form.watch('status.locked')}
+                  onLockClick={() =>
+                    form.setValue('status.locked', !form.watch('status.locked'))
+                  }
+                  showLockIcon
                 />
               )}
             />
@@ -281,10 +369,10 @@ export function MovieForm() {
           <div className="flex w-full space-x-4">
             <FormField
               control={form.control}
-              name="country"
+              name="original_country.value"
               render={({ field }) => (
                 <FormDataList
-                  id="country"
+                  id="original_country"
                   label={t('country')}
                   data={countries}
                   value={field.value}
@@ -297,15 +385,23 @@ export function MovieForm() {
                   })}
                   notFoundText={t('field_not_found', { field: t('country') })}
                   onChange={field.onChange}
+                  isLocked={form.watch('original_country.locked')}
+                  onLockClick={() =>
+                    form.setValue(
+                      'original_country.locked',
+                      !form.watch('original_country.locked'),
+                    )
+                  }
+                  showLockIcon
                 />
               )}
             />
             <FormField
               control={form.control}
-              name="language"
+              name="original_language.value"
               render={({ field }) => (
                 <FormDataList
-                  id="language"
+                  id="original_language"
                   label={t('language')}
                   data={languages}
                   value={field.value}
@@ -318,20 +414,36 @@ export function MovieForm() {
                   })}
                   notFoundText={t('field_not_found', { field: t('language') })}
                   onChange={field.onChange}
+                  isLocked={form.watch('original_language.locked')}
+                  onLockClick={() =>
+                    form.setValue(
+                      'original_language.locked',
+                      !form.watch('original_language.locked'),
+                    )
+                  }
+                  showLockIcon
                 />
               )}
             />
           </div>
           <FormField
             control={form.control}
-            name="age_rating"
+            name="age_rating.value"
             render={({ field }) => (
               <FormRadioButton
                 id="age_rating"
                 label={t('age_rating')}
                 currentValue={field.value}
-                data={ageRating}
+                data={age_rating}
                 onChange={field.onChange}
+                isLocked={form.watch('age_rating.locked')}
+                onLockClick={() =>
+                  form.setValue(
+                    'age_rating.locked',
+                    !form.watch('age_rating.locked'),
+                  )
+                }
+                showLockIcon
               />
             )}
           />

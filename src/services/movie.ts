@@ -1,5 +1,5 @@
 import { getCurrentUserId } from './auth'
-import { insertCover } from './common'
+import { insertImage } from './common'
 import { insertEntry } from '@/services/entry'
 import type { InsertMovieType, MovieEntry } from '@/types/movie.types'
 import { AppSupabaseClient } from '@/lib/supabase/types'
@@ -23,52 +23,60 @@ export async function insertMovie(
   movie: InsertMovieType,
   cover: File,
 ): Promise<boolean> {
-  const entryData = await insertEntry(supabase, 2, movie.age_rating)
+  const entryData = await insertEntry(
+    supabase,
+    2,
+    movie.age_rating.value === 'nc-17' ? true : false,
+  )
   if (entryData) {
     const userId = await getCurrentUserId(supabase)
     if (userId) {
-      const coverData = await insertCover(
+      const coverData = await insertImage(
         supabase,
         cover,
-        userId,
-        movie.cover.size,
-        movie.cover.language,
+        'cover',
         'movie',
-        true,
+        movie.default_cover.value.dimension,
+        movie.default_cover.value.size,
+        userId,
       )
       if (coverData) {
-        const { error } = await supabase.from('movie').insert({
+        const cover = {
+          default: true,
+          lang: movie.default_cover.value.language,
+          is_primary: true,
+          image_id: coverData.id,
+          locked: movie.default_cover.locked,
+        }
+        const { error } = await supabase.from('movies').insert({
           id: entryData.id,
-          origin_country: movie.country,
-          origin_name: movie.title,
-          language: movie.language,
-          status: movie.movie_status,
-          release_date: movie.release_date,
-          type: movie.movie_type,
-          default_cover_id: coverData.id,
+          original_title: movie.original_title,
+          original_country: movie.original_country,
+          original_language: movie.original_language,
+          original_airdate: movie.original_airdate,
+          description: [{ ...movie.english_description, lang: 'en' }],
+          alternative_title: [
+            { ...movie.english_title, lang: 'en', is_primary: true },
+          ],
+          format: movie.format,
+          status: movie.status,
+          age_rating: movie.age_rating,
+          covers: [cover],
         })
-        await insertMovieCover(supabase, entryData.id, coverData.id)
         if (!error) {
           movie.genres.forEach(async (genreId) => {
             await insertMovieGenre(supabase, entryData.id, genreId)
           })
-          const { error } = await supabase.from('movie_translation').insert({
-            movie_id: entryData.id,
-            lang: 'en',
-            name: movie.english_title,
-            description: movie.description,
-          })
-          if (!error) {
-            return true
-          } else {
-            return false
-          }
+          return true
         } else {
           return false
         }
+      } else {
+        return false
       }
+    } else {
+      return false
     }
-    return true
   } else {
     return false
   }
@@ -82,22 +90,6 @@ export const insertMovieGenre = async (
   const { error } = await supabase.from('movie_genre').insert({
     movie_id: movieId,
     genre_id: genreId,
-  })
-  if (!error) {
-    return true
-  } else {
-    return false
-  }
-}
-
-export const insertMovieCover = async (
-  supabase: AppSupabaseClient,
-  movieId: string,
-  coverId: string,
-): Promise<boolean> => {
-  const { error } = await supabase.from('movie_cover').insert({
-    cover_id: coverId,
-    movie_id: movieId,
   })
   if (!error) {
     return true

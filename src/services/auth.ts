@@ -24,7 +24,7 @@ export const signInWithUsernameAndPassword = async (
   password: string,
 ): Promise<Boolean> => {
   const { data } = await supabase
-    .from('account')
+    .from('accounts')
     .select('email')
     .eq('username', username)
     .single()

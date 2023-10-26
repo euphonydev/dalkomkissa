@@ -9,7 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      account: {
+      accounts: {
         Row: {
           email: string
           id: string
@@ -30,53 +30,14 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'account_id_fkey'
+            foreignKeyName: 'accounts_id_fkey'
             columns: ['id']
             referencedRelation: 'users'
             referencedColumns: ['id']
           },
         ]
       }
-      age_rating: {
-        Row: {
-          id: number
-          min_age: number | null
-          name: string
-        }
-        Insert: {
-          id?: number
-          min_age?: number | null
-          name: string
-        }
-        Update: {
-          id?: number
-          min_age?: number | null
-          name?: string
-        }
-        Relationships: []
-      }
-      alternative_name: {
-        Row: {
-          id: number
-          lang: string
-          name: string
-          type: string
-        }
-        Insert: {
-          id: number
-          lang: string
-          name: string
-          type: string
-        }
-        Update: {
-          id?: number
-          lang?: string
-          name?: string
-          type?: string
-        }
-        Relationships: []
-      }
-      character: {
+      characters: {
         Row: {
           birthdate: string | null
           gender: string | null
@@ -97,184 +58,51 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'character_id_fkey'
+            foreignKeyName: 'characters_id_fkey'
             columns: ['id']
-            referencedRelation: 'entry'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
       }
-      character_alternative_name: {
+      entries: {
         Row: {
-          alternative_name_id: number
-          character_id: string
-        }
-        Insert: {
-          alternative_name_id: number
-          character_id: string
-        }
-        Update: {
-          alternative_name_id?: number
-          character_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'character_alternative_name_alternative_name_id_fkey'
-            columns: ['alternative_name_id']
-            referencedRelation: 'alternative_name'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'character_alternative_name_character_id_fkey'
-            columns: ['character_id']
-            referencedRelation: 'character'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      character_image: {
-        Row: {
-          character_id: string
-          image_id: string
-        }
-        Insert: {
-          character_id: string
-          image_id: string
-        }
-        Update: {
-          character_id?: string
-          image_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'character_image_character_id_fkey'
-            columns: ['character_id']
-            referencedRelation: 'character'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'character_image_image_id_fkey'
-            columns: ['image_id']
-            referencedRelation: 'image'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      character_translation: {
-        Row: {
-          character_id: string
-          description: string
-          lang: string
-          name: string
-        }
-        Insert: {
-          character_id: string
-          description: string
-          lang: string
-          name: string
-        }
-        Update: {
-          character_id?: string
-          description?: string
-          lang?: string
-          name?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'character_translation_character_id_fkey'
-            columns: ['character_id']
-            referencedRelation: 'character'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      cover: {
-        Row: {
-          created_at: string | null
-          id: string
-          is_primary: boolean
-          lang: string
-          profile_id: string
-          size: string
-          url: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          is_primary?: boolean
-          lang: string
-          profile_id: string
-          size: string
-          url: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          is_primary?: boolean
-          lang?: string
-          profile_id?: string
-          size?: string
-          url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'cover_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'cover_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      entry: {
-        Row: {
-          age_rating_id: number
           created_at: string
           deleted_at: string | null
           id: string
+          is_adult: boolean
           published_at: string | null
           type_id: number | null
           updated_at: string | null
         }
         Insert: {
-          age_rating_id?: number
           created_at?: string
           deleted_at?: string | null
           id?: string
+          is_adult?: boolean
           published_at?: string | null
           type_id?: number | null
           updated_at?: string | null
         }
         Update: {
-          age_rating_id?: number
           created_at?: string
           deleted_at?: string | null
           id?: string
+          is_adult?: boolean
           published_at?: string | null
           type_id?: number | null
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'entry_age_rating_id_fkey'
-            columns: ['age_rating_id']
-            referencedRelation: 'age_rating'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'entry_type_id_fkey'
+            foreignKeyName: 'entries_type_id_fkey'
             columns: ['type_id']
             referencedRelation: 'type'
             referencedColumns: ['id']
           },
         ]
       }
-      episode: {
+      episodes: {
         Row: {
           episode_number: number
           id: string
@@ -298,82 +126,57 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'episode_id_fkey'
+            foreignKeyName: 'episodes_id_fkey'
             columns: ['id']
-            referencedRelation: 'entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'episode_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'episode_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
       }
-      episode_image: {
+      follows: {
         Row: {
-          episode_id: string
-          image_id: string
+          follow: string
+          follow_date: string
+          profile_id: string
         }
         Insert: {
-          episode_id: string
-          image_id: string
+          follow: string
+          follow_date: string
+          profile_id: string
         }
         Update: {
-          episode_id?: string
-          image_id?: string
+          follow?: string
+          follow_date?: string
+          profile_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'episode_image_episode_id_fkey'
-            columns: ['episode_id']
-            referencedRelation: 'episode'
+            foreignKeyName: 'follows_follow_fkey'
+            columns: ['follow']
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'episode_image_image_id_fkey'
-            columns: ['image_id']
-            referencedRelation: 'image'
-            referencedColumns: ['id']
+            foreignKeyName: 'follows_follow_fkey'
+            columns: ['follow']
+            referencedRelation: 'user_profile'
+            referencedColumns: ['profile_id']
           },
-        ]
-      }
-      episode_translation: {
-        Row: {
-          description: string
-          episode_id: string
-          lang: string
-          name: string
-        }
-        Insert: {
-          description: string
-          episode_id: string
-          lang: string
-          name: string
-        }
-        Update: {
-          description?: string
-          episode_id?: string
-          lang?: string
-          name?: string
-        }
-        Relationships: [
           {
-            foreignKeyName: 'episode_translation_episode_id_fkey'
-            columns: ['episode_id']
-            referencedRelation: 'episode'
+            foreignKeyName: 'follows_profile_id_fkey'
+            columns: ['profile_id']
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'follows_profile_id_fkey'
+            columns: ['profile_id']
+            referencedRelation: 'user_profile'
+            referencedColumns: ['profile_id']
           },
         ]
       }
-      genre: {
+      genres: {
         Row: {
           id: number
           name: string
@@ -388,289 +191,44 @@ export interface Database {
         }
         Relationships: []
       }
-      image: {
+      images: {
         Row: {
+          account_id: string
+          bucket: string
           created_at: string | null
+          dimension: string
           id: string
-          is_primary: boolean
-          profile_id: string
-          size: string
+          size: number | null
           url: string
         }
         Insert: {
+          account_id: string
+          bucket: string
           created_at?: string | null
+          dimension: string
           id?: string
-          is_primary?: boolean
-          profile_id: string
-          size: string
+          size?: number | null
           url: string
         }
         Update: {
+          account_id?: string
+          bucket?: string
           created_at?: string | null
+          dimension?: string
           id?: string
-          is_primary?: boolean
-          profile_id?: string
-          size?: string
+          size?: number | null
           url?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'image_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'image_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      link: {
-        Row: {
-          id: number
-          provider: string
-          type: string | null
-          url: string
-        }
-        Insert: {
-          id?: number
-          provider: string
-          type?: string | null
-          url: string
-        }
-        Update: {
-          id?: number
-          provider?: string
-          type?: string | null
-          url?: string
-        }
-        Relationships: []
-      }
-      movie: {
-        Row: {
-          default_cover_id: string | null
-          id: string
-          language: string
-          origin_country: string | null
-          origin_name: string
-          release_date: string | null
-          runtime: number | null
-          status: Database['public']['Enums']['publication_status']
-          type: Database['public']['Enums']['movie_type'] | null
-        }
-        Insert: {
-          default_cover_id?: string | null
-          id: string
-          language: string
-          origin_country?: string | null
-          origin_name: string
-          release_date?: string | null
-          runtime?: number | null
-          status: Database['public']['Enums']['publication_status']
-          type?: Database['public']['Enums']['movie_type'] | null
-        }
-        Update: {
-          default_cover_id?: string | null
-          id?: string
-          language?: string
-          origin_country?: string | null
-          origin_name?: string
-          release_date?: string | null
-          runtime?: number | null
-          status?: Database['public']['Enums']['publication_status']
-          type?: Database['public']['Enums']['movie_type'] | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_default_cover_id_fkey'
-            columns: ['default_cover_id']
-            referencedRelation: 'cover'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_id_fkey'
-            columns: ['id']
-            referencedRelation: 'entry'
+            foreignKeyName: 'images_account_id_fkey'
+            columns: ['account_id']
+            referencedRelation: 'accounts'
             referencedColumns: ['id']
           },
         ]
       }
-      movie_alternative_name: {
-        Row: {
-          alternative_name_id: number
-          movie_id: string
-        }
-        Insert: {
-          alternative_name_id: number
-          movie_id: string
-        }
-        Update: {
-          alternative_name_id?: number
-          movie_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_alternative_name_alternative_name_id_fkey'
-            columns: ['alternative_name_id']
-            referencedRelation: 'alternative_name'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_alternative_name_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_alternative_name_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_character: {
-        Row: {
-          character_id: string
-          id: number
-          lang: string
-          movie_id: string
-          profile_id: string
-          type: string
-        }
-        Insert: {
-          character_id: string
-          id?: number
-          lang: string
-          movie_id: string
-          profile_id: string
-          type: string
-        }
-        Update: {
-          character_id?: string
-          id?: number
-          lang?: string
-          movie_id?: string
-          profile_id?: string
-          type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_character_character_id_fkey'
-            columns: ['character_id']
-            referencedRelation: 'character'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_character_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_character_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_character_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_character_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      movie_company: {
-        Row: {
-          id: number
-          movie_id: string
-          profile_id: string
-          type: number
-        }
-        Insert: {
-          id?: number
-          movie_id: string
-          profile_id: string
-          type: number
-        }
-        Update: {
-          id?: number
-          movie_id?: string
-          profile_id?: string
-          type?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_company_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_company_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_company_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_company_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      movie_cover: {
-        Row: {
-          cover_id: string
-          movie_id: string
-        }
-        Insert: {
-          cover_id: string
-          movie_id: string
-        }
-        Update: {
-          cover_id?: string
-          movie_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_cover_cover_id_fkey'
-            columns: ['cover_id']
-            referencedRelation: 'cover'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_cover_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_cover_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_genre: {
+      movie_genres: {
         Row: {
           genre_id: number
           movie_id: string
@@ -685,89 +243,9 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'movie_genre_genre_id_fkey'
+            foreignKeyName: 'movie_genres_genre_id_fkey'
             columns: ['genre_id']
-            referencedRelation: 'genre'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_genre_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_genre_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_image: {
-        Row: {
-          image_id: string
-          movie_id: string
-        }
-        Insert: {
-          image_id: string
-          movie_id: string
-        }
-        Update: {
-          image_id?: string
-          movie_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_image_image_id_fkey'
-            columns: ['image_id']
-            referencedRelation: 'image'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_image_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_image_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_link: {
-        Row: {
-          link_id: number
-          movie_id: string
-        }
-        Insert: {
-          link_id: number
-          movie_id: string
-        }
-        Update: {
-          link_id?: number
-          movie_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_link_link_id_fkey'
-            columns: ['link_id']
-            referencedRelation: 'link'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_link_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_link_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
+            referencedRelation: 'genres'
             referencedColumns: ['id']
           },
         ]
@@ -802,21 +280,9 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'movie_list_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_list_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
             foreignKeyName: 'movie_list_profile_id_fkey'
             columns: ['profile_id']
-            referencedRelation: 'profile'
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
           },
           {
@@ -827,93 +293,7 @@ export interface Database {
           },
         ]
       }
-      movie_review: {
-        Row: {
-          movie_id: string
-          review_id: string
-        }
-        Insert: {
-          movie_id: string
-          review_id: string
-        }
-        Update: {
-          movie_id?: string
-          review_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_review_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_review_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_review_review_id_fkey'
-            columns: ['review_id']
-            referencedRelation: 'review'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_staff: {
-        Row: {
-          id: number
-          movie_id: string
-          profile_id: string
-          staff_position_id: number
-        }
-        Insert: {
-          id?: number
-          movie_id: string
-          profile_id: string
-          staff_position_id: number
-        }
-        Update: {
-          id?: number
-          movie_id?: string
-          profile_id?: string
-          staff_position_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_staff_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_staff_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_staff_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_staff_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-          {
-            foreignKeyName: 'movie_staff_staff_position_id_fkey'
-            columns: ['staff_position_id']
-            referencedRelation: 'staff_position'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      movie_tag: {
+      movie_tags: {
         Row: {
           movie_id: string
           theme_id: number
@@ -928,97 +308,72 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'movie_tag_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_tag_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_tag_theme_id_fkey'
+            foreignKeyName: 'movie_tags_theme_id_fkey'
             columns: ['theme_id']
-            referencedRelation: 'tag'
+            referencedRelation: 'tags'
             referencedColumns: ['id']
           },
         ]
       }
-      movie_translation: {
+      movies: {
         Row: {
-          description: string
-          lang: string
-          movie_id: string
-          name: string
-          tagline: string | null
+          age_rating: Json | null
+          alternative_title: Json | null
+          covers: Json | null
+          description: Json | null
+          format: Json
+          id: string
+          original_airdate: Json | null
+          original_country: Json
+          original_language: Json
+          original_title: Json
+          reviews: Json | null
+          runtime: Json | null
+          status: Json
+          tagline: Json | null
         }
         Insert: {
-          description: string
-          lang: string
-          movie_id: string
-          name: string
-          tagline?: string | null
+          age_rating?: Json | null
+          alternative_title?: Json | null
+          covers?: Json | null
+          description?: Json | null
+          format: Json
+          id: string
+          original_airdate?: Json | null
+          original_country: Json
+          original_language: Json
+          original_title: Json
+          reviews?: Json | null
+          runtime?: Json | null
+          status: Json
+          tagline?: Json | null
         }
         Update: {
-          description?: string
-          lang?: string
-          movie_id?: string
-          name?: string
-          tagline?: string | null
+          age_rating?: Json | null
+          alternative_title?: Json | null
+          covers?: Json | null
+          description?: Json | null
+          format?: Json
+          id?: string
+          original_airdate?: Json | null
+          original_country?: Json
+          original_language?: Json
+          original_title?: Json
+          reviews?: Json | null
+          runtime?: Json | null
+          status?: Json
+          tagline?: Json | null
         }
         Relationships: [
           {
-            foreignKeyName: 'movie_translation_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_translation_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
+            foreignKeyName: 'movies_id_fkey'
+            columns: ['id']
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
       }
-      movie_video: {
-        Row: {
-          movie_id: string
-          video_id: string
-        }
-        Insert: {
-          movie_id: string
-          video_id: string
-        }
-        Update: {
-          movie_id?: string
-          video_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_video_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_video_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'movie_video_video_id_fkey'
-            columns: ['video_id']
-            referencedRelation: 'video'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      profile: {
+      profiles: {
         Row: {
           account_id: string | null
           background: string | null
@@ -1054,128 +409,20 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'profile_account_id_fkey'
+            foreignKeyName: 'profiles_account_id_fkey'
             columns: ['account_id']
-            referencedRelation: 'account'
+            referencedRelation: 'accounts'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'profile_id_fkey'
+            foreignKeyName: 'profiles_id_fkey'
             columns: ['id']
-            referencedRelation: 'entry'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
       }
-      profile_follow: {
-        Row: {
-          follow: string
-          follow_date: string
-          profile_id: string
-        }
-        Insert: {
-          follow: string
-          follow_date: string
-          profile_id: string
-        }
-        Update: {
-          follow?: string
-          follow_date?: string
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'profile_follow_follow_fkey'
-            columns: ['follow']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'profile_follow_follow_fkey'
-            columns: ['follow']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-          {
-            foreignKeyName: 'profile_follow_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'profile_follow_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      profile_link: {
-        Row: {
-          link_id: number
-          profile_id: string
-        }
-        Insert: {
-          link_id: number
-          profile_id: string
-        }
-        Update: {
-          link_id?: number
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'profile_link_link_id_fkey'
-            columns: ['link_id']
-            referencedRelation: 'link'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'profile_link_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'profile_link_profile_id_fkey'
-            columns: ['profile_id']
-            referencedRelation: 'user_profile'
-            referencedColumns: ['profile_id']
-          },
-        ]
-      }
-      related_entry: {
-        Row: {
-          entry_id: string
-          related_to: string
-          type: string
-        }
-        Insert: {
-          entry_id: string
-          related_to: string
-          type: string
-        }
-        Update: {
-          entry_id?: string
-          related_to?: string
-          type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'related_entry_entry_id_fkey'
-            columns: ['entry_id']
-            referencedRelation: 'entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'related_entry_related_to_fkey'
-            columns: ['related_to']
-            referencedRelation: 'entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      review: {
+      reviews: {
         Row: {
           id: string
           profile_id: string
@@ -1196,26 +443,26 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'review_id_fkey'
+            foreignKeyName: 'reviews_id_fkey'
             columns: ['id']
-            referencedRelation: 'entry'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'review_profile_id_fkey'
+            foreignKeyName: 'reviews_profile_id_fkey'
             columns: ['profile_id']
-            referencedRelation: 'profile'
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'review_profile_id_fkey'
+            foreignKeyName: 'reviews_profile_id_fkey'
             columns: ['profile_id']
             referencedRelation: 'user_profile'
             referencedColumns: ['profile_id']
           },
         ]
       }
-      season: {
+      seasons: {
         Row: {
           id: string
           movie_id: string
@@ -1236,80 +483,9 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'season_id_fkey'
+            foreignKeyName: 'seasons_id_fkey'
             columns: ['id']
-            referencedRelation: 'entry'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'season_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'season_movie_id_fkey'
-            columns: ['movie_id']
-            referencedRelation: 'movie_entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      season_episode: {
-        Row: {
-          episode_id: string
-          season_id: string
-        }
-        Insert: {
-          episode_id: string
-          season_id: string
-        }
-        Update: {
-          episode_id?: string
-          season_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'season_episode_episode_id_fkey'
-            columns: ['episode_id']
-            referencedRelation: 'episode'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'season_episode_season_id_fkey'
-            columns: ['season_id']
-            referencedRelation: 'season'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      season_translation: {
-        Row: {
-          cover_id: string
-          description: string
-          lang: string
-          name: string
-          season_id: string
-        }
-        Insert: {
-          cover_id: string
-          description: string
-          lang: string
-          name: string
-          season_id: string
-        }
-        Update: {
-          cover_id?: string
-          description?: string
-          lang?: string
-          name?: string
-          season_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'season_translation_season_id_fkey'
-            columns: ['season_id']
-            referencedRelation: 'season'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
@@ -1332,7 +508,7 @@ export interface Database {
         }
         Relationships: []
       }
-      tag: {
+      tags: {
         Row: {
           id: number
           name: string
@@ -1365,64 +541,8 @@ export interface Database {
         }
         Relationships: []
       }
-      video: {
-        Row: {
-          id: string
-          lang: string
-          provider: string
-          quality: string | null
-          type: string
-          url: string
-        }
-        Insert: {
-          id?: string
-          lang: string
-          provider: string
-          quality?: string | null
-          type: string
-          url: string
-        }
-        Update: {
-          id?: string
-          lang?: string
-          provider?: string
-          quality?: string | null
-          type?: string
-          url?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
-      movie_entry: {
-        Row: {
-          average_score: number | null
-          cover_url: string | null
-          created_at: string | null
-          deleted_at: string | null
-          description: string | null
-          id: string | null
-          lang: string | null
-          origin_country: string | null
-          published: number | null
-          published_at: string | null
-          release_date: string | null
-          runtime: number | null
-          status: Database['public']['Enums']['publication_status'] | null
-          title: string | null
-          type: Database['public']['Enums']['movie_type'] | null
-          updated_at: string | null
-          watch_count: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'movie_id_fkey'
-            columns: ['id']
-            referencedRelation: 'entry'
-            referencedColumns: ['id']
-          },
-        ]
-      }
       user_profile: {
         Row: {
           account_id: string | null
@@ -1440,15 +560,15 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'profile_account_id_fkey'
+            foreignKeyName: 'profiles_account_id_fkey'
             columns: ['account_id']
-            referencedRelation: 'account'
+            referencedRelation: 'accounts'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'profile_id_fkey'
+            foreignKeyName: 'profiles_id_fkey'
             columns: ['profile_id']
-            referencedRelation: 'entry'
+            referencedRelation: 'entries'
             referencedColumns: ['id']
           },
         ]
@@ -1474,6 +594,29 @@ export interface Database {
           uid: string
         }
         Returns: Json
+      }
+      get_movie_entries: {
+        Args: {
+          lang: string
+        }
+        Returns: {
+          id: string
+          title: string
+          description: string
+          original_country: string
+          original_language: string
+          original_airdate: string
+          cover_url: string
+          format: string
+          status: string
+          runtime: string
+          average_score: number
+          is_adult: boolean
+          created_at: string
+          published_at: string
+          updated_at: string
+          deleted_at: string
+        }[]
       }
       get_my_claim: {
         Args: {

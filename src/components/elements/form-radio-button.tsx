@@ -9,23 +9,20 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { FormInputHeader } from '@/components/elements/form-input-header'
 import { cn } from '@/lib/utils'
-
-interface RadioItem {
-  id: number
-  name: string
-}
+import { Enum } from '@/lib/utils/type'
 
 interface Props {
   label: string
   id: string
-  data: Array<RadioItem> | null
-  currentValue: number
+  data: Enum<string>
+  currentValue: string
   className?: string
   helpText?: string
   showLockIcon?: boolean
   isLocked?: boolean
+  withKeyTranslation?: boolean
   onLockClick?: () => void
-  onChange?: (value: number) => void
+  onChange?: (value: string) => void
 }
 
 const FormRadioButton = ({
@@ -35,6 +32,7 @@ const FormRadioButton = ({
   data,
   currentValue,
   className,
+  withKeyTranslation = false,
   showLockIcon,
   isLocked,
   onLockClick,
@@ -61,23 +59,25 @@ const FormRadioButton = ({
         <RadioGroup
           id={id}
           onValueChange={(value) => {
-            onChange && onChange(parseInt(value))
+            onChange && onChange(value)
           }}
           className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6"
         >
-          {data?.map((data) => (
+          {data.map((data) => (
             <FormItem
               className="flex items-center space-x-3 space-y-0"
-              key={data.id}
+              key={data}
             >
               <FormControl>
                 <RadioGroupItem
-                  value={`${data.id}`}
-                  checked={currentValue === data.id}
+                  value={`${data}`}
+                  checked={currentValue === data}
                 />
               </FormControl>
               <FormLabel className="font-normal">
-                {t(data.name.toUpperCase())}
+                {withKeyTranslation
+                  ? t(data.toUpperCase())
+                  : data.toUpperCase()}
               </FormLabel>
             </FormItem>
           ))}
