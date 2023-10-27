@@ -4,6 +4,19 @@ const withNextIntl = require('next-intl/plugin')(
 
 module.exports = withNextIntl({
     images: {
-        domains: ['mamumipzdykcblllgrus.supabase.co', '*.googleusercontent.com', 'robohash.org'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'mamumipzdykcblllgrus.supabase.co'
+            },
+            {
+                protocol: 'https',
+                hostname: '*.googleusercontent.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'robohash.org'
+            }
+        ],
     },
 });

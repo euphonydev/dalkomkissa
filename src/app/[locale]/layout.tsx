@@ -24,6 +24,7 @@ export default async function RootLayout({
   params: { locale: string }
 }) {
   const locale = useLocale()
+  const timeZone = 'Asia/Jakarta'
   let messages
   try {
     messages = (await import(`@/assets/locales/${locale}.json`)).default
@@ -39,6 +40,7 @@ export default async function RootLayout({
         <NextIntlClientProvider
           locale={locale}
           messages={messages}
+          timeZone={timeZone}
         >
           <UserProvider>
             <ThemeProvider
