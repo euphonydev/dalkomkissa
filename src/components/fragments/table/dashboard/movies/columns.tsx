@@ -45,21 +45,21 @@ export const columns: ColumnDef<MovieEntry>[] = [
     ),
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'format',
     header: () => <TableHeaderData label="format" />,
     cell: ({ row }) => (
       <TableRowData
-        key="type"
-        label={row.getValue('type')}
+        key="format"
+        label={row.getValue('format')}
       />
     ),
   },
   {
-    accessorKey: 'published',
+    accessorKey: 'published_at',
     header: () => <TableHeaderData label="status" />,
     cell: ({ row }) => (
       <TableRowData
-        label={row.getValue('published') ? 'published' : 'draft'}
+        label={row.getValue('published_at') ? 'published' : 'draft'}
         textHighlightTrigger="published"
         textHighlight
       />
