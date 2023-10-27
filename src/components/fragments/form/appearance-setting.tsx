@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
-import { usePathname, useRouter } from 'next-intl/client'
 import { useTheme } from 'next-themes'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,6 +31,7 @@ import {
 } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
+import { usePathname, useRouter } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 export function AppearanceSettingForm() {
