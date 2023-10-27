@@ -172,7 +172,6 @@ export function MovieForm() {
             {t('action_success', {
               action: t('add_new_entry', { entry: t('movie') }).toLowerCase(),
             })}
-            {JSON.stringify(formData)}
           </p>
         ),
       })
