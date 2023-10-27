@@ -9,9 +9,8 @@ export async function getMoviesByLang(
   lang: string,
 ): Promise<MovieEntry[]> {
   const { data } = await supabase
-    .from('movie_entry')
+    .rpc('get_movie_entries', { lang: lang })
     .select('*')
-    .eq('lang', lang)
   if (data) {
     return data
   }

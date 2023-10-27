@@ -3,11 +3,26 @@ import { age_rating } from './enums/age-rating'
 import { countries } from './enums/countries'
 import { movie_type } from './enums/movie-type'
 import { publication_status } from './enums/publication-status'
-import { Database } from '@/types/database.types'
 import { Overwrite } from '@/lib/utils/type'
 
-export type MovieEntry =
-  Database['public']['Functions']['get_movie_entries']['Returns']
+export type MovieEntry = {
+  id: string
+  title: string
+  description: string
+  original_country: string
+  original_language: string
+  original_airdate: string
+  cover_url: string
+  format: string
+  status: string
+  runtime: string
+  average_score: number
+  is_adult: boolean
+  created_at: string
+  published_at: string
+  updated_at: string
+  deleted_at: string
+}
 export type InsertMovieType = {
   original_title: Overwrite<LockedField, { value: string }>
   original_country: Overwrite<
