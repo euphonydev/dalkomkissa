@@ -79,6 +79,7 @@ const FormDataList = ({
             <Button
               variant="outline"
               role="combobox"
+              disabled={isLocked}
               className={cn(
                 'w-full justify-between',
                 !value && 'text-muted-foreground',

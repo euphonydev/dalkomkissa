@@ -55,6 +55,7 @@ type Props = {
 
 const ImageMultiLangModal = ({
   label,
+  disabled = false,
   onModalSubmit,
   openModalRef,
   ...props
@@ -159,6 +160,7 @@ const ImageMultiLangModal = ({
         <Button
           {...props}
           variant="outline"
+          disabled={disabled}
           ref={openModalRef}
         >
           <PlusIcon className="h-4 w-4 md:mr-2" />

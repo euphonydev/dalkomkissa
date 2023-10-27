@@ -73,6 +73,7 @@ const FormCheckbox = ({
                 >
                   <FormControl>
                     <Checkbox
+                      disabled={isLocked}
                       checked={field.value?.includes(item.id)}
                       onCheckedChange={(checked: boolean) => {
                         return checked

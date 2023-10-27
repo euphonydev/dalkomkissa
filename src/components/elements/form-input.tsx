@@ -48,6 +48,7 @@ const FormInput = React.forwardRef<HTMLInputElement, Props>(
             type={type}
             ref={ref}
             id={id}
+            disabled={isLocked}
             {...props}
           />
         </FormControl>

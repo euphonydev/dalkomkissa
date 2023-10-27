@@ -4,7 +4,7 @@
   "action_success": "Successfully {action}.",
   "add_new_entry": "Add new {entry}",
   "all": "All",
-  "rating": "Age rating",
+  "age_rating": "Age rating",
   "appearance": "Appearance",
   "appearance_setting_desc": "Customize how you see the site.",
   "avatar": "Avatar",
@@ -124,7 +124,7 @@
     "mystery": "Mystery",
     "reality": "Reality",
     "romance": "Romance",
-    "sci-fi": "Sci-fi",
+    "scifi": "Sci-fi",
     "sport": "Sport",
     "thriller": "Thriller",
     "war": "War"

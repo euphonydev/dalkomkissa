@@ -233,6 +233,7 @@ export function MovieForm() {
                   label={t('add_new_entry', {
                     entry: t('cover').toLowerCase(),
                   })}
+                  disabled={form.getValues('default_cover.locked')}
                   onModalSubmit={handleNewCover}
                   openModalRef={openModalRef}
                 />

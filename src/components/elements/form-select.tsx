@@ -54,7 +54,10 @@ const FormSelect = ({
         isLocked={isLocked}
         onLockClick={onLockClick}
       />
-      <Select onValueChange={onChange}>
+      <Select
+        onValueChange={onChange}
+        disabled={isLocked}
+      >
         <FormControl>
           <SelectTrigger>
             <SelectValue placeholder={placeholder} />

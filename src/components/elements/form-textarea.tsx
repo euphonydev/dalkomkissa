@@ -46,6 +46,7 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, Props>(
           <Textarea
             ref={ref}
             id={id}
+            disabled={isLocked}
             {...props}
           />
         </FormControl>

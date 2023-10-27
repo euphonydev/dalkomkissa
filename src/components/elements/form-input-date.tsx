@@ -62,6 +62,7 @@ const FormInputDate = ({
             <Button
               id={id}
               variant="outline"
+              disabled={isLocked}
               className={cn(
                 'text-left font-normal',
                 !value && 'text-muted-foreground',

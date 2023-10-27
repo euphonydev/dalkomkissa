@@ -71,6 +71,7 @@ const FormRadioButton = ({
               <FormControl>
                 <RadioGroupItem
                   value={`${data}`}
+                  disabled={isLocked}
                   checked={currentValue === data}
                 />
               </FormControl>
