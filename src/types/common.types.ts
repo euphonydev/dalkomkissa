@@ -1,5 +1,3 @@
-import { Overwrite } from '@/lib/utils/type'
-
 export type LockedField = {
   locked: boolean
 }
@@ -16,11 +14,12 @@ export type ImageInput = {
   size: number
 }
 
-export type Image = Overwrite<
-  ImageInput,
-  {
-    id: string
-    account_id: string
-    created_at: string
-  }
->
+export type Image = {
+  account_id: string
+  bucket: string
+  created_at: string | null
+  dimension: string
+  id: string
+  size: number | null
+  url: string
+}

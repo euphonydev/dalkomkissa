@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { Cover } from '@/types/image.types'
+import { Image } from '@/types/common.types'
 import { AppSupabaseClient } from '@/lib/supabase/types'
 import { substringAfterLast } from '@/lib/utils/string'
 
@@ -58,7 +58,7 @@ export const insertImage = async (
   dimension: string,
   size: number,
   accountId: string,
-): Promise<Cover | null> => {
+): Promise<Image | null> => {
   const generatedId = uuidv4()
   const fileExtension = substringAfterLast(file.name, '.')
   const pathUrl = `${path}/${generatedId}.${fileExtension}`
