@@ -90,7 +90,8 @@ export const columns: ColumnDef<MovieEntry>[] = [
       return (
         <TableRowBadge
           label={publishedAt < now ? 'published' : 'draft'}
-          variant={publishedAt ? 'default' : 'outline'}
+          variant={publishedAt < now ? 'default' : 'outline'}
+          useTranslation
         />
       )
     },
