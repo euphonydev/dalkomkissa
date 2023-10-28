@@ -1,15 +1,12 @@
 import '@/assets/globals.css'
+import { GeistSans } from 'geist/font'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, useLocale } from 'next-intl'
-import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { ThemeProvider } from '@/contexts/theme-provider'
 import { UserProvider } from '@/contexts/user-context'
 import { Toaster } from '@/components/ui/toaster'
-import { cn } from '@/lib/utils'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Dalkom Kissa',
@@ -36,7 +33,7 @@ export default async function RootLayout({
   }
   return (
     <html lang={locale}>
-      <body className={cn('bg-background', inter.className)}>
+      <body className={GeistSans.className}>
         <NextIntlClientProvider
           locale={locale}
           messages={messages}
