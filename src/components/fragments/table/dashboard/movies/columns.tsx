@@ -1,5 +1,6 @@
 'use client'
 
+import { TableRowBadge } from '../../row-badge'
 import { ColumnDef } from '@tanstack/react-table'
 import { MovieEntry } from '@/types/movie.types'
 import { TableHeaderData } from '@/components/fragments/table/header'
@@ -34,6 +35,7 @@ export const columns: ColumnDef<MovieEntry>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 64,
   },
   {
     accessorKey: 'title',
@@ -43,6 +45,19 @@ export const columns: ColumnDef<MovieEntry>[] = [
         column={column}
       />
     ),
+    cell: ({ row }) => {
+      const airdate = new Date(row.original.original_airdate)
+      const year = airdate.getFullYear()
+      return (
+        <>
+          <div className="line-clamp-2">{`${row.original.title} (${year})`}</div>
+          <div className="text-alt mt-2 line-clamp-3 hidden lg:line-clamp-4 lg:[display:-webkit-box]">
+            {row.original.description}
+          </div>
+        </>
+      )
+    },
+    enableSorting: true,
   },
   {
     accessorKey: 'format',
@@ -50,25 +65,42 @@ export const columns: ColumnDef<MovieEntry>[] = [
     cell: ({ row }) => (
       <TableRowData
         key="format"
-        label={row.getValue('format')}
+        label={row.original.format}
       />
     ),
+    size: 6,
   },
   {
-    accessorKey: 'published_at',
+    accessorKey: 'status',
     header: () => <TableHeaderData label="status" />,
     cell: ({ row }) => (
       <TableRowData
-        label={row.getValue('published_at') ? 'published' : 'draft'}
-        textHighlightTrigger="published"
-        textHighlight
+        key="status"
+        label={row.original.status}
       />
     ),
+    size: 6,
+  },
+  {
+    accessorKey: 'published_at',
+    header: () => <TableHeaderData label="published" />,
+    cell: ({ row }) => {
+      const publishedAt = new Date(row.original.published_at)
+      const now = new Date()
+      return (
+        <TableRowBadge
+          label={publishedAt < now ? 'published' : 'draft'}
+          variant={publishedAt ? 'default' : 'outline'}
+        />
+      )
+    },
+    size: 6,
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: () => <TableRowAction menuItem={actionMenuItem} />,
+    size: 2,
   },
 ]
 
