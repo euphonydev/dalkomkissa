@@ -85,12 +85,14 @@ export const columns: ColumnDef<MovieEntry>[] = [
     accessorKey: 'published_at',
     header: () => <TableHeaderData label="published" />,
     cell: ({ row }) => {
-      const publishedAt = new Date(row.original.published_at)
+      const publishedAt = row.original.published_at
+        ? new Date(row.original.published_at)
+        : null
       const now = new Date()
       return (
         <TableRowBadge
-          label={publishedAt < now ? 'published' : 'draft'}
-          variant={publishedAt < now ? 'default' : 'outline'}
+          label={publishedAt && publishedAt < now ? 'published' : 'draft'}
+          variant={publishedAt && publishedAt < now ? 'default' : 'outline'}
           useTranslation
         />
       )
