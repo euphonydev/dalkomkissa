@@ -1,6 +1,8 @@
 import { MoreVerticalIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -8,16 +10,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useToast } from '@/components/ui/use-toast'
 
 type TableRowActionProps = {
-  menuItem: {
-    label: string
-    link: string
-  }[]
+  children: React.ReactElement<typeof MenuItemAction>
 }
 
-export function TableRowAction({ menuItem }: TableRowActionProps) {
-  const t = useTranslations()
+export function TableRowAction({ children }: TableRowActionProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,16 +27,59 @@ export function TableRowAction({ menuItem }: TableRowActionProps) {
           <MoreVerticalIcon className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {menuItem.map(({ label, link }) => (
-          <Link
-            key={label}
-            href={link}
-          >
-            <DropdownMenuItem key={label}>{t(label)}</DropdownMenuItem>
-          </Link>
-        ))}
-      </DropdownMenuContent>
+      <DropdownMenuContent align="end">{children}</DropdownMenuContent>
     </DropdownMenu>
   )
+}
+
+interface MenuItemActionProps {
+  label: string
+  link?: string
+  onClick?: () => void
+  successTranslationKey?: string
+}
+
+export const MenuItemAction = ({
+  label,
+  link,
+  onClick,
+  successTranslationKey = label,
+}: MenuItemActionProps) => {
+  const t = useTranslations()
+  const router = useRouter()
+  const { toast } = useToast()
+  if (link) {
+    return (
+      <Link
+        key={label}
+        href={link}
+      >
+        <DropdownMenuItem>{t(label)}</DropdownMenuItem>
+      </Link>
+    )
+  } else if (onClick) {
+    return (
+      <DropdownMenuItem
+        onClick={() => {
+          onClick()
+          toast({
+            description: (
+              <p>
+                {t('action_success', {
+                  action: t('change_field', {
+                    field: t(successTranslationKey),
+                  }).toLowerCase(),
+                })}
+              </p>
+            ),
+          })
+          router.refresh()
+        }}
+      >
+        {t(label)}
+      </DropdownMenuItem>
+    )
+  } else {
+    return <DropdownMenuItem key={label}>{t(label)}</DropdownMenuItem>
+  }
 }

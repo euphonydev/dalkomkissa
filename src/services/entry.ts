@@ -20,3 +20,37 @@ export const insertEntry = async (
     return null
   }
 }
+
+export const publishEntry = async (
+  supabase: AppSupabaseClient,
+  entryId: string,
+): Promise<Entry | null> => {
+  const { data, error } = await supabase
+    .from('entries')
+    .update({
+      published_at: new Date().toISOString(),
+    })
+    .eq('id', entryId)
+  if (!error) {
+    return data
+  } else {
+    return null
+  }
+}
+
+export const unpublishEntry = async (
+  supabase: AppSupabaseClient,
+  entryId: string,
+): Promise<Entry | null> => {
+  const { data, error } = await supabase
+    .from('entries')
+    .update({
+      published_at: null,
+    })
+    .eq('id', entryId)
+  if (!error) {
+    return data
+  } else {
+    return null
+  }
+}

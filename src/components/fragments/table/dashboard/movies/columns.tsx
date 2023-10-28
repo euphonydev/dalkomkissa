@@ -1,23 +1,19 @@
 'use client'
 
 import { TableRowBadge } from '../../row-badge'
+import { publishEntry, unpublishEntry } from '@/services/entry'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { ColumnDef } from '@tanstack/react-table'
 import { MovieEntry } from '@/types/movie.types'
 import { TableHeaderData } from '@/components/fragments/table/header'
 import { TableRowData } from '@/components/fragments/table/row'
-import { TableRowAction } from '@/components/fragments/table/row-action'
+import {
+  MenuItemAction,
+  TableRowAction,
+} from '@/components/fragments/table/row-action'
 import { TableRowImage } from '@/components/fragments/table/row-image'
 
-const actionMenuItem = [
-  {
-    label: 'edit',
-    link: '/dashboard/movies',
-  },
-  {
-    label: 'publish_now',
-    link: '/dashboard/movies',
-  },
-]
+const supabase = createClientComponentClient()
 
 export const columns: ColumnDef<MovieEntry>[] = [
   {
@@ -102,7 +98,29 @@ export const columns: ColumnDef<MovieEntry>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: () => <TableRowAction menuItem={actionMenuItem} />,
+    cell: ({ row }) => {
+      const publishedAt = row.original.published_at
+        ? new Date(row.original.published_at)
+        : null
+      const now = new Date()
+      return (
+        <TableRowAction>
+          {publishedAt && publishedAt < now ? (
+            <MenuItemAction
+              label="unpublish"
+              onClick={() => unpublishEntry(supabase, row.original.id)}
+              successTranslationKey="published_status"
+            />
+          ) : (
+            <MenuItemAction
+              label="publish_now"
+              onClick={() => publishEntry(supabase, row.original.id)}
+              successTranslationKey="published_status"
+            />
+          )}
+        </TableRowAction>
+      )
+    },
     size: 2,
   },
 ]
