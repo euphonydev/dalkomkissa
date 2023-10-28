@@ -1,4 +1,4 @@
-import { getMoviesByLang } from '@/services/movie'
+import { getMovieEntries } from '@/services/movie'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { DataTable } from '@/components/fragments/table/dashboard/data-table'
@@ -8,7 +8,7 @@ export async function MovieTable() {
   const supabase = createServerComponentClient({
     cookies,
   })
-  const data = await getMoviesByLang(supabase, 'en')
+  const data = await getMovieEntries(supabase, 'en', false)
   return (
     <div className="py-10">
       <DataTable

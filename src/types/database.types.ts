@@ -598,6 +598,7 @@ export interface Database {
       get_movie_entries: {
         Args: {
           lang: string
+          published_only: boolean
         }
         Returns: {
           id: string

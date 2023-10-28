@@ -4,12 +4,13 @@ import { insertEntry } from '@/services/entry'
 import type { InsertMovieType, MovieEntry } from '@/types/movie.types'
 import { AppSupabaseClient } from '@/lib/supabase/types'
 
-export async function getMoviesByLang(
+export async function getMovieEntries(
   supabase: AppSupabaseClient,
   lang: string,
+  published_only: boolean,
 ): Promise<MovieEntry[]> {
   const { data } = await supabase
-    .rpc('get_movie_entries', { lang: lang })
+    .rpc('get_movie_entries', { lang: lang, published_only: published_only })
     .select('*')
   if (data) {
     return data
